@@ -6,7 +6,7 @@ export class Hen extends MovableObject {
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:340, _width: 90, _height: 90});
+        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80});
         this.loadImage(ImageManager.HEN.walk[0]);
         this.randomizedStartPosition();
     }

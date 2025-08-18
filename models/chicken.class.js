@@ -6,7 +6,7 @@ export class Chicken extends MovableObject{
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 365, _width: 60, _height: 60});
+        super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 375, _width: 50, _height: 50});
         this.loadImage(ImageManager.CHICKEN.walk[0]);
         this.randomizedStartPosition();
     }

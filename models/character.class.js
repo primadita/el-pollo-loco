@@ -6,7 +6,7 @@ export class Character extends MovableObject{
     // #endregion
     
     constructor(){
-        super({_img: ImageManager.PEPE.walk[0], _x: 100, _y: 185, _width: 120, _height: 250});
+        super({_img: ImageManager.PEPE.walk[0], _x: 100, _y: 165, _width: 120, _height: 270});
         this.loadImage(ImageManager.PEPE.walk[0]);
     }
     
