@@ -22,6 +22,10 @@ export class MovableObject{
         this.img.src = path;
     }
 
+    randomizedStartPosition(){
+        this.x = this.x + Math.random() * 500;
+    }
+    
     moveRight(){
 
     }
