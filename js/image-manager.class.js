@@ -113,19 +113,19 @@ export class ImageManager{
         ]
     }
     static BACKGROUND = {
-        firstLayer : [
+        firstDesert : [
             './assets/img/5_background/layers/1_first_layer/1.png',
             './assets/img/5_background/layers/1_first_layer/2.png'
         ],
-        secondLayer : [
+        secondDesert : [
             './assets/img/5_background/layers/2_second_layer/1.png',
             './assets/img/5_background/layers/2_second_layer/2.png'
         ],
-        thirdLayer : [
+        thirdDesert : [
             './assets/img/5_background/layers/3_third_layer/1.png',
             './assets/img/5_background/layers/3_third_layer/2.png'
         ],
-        fullLayer : [
+        fullDesert : [
             './assets/img/5_background/layers/3_third_layer/full.png',
             './assets/img/5_background/layers/2_second_layer/full.png',
             './assets/img/5_background/layers/1_first_layer/full.png',   
@@ -134,7 +134,8 @@ export class ImageManager{
             './assets/img/5_background/layers/4_clouds/1.png',
             './assets/img/5_background/layers/4_clouds/2.png'
         ],
-        air : './assets/img/5_background/layers/air.png'
+        air : './assets/img/5_background/layers/air.png',
+        fullCloud : './assets/img/5_background/layers/4_clouds/full.png'
     }
     static BOTTLE = {
         onGround : [

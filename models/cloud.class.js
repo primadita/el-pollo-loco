@@ -1,13 +1,13 @@
 import { ImageManager } from "../js/image-manager.class.js";
 import { MovableObject } from "./movable-object.class.js";
 
-export class Chicken extends MovableObject{
+export class Cloud extends MovableObject{
     // #region ATTRIBUTES
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 365, _width: 60, _height: 60});
-        this.loadImage(ImageManager.CHICKEN.walk[0]);
+        super({_img: ImageManager.BACKGROUND.fullCloud, _x: 30, _y: 30, _width: 2 * 500, _height: 300});
+        this.loadImage(ImageManager.BACKGROUND.fullCloud);
         this.randomizedStartPosition();
     }
 
