@@ -8,11 +8,12 @@ export class Chicken extends MovableObject{
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 375, _width: 50, _height: 50});
+        super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 375, _width: 50, _height: 50, _speed : 0.2 + Math.random() * 0.25});
         this.loadImage(ImageManager.CHICKEN.walk[0]);
         this.loadImages(ImageManager.CHICKEN.walk);
         this.randomizedStartPosition();
         IntervalHub.startInterval(this.animate, 1000 / 9);
+        IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }
 
     // #region METHODS

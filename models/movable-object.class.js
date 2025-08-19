@@ -11,7 +11,7 @@ export class MovableObject{
 
     // #endregion
 
-    constructor({_img, _x = 120, _y = 250, _width = 100, _height = 150, _speed = 10} = {}){
+    constructor({_img, _x = 120, _y = 250, _width = 100, _height = 150, _speed = 0.15} = {}){
         this.img = _img;
         this.x = _x;
         this.y = _y;
@@ -44,7 +44,7 @@ export class MovableObject{
     }
 
     moveLeft = () => {
-        this.x -= 0.15;
+        this.x -= this.speed;
     }
     // #endregion
 }

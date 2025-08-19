@@ -8,11 +8,12 @@ export class Hen extends MovableObject {
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80});
+        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80, _speed: 0.3 + Math.random() * 0.25});
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
         this.randomizedStartPosition();
-        IntervalHub.startInterval(this.animate, 1000 / 4);
+        IntervalHub.startInterval(this.animate, 1000 / 5);
+        IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }
 
     // #region METHODS
