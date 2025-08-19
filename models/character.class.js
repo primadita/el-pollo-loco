@@ -27,15 +27,15 @@ export class Character extends MovableObject{
     }
 
     action = () => {
-        if(this.world.keyboard.RIGHT){
+        if(this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX){
             this.otherDirection = false;
             this.moveRight();
         }
-        if(this.world.keyboard.LEFT){
+        if(this.world.keyboard.LEFT && this.x > 0){
             this.otherDirection = true;
             this.moveLeft();
         }
-        this.world.cameraX = -this.x;
+        this.world.cameraX = -this.x + this.width;
     }
 
     jump(){

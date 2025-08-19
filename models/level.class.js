@@ -7,9 +7,13 @@ import { Hen } from "./hen.class.js";
 import { Sky } from "./sky.class.js";
 
 export class Level{
+    // #region ATTRIBUTES
     enemies;
     clouds;
     backgrounds;
+    levelEndX = 2160;
+    // #endregion
+
     constructor(){
         this.enemies = [
             new Hen(),
@@ -32,6 +36,6 @@ export class Level{
             new DesertThirdLayer(),
             new DesertSecondLayer(), 
             new DesertFirstLayer()
-    ];
+        ];
     }
 }
