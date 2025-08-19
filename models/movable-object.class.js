@@ -8,6 +8,7 @@ export class MovableObject{
     speed;
     imageCache = {};
     currentImage = 0;
+    otherDirection = false;
 
     // #endregion
 
@@ -39,8 +40,8 @@ export class MovableObject{
         this.x = this.x + Math.random() * 500;
     }
     
-    moveRight(){
-
+    moveRight = () => {
+        this.x += this.speed;
     }
 
     moveLeft = () => {

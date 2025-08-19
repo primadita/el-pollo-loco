@@ -1,13 +1,14 @@
 export class Background{
     // #region ATTRIBUTES
-    x = 0;
+    x;
     y = 0;
     width = 2 * canvas.width;
     height = canvas.height;
     img;
     // #endregion
 
-    constructor({_img} = {}){
+    constructor({_x, _img} = {}){
+        this.x = _x;
         this.img = _img;
         this.loadImage(_img);
     }
