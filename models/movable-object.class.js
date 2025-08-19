@@ -6,6 +6,7 @@ export class MovableObject{
     height;
     img;
     speed;
+    imageCache = {};
 
     // #endregion
 
@@ -22,6 +23,15 @@ export class MovableObject{
     loadImage(path){
         this.img = new Image();
         this.img.src = path;
+    }
+
+    loadImages(arr){
+        arr.forEach((path) => {
+            let images = new Image();
+            images.src = path;
+            this.imageCache[path] = images;
+        })
+        
     }
 
     randomizedStartPosition(){
