@@ -7,6 +7,7 @@ export class MovableObject{
     img;
     speed;
     imageCache = {};
+    currentImage = 0;
 
     // #endregion
 
