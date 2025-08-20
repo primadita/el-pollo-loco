@@ -5,20 +5,22 @@ export class MovableObject{
     width;
     height;
     img;
-    speed;
+    xSpeed;
+    ySpeed = 0;
+    acceleration = 2.5; // or gravitation
     imageCache = {};
     currentImage = 0;
     otherDirection = false;
 
     // #endregion
 
-    constructor({_img, _x = 120, _y = 250, _width = 100, _height = 150, _speed = 0.15} = {}){
+    constructor({_img, _x = 120, _y = 250, _width = 100, _height = 150, _xSpeed = 0.15} = {}){
         this.img = _img;
         this.x = _x;
         this.y = _y;
         this.width = _width;
         this.height = _height;
-        this.speed = _speed;
+        this.xSpeed = _xSpeed;
     }
 
     // #region METHODS
@@ -32,20 +34,42 @@ export class MovableObject{
             let images = new Image();
             images.src = path;
             this.imageCache[path] = images;
-        })
+        });
         
     }
 
+    playAnimation(arr){
+        let i = this.currentImage % arr.length;
+        let path = arr[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     randomizedStartPosition(){
-        this.x = this.x + Math.random() * 500;
+        this.x = this.x + Math.random() * 1800;
     }
     
     moveRight = () => {
-        this.x += this.speed;
+        this.x += this.xSpeed;
     }
 
     moveLeft = () => {
-        this.x -= this.speed;
+        this.x -= this.xSpeed;
+    }
+
+    applyGravity = () => {
+        if(this.isAboveGround() || this.ySpeed > 0){
+            this.y -= this.ySpeed;
+            this.ySpeed -= this.acceleration;
+        }
+    }
+
+    isAboveGround(){
+        return this.y + this.height < 165;
+    }
+
+    jump(){
+        this.ySpeed = 30;
     }
     // #endregion
 }

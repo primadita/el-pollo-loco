@@ -8,7 +8,7 @@ export class Hen extends MovableObject {
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80, _speed: 0.3 + Math.random() * 0.25});
+        super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80, _xSpeed: 0.5 + Math.random() * 0.25});
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
         this.randomizedStartPosition();
@@ -18,10 +18,7 @@ export class Hen extends MovableObject {
 
     // #region METHODS
     animate = () => {
-        let i = this.currentImage % ImageManager.HEN.walk.length;
-        let path = ImageManager.HEN.walk[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(ImageManager.HEN.walk);
     }
     // #endregion
 }

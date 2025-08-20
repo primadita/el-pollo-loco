@@ -14,26 +14,26 @@ function init(){
 init();
 
 window.addEventListener('keydown', (e) => {
-    if(e.keyCode == 39){
+    if(e.key == 'ArrowRight'){
         keyboard.RIGHT = true;
     }
-    if(e.keyCode == 37){
+    if(e.key == 'ArrowLeft'){
         keyboard.LEFT = true;
     }
-    if(e.keyCode == 32){
+    if(e.key == ' '){
         keyboard.SPACE = true;
     }
 });
 window.addEventListener("keyup",(e) => {
-    if(e.keyCode == 39){
+    if(e.key == 'ArrowRight'){
         keyboard.RIGHT = false;
     }
 
-    if(e.keyCode == 37){
+    if(e.key == 'ArrowLeft'){
         keyboard.LEFT = false;
     }
 
-    if(e.keyCode == 32){
+    if(e.key == ' '){
         keyboard.SPACE = false;
     }
 })

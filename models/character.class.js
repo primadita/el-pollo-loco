@@ -8,21 +8,22 @@ export class Character extends MovableObject{
     // #endregion
     
     constructor(){
-        super({_img: ImageManager.PEPE.walk[0], _x: 100, _y: 165, _width: 120, _height: 270, _speed: 5});
+        super({_img: ImageManager.PEPE.walk[0], _x: 100, _y: 65, _width: 120, _height: 270, _xSpeed: 5});
         this.loadImage(ImageManager.PEPE.walk[0]);
         this.loadImages(ImageManager.PEPE.walk);
-        IntervalHub.startInterval(this.animate, 1000 / 20);
+        this.loadImages(ImageManager.PEPE.jump);
+        IntervalHub.startInterval(this.applyGravity, 1000 / 25);
+        IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
         
     }
     
     // #region METHODS
     animate = () => {
-        if( this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
-            let i = this.currentImage % ImageManager.PEPE.walk.length;
-            let path = ImageManager.PEPE.walk[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+        if(this.isAboveGround()){
+            this.playAnimation(ImageManager.PEPE.jump);
+        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+            this.playAnimation(ImageManager.PEPE.walk);
         }   
     }
 
@@ -35,12 +36,10 @@ export class Character extends MovableObject{
             this.otherDirection = true;
             this.moveLeft();
         }
-        this.world.cameraX = -this.x + this.width;
-    }
-
-    jump(){
-
+        if(this.world.keyboard.SPACE && !this.isAboveGround()){
+            this.jump();
+        }
+        this.world.cameraX = -this.x + this.width; 
     }
     // #endregion
-
 }
