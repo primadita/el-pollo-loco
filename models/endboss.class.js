@@ -5,10 +5,10 @@ import { MovableObject } from "./movable-object.class.js";
 export class Endboss extends MovableObject{
     // #region ATTRIBUTES
     offset = {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
+        top: 90,
+        left: 30,
+        bottom: 40,
+        right: 35
     }
     // #endregion
 

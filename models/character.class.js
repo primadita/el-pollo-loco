@@ -6,10 +6,10 @@ export class Character extends MovableObject{
     // #region ATTRIBUTES
     world;
     offset = {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
+        top: 155,
+        left: 30,
+        bottom: 15,
+        right: 55
     }
     // #endregion
     

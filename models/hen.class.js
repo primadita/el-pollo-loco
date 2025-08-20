@@ -5,10 +5,10 @@ import { MovableObject } from "./movable-object.class.js";
 export class Hen extends MovableObject {
     // #region ATTRIBUTES
     offset = {
-        top: 10,
-        left: 10,
+        top: 5,
+        left: 2,
         bottom: 10,
-        right: 10
+        right: 2
     }
     // #endregion
 

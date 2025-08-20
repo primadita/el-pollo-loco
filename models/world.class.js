@@ -2,6 +2,7 @@ import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
 import { Endboss } from "./endboss.class.js";
 import { Hen } from "./hen.class.js";
+import { IntervalHub } from "./interval-hub.class.js";
 import { Level } from "./level.class.js";
 
 export class World{
@@ -20,6 +21,7 @@ export class World{
         this.keyboard = _keyboard;
         this.draw();
         this.setWorld();
+        IntervalHub.startInterval(this.checkCollisions, 1000 / 1);
     }
     // #region METHODS
     draw(){
@@ -38,7 +40,11 @@ export class World{
             this.flipImage(mo);
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-        this.drawFrame(mo);
+        
+        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss){
+            this.drawFrame(mo);
+            this.drawOffset(mo);
+        }
 
         if(mo.otherDirection){
             this.flipImageBack(mo);
@@ -66,14 +72,23 @@ export class World{
     }
 
     drawFrame(mo){
-        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss){
-            this.ctx.beginPath();
-            this.ctx.lineWidth = 3;
-            this.ctx.strokeStyle = "blue";
-            this.ctx.rect(mo.x, mo.y, mo.width, mo.height);
-            this.ctx.stroke();
-        }
-        
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeStyle = "blue";
+        this.ctx.rect(mo.x, mo.y, mo.width, mo.height);
+        this.ctx.stroke();
+    }
+
+    drawOffset(mo){
+        this.ctx.beginPath();
+        this.ctx.lineWidth = 3;
+        this.ctx.strokeStyle = "red";
+        this.ctx.rect(mo.realX, mo.realY, mo.realWidth, mo.realHeight);
+        this.ctx.stroke();
+    }
+
+    checkCollisions(){
+
     }
     // #endregion
 }
