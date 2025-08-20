@@ -22,9 +22,11 @@ export class Character extends MovableObject{
     animate = () => {
         if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
-        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
-            this.playAnimation(ImageManager.PEPE.walk);
-        }   
+        } else {
+            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+                this.playAnimation(ImageManager.PEPE.walk);
+            }   
+        }
     }
 
     action = () => {

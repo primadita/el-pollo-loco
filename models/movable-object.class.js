@@ -65,7 +65,7 @@ export class MovableObject{
     }
 
     isAboveGround(){
-        return this.y + this.height < 165;
+        return this.y < 165;
     }
 
     jump(){
