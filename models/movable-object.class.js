@@ -1,11 +1,10 @@
+import { ImageManager } from "../js/image-manager.class.js";
+import { DrawableObject } from "./drawable-object.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 
-export class MovableObject{
+export class MovableObject extends DrawableObject{
     // #region ATTRIBUTES
-    x;
-    y;
-    width;
-    height;
+   
     offset = {
         top: 0,
         left: 0,
@@ -16,41 +15,28 @@ export class MovableObject{
     realY;
     realWidth;
     realHeight;
-    img;
+    
     xSpeed;
     ySpeed = 0;
     acceleration = 2.5; // or gravitation
-    imageCache = {};
-    currentImage = 0;
+    
+    
     otherDirection = false;
     energy = 100;
     lastHit = 0;
 
     // #endregion
 
-    constructor({_img, _x = 120, _y = 250, _width = 100, _height = 150, _xSpeed = 0.15} = {}){
-        this.img = _img;
-        this.x = _x;
-        this.y = _y;
-        this.width = _width;
-        this.height = _height;
+    constructor({_img, _x, _y, _width, _height, _xSpeed} = {}){
+        super({_img, _x, _y, _width, _height});
         this.xSpeed = _xSpeed;
         IntervalHub.startInterval(this.getRealFrame, 1000 / 60);
     }
 
     // #region METHODS
-    loadImage(path){
-        this.img = new Image();
-        this.img.src = path;
-    }
+    
 
-    loadImages(arr){
-        arr.forEach((path) => {
-            let images = new Image();
-            images.src = path;
-            this.imageCache[path] = images;
-        });
-    }
+    
 
     playAnimation(arr){
         let i = this.currentImage % arr.length;
