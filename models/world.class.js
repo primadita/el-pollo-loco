@@ -1,12 +1,8 @@
 import { Character } from "./character.class.js";
-// import { Chicken } from "./chicken.class.js";
-// import { Cloud } from "./cloud.class.js";
-// import { DesertFirstLayer } from "./desert-first-layer.class.js";
-// import { DesertSecondLayer } from "./desert-second-layer.class.js";
-// import { DesertThirdLayer } from "./desert-third-layer.class.js";
-// import { Hen } from "./hen.class.js";
+import { Chicken } from "./chicken.class.js";
+import { Endboss } from "./endboss.class.js";
+import { Hen } from "./hen.class.js";
 import { Level } from "./level.class.js";
-// import { Sky } from "./sky.class.js";
 
 export class World{
     // #region ATTRIBUTES
@@ -42,9 +38,10 @@ export class World{
             this.flipImage(mo);
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        this.drawFrame(mo);
+
         if(mo.otherDirection){
             this.flipImageBack(mo);
-
         }
     }
 
@@ -66,6 +63,17 @@ export class World{
     flipImageBack(mo){
         this.ctx.restore();
         mo.x = mo.x * -1;
+    }
+
+    drawFrame(mo){
+        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss){
+            this.ctx.beginPath();
+            this.ctx.lineWidth = 3;
+            this.ctx.strokeStyle = "blue";
+            this.ctx.rect(mo.x, mo.y, mo.width, mo.height);
+            this.ctx.stroke();
+        }
+        
     }
     // #endregion
 }

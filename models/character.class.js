@@ -5,6 +5,12 @@ import { MovableObject } from "./movable-object.class.js";
 export class Character extends MovableObject{
     // #region ATTRIBUTES
     world;
+    offset = {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
+    }
     // #endregion
     
     constructor(){
@@ -12,6 +18,7 @@ export class Character extends MovableObject{
         this.loadImage(ImageManager.PEPE.walk[0]);
         this.loadImages(ImageManager.PEPE.walk);
         this.loadImages(ImageManager.PEPE.jump);
+        this.getRealFrame();
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);

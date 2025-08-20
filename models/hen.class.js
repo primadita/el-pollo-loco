@@ -4,7 +4,12 @@ import { MovableObject } from "./movable-object.class.js";
 
 export class Hen extends MovableObject {
     // #region ATTRIBUTES
-
+    offset = {
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
+    }
     // #endregion
 
     constructor(){
@@ -12,6 +17,7 @@ export class Hen extends MovableObject {
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
         this.randomizedStartPosition();
+        this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 5);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }

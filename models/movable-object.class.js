@@ -4,6 +4,16 @@ export class MovableObject{
     y;
     width;
     height;
+    offset = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0
+    }
+    realX;
+    realY;
+    realWidth;
+    realHeight;
     img;
     xSpeed;
     ySpeed = 0;
@@ -35,7 +45,6 @@ export class MovableObject{
             images.src = path;
             this.imageCache[path] = images;
         });
-        
     }
 
     playAnimation(arr){
@@ -57,6 +66,10 @@ export class MovableObject{
         this.x -= this.xSpeed;
     }
 
+    jump(){
+        this.ySpeed = 30;
+    }
+
     applyGravity = () => {
         if(this.isAboveGround() || this.ySpeed > 0){
             this.y -= this.ySpeed;
@@ -68,8 +81,19 @@ export class MovableObject{
         return this.y < 165;
     }
 
-    jump(){
-        this.ySpeed = 30;
+    isColliding(mo){
+        return this.realX + this.realWidth > mo.realX &&
+            this.realY + this.realHeight > mo.realY &&
+            this.realX < mo.realX + mo.realWidth &&
+            this.realY < mo.realY + mo.realHeight;
     }
+
+    getRealFrame(){
+        this.realX = this.x + this.offset.left;
+        this.realY = this.y + this.offset.top;
+        this.realWidth = this.width - this.offset.left - this.offset.right;
+        this.realHeight = this.height - this.offset.top - this.offset.bottom;
+    }
+
     // #endregion
 }
