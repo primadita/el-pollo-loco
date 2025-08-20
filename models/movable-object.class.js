@@ -1,3 +1,5 @@
+import { IntervalHub } from "./interval-hub.class.js";
+
 export class MovableObject{
     // #region ATTRIBUTES
     x;
@@ -21,6 +23,8 @@ export class MovableObject{
     imageCache = {};
     currentImage = 0;
     otherDirection = false;
+    energy = 100;
+    lastHit = 0;
 
     // #endregion
 
@@ -31,6 +35,7 @@ export class MovableObject{
         this.width = _width;
         this.height = _height;
         this.xSpeed = _xSpeed;
+        IntervalHub.startInterval(this.getRealFrame, 1000 / 60);
     }
 
     // #region METHODS
@@ -70,6 +75,15 @@ export class MovableObject{
         this.ySpeed = 30;
     }
 
+    hit(){
+        this.energy -= 5;
+        if (this.energy < 0){
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
     applyGravity = () => {
         if(this.isAboveGround() || this.ySpeed > 0){
             this.y -= this.ySpeed;
@@ -87,8 +101,16 @@ export class MovableObject{
             this.realX < mo.realX + mo.realWidth &&
             this.realY < mo.realY + mo.realHeight;
     }
+    isHurt(){
+        let timepassed = (new Date().getTime() - this.lastHit) / 1000;
+        return timepassed < 0.5
+    }
 
-    getRealFrame(){
+    isDead(){
+        return this.energy == 0;
+    }
+
+    getRealFrame = () => {
         this.realX = this.x + this.offset.left;
         this.realY = this.y + this.offset.top;
         this.realWidth = this.width - this.offset.left - this.offset.right;

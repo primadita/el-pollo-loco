@@ -21,7 +21,7 @@ export class World{
         this.keyboard = _keyboard;
         this.draw();
         this.setWorld();
-        IntervalHub.startInterval(this.checkCollisions, 1000 / 1);
+        IntervalHub.startInterval(this.checkCollisions, 1000 / 5);
     }
     // #region METHODS
     draw(){
@@ -80,6 +80,7 @@ export class World{
     }
 
     drawOffset(mo){
+        mo.getRealFrame();
         this.ctx.beginPath();
         this.ctx.lineWidth = 3;
         this.ctx.strokeStyle = "red";
@@ -87,8 +88,14 @@ export class World{
         this.ctx.stroke();
     }
 
-    checkCollisions(){
-
+    checkCollisions = () => {
+        this.level.enemies.forEach((enemy) => {
+            if(this.character.isColliding(enemy)){
+                this.character.hit();
+                
+                console.log('Collision with character', this.character.energy);
+            }
+        })
     }
     // #endregion
 }

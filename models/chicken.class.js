@@ -7,7 +7,7 @@ export class Chicken extends MovableObject{
     offset = {
         top: 5,
         left: 6,
-        bottom: 5,
+        bottom: 8,
         right: 5
     }
     // #endregion
@@ -17,7 +17,7 @@ export class Chicken extends MovableObject{
         this.loadImage(ImageManager.CHICKEN.walk[0]);
         this.loadImages(ImageManager.CHICKEN.walk);
         this.randomizedStartPosition();
-        this.getRealFrame();
+        // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 9);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }

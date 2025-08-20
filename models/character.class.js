@@ -6,10 +6,10 @@ export class Character extends MovableObject{
     // #region ATTRIBUTES
     world;
     offset = {
-        top: 155,
+        top: 135,
         left: 30,
         bottom: 15,
-        right: 55
+        right: 35
     }
     // #endregion
     
@@ -18,7 +18,11 @@ export class Character extends MovableObject{
         this.loadImage(ImageManager.PEPE.walk[0]);
         this.loadImages(ImageManager.PEPE.walk);
         this.loadImages(ImageManager.PEPE.jump);
-        this.getRealFrame();
+        this.loadImages(ImageManager.PEPE.dead);
+        this.loadImages(ImageManager.PEPE.hurt);
+        this.loadImages(ImageManager.PEPE.idle);
+        this.loadImages(ImageManager.PEPE.longIdle);
+        // this.getRealFrame();
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
@@ -27,14 +31,19 @@ export class Character extends MovableObject{
     
     // #region METHODS
     animate = () => {
-        if(this.isAboveGround()){
+        if(this.isDead()){
+            this.playAnimation(ImageManager.PEPE.dead);
+        } else if(this.isHurt()){
+            this.playAnimation(ImageManager.PEPE.hurt);
+        } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
-        } else {
-            if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
-                this.playAnimation(ImageManager.PEPE.walk);
-            }   
+        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+            this.playAnimation(ImageManager.PEPE.walk);
+        }  else {
+            this.playAnimation(ImageManager.PEPE.idle);
         }
     }
+    
 
     action = () => {
         if(this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX){

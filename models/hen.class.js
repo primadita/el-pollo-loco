@@ -6,9 +6,9 @@ export class Hen extends MovableObject {
     // #region ATTRIBUTES
     offset = {
         top: 5,
-        left: 2,
-        bottom: 10,
-        right: 2
+        left: 5,
+        bottom: 15,
+        right: 5
     }
     // #endregion
 
@@ -17,7 +17,7 @@ export class Hen extends MovableObject {
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
         this.randomizedStartPosition();
-        this.getRealFrame();
+        // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 5);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }

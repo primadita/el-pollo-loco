@@ -5,10 +5,10 @@ import { MovableObject } from "./movable-object.class.js";
 export class Endboss extends MovableObject{
     // #region ATTRIBUTES
     offset = {
-        top: 90,
-        left: 30,
-        bottom: 40,
-        right: 35
+        top: 100,
+        left: 50,
+        bottom: 80,
+        right: 55
     }
     // #endregion
 
@@ -16,7 +16,7 @@ export class Endboss extends MovableObject{
         super({_img: ImageManager.HENBOSS.angry[0], _x: 2300, _y: 60, _width: 400, _height: 400, _xSpeed : 0.2});
         this.loadImage(ImageManager.HENBOSS.angry[0]);
         this.loadImages(ImageManager.HENBOSS.angry);
-        this.getRealFrame();
+        // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 9);
     }
 
