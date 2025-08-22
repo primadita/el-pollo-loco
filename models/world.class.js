@@ -1,7 +1,11 @@
 import { ImageManager } from "../js/image-manager.class.js";
+import { BottleBar } from "./bottle-bar.class.js";
 import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
+import { CoinBar } from "./coin-bar.class.js";
+import { EndBossBar } from "./endboss-bar.class.js";
 import { Endboss } from "./endboss.class.js";
+import { HealthBar } from "./health-bar.class.js";
 import { Hen } from "./hen.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { Level } from "./level.class.js";
@@ -15,7 +19,7 @@ export class World{
     canvas;
     keyboard;
     cameraX = 0;
-    statusBar = new StatusBar({_y:20, _imgArray: ImageManager.STATUSBAR.healthBar});
+    statusBar = [new HealthBar(), new CoinBar(), new BottleBar(), new EndBossBar()];
     // #endregion
 
     constructor(_canvas, _keyboard){
@@ -33,7 +37,7 @@ export class World{
         this.addObjectsToMap(this.level.backgrounds);
         this.ctx.translate(-this.cameraX, 0); //back 
         // ---- space for fixed object -------
-        this.addToMap(this.statusBar);
+        this.addObjectsToMap(this.statusBar);
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
@@ -100,7 +104,7 @@ export class World{
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.statusBar[0].setPercentage(this.character.energy);
             }
         })
     }
