@@ -37,6 +37,7 @@ export class Character extends MovableObject{
             this.playAnimation(ImageManager.PEPE.hurt);
         } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
+            // TO DO: jump animation nur ein Durchlauf
         } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
             this.playAnimation(ImageManager.PEPE.walk);
         }  else {

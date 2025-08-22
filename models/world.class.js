@@ -1,9 +1,11 @@
+import { ImageManager } from "../js/image-manager.class.js";
 import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
 import { Endboss } from "./endboss.class.js";
 import { Hen } from "./hen.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { Level } from "./level.class.js";
+import { StatusBar } from "./status-bar.class.js";
 
 export class World{
     // #region ATTRIBUTES
@@ -13,6 +15,7 @@ export class World{
     canvas;
     keyboard;
     cameraX = 0;
+    statusBar = new StatusBar({_y:20, _imgArray: ImageManager.STATUSBAR.healthBar});
     // #endregion
 
     constructor(_canvas, _keyboard){
@@ -28,6 +31,7 @@ export class World{
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.cameraX, 0);
         this.addObjectsToMap(this.level.backgrounds);
+        this.addToMap(this.statusBar);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
