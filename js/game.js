@@ -23,17 +23,21 @@ window.addEventListener('keydown', (e) => {
     if(e.key == ' '){
         keyboard.SPACE = true;
     }
+    if(e.key == 'd'){
+        keyboard.D = true;
+    }
 });
 window.addEventListener("keyup",(e) => {
     if(e.key == 'ArrowRight'){
         keyboard.RIGHT = false;
     }
-
     if(e.key == 'ArrowLeft'){
         keyboard.LEFT = false;
     }
-
     if(e.key == ' '){
         keyboard.SPACE = false;
+    }
+    if(e.key == 'd'){
+        keyboard.D = false;
     }
 })

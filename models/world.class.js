@@ -9,7 +9,7 @@ import { HealthBar } from "./health-bar.class.js";
 import { Hen } from "./hen.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { Level } from "./level.class.js";
-import { StatusBar } from "./status-bar.class.js";
+import { ThrowableObject } from "./throwable-object.class.js";
 
 export class World{
     // #region ATTRIBUTES
@@ -20,6 +20,7 @@ export class World{
     keyboard;
     cameraX = 0;
     statusBar = [new HealthBar(), new CoinBar(), new BottleBar(), new EndBossBar()];
+    throwableObjects = [];
     // #endregion
 
     constructor(_canvas, _keyboard){
@@ -28,7 +29,7 @@ export class World{
         this.keyboard = _keyboard;
         this.draw();
         this.setWorld();
-        IntervalHub.startInterval(this.checkCollisions, 1000 / 5);
+        IntervalHub.startInterval(this.run, 1000 / 5);
     }
     // #region METHODS
     draw(){
@@ -41,6 +42,7 @@ export class World{
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
@@ -100,7 +102,19 @@ export class World{
         this.ctx.stroke();
     }
 
-    checkCollisions = () => {
+    run = () => {
+        this.checkCollisions();
+        this.checkThrowObjects();
+    }
+
+    checkThrowObjects(){
+        if(this.keyboard.D){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+            let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
+            this.throwableObjects.push(bottle);
+        }
+    }
+
+    checkCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 this.character.hit();
