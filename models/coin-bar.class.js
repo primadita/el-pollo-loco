@@ -7,6 +7,7 @@ export class CoinBar extends StatusBar{
 
     constructor(){
         super({_y: 45, _imgArray: ImageManager.STATUSBAR.coinBar});
+        this.setPercentage(0);
     }
 
     // #region METHODS

@@ -7,6 +7,7 @@ export class BottleBar extends StatusBar{
 
     constructor(){
         super({_y: 90, _imgArray: ImageManager.STATUSBAR.bottleBar});
+        this.setPercentage(0);
     }
 
     // #region METHODS

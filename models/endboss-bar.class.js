@@ -3,10 +3,11 @@ import { StatusBar } from "./status-bar.class.js";
 
 export class EndBossBar extends StatusBar{
     // #region ATTRIBUTES
+    x = 500;
     // #endregion
 
     constructor(){
-        super({_y: 135, _imgArray: ImageManager.STATUSBAR.endBossBar});
+        super({_y: 10, _imgArray: ImageManager.STATUSBAR.endBossBar});
     }
 
     // #region METHODS

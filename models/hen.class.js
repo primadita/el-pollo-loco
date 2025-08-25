@@ -16,6 +16,7 @@ export class Hen extends MovableObject {
         super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80, _xSpeed: 0.5 + Math.random() * 0.25});
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
+        this.loadImage(ImageManager.HEN.dead);
         this.randomizedStartPosition();
         // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 5);
@@ -24,7 +25,13 @@ export class Hen extends MovableObject {
 
     // #region METHODS
     animate = () => {
-        this.playAnimation(ImageManager.HEN.walk);
+        if (this.isDead()){
+            this.playAnimation(ImageManager.HEN.dead);
+        } else {
+            this.playAnimation(ImageManager.HEN.walk);
+        }
+        
+        
     }
     // #endregion
 }

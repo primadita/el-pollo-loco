@@ -19,7 +19,7 @@ export class World{
     canvas;
     keyboard;
     cameraX = 0;
-    statusBar = [new HealthBar(), new CoinBar(), new BottleBar(), new EndBossBar()];
+    statusBar = [new HealthBar(), new CoinBar(), new BottleBar()];
     throwableObjects = [];
     // #endregion
 
@@ -39,6 +39,10 @@ export class World{
         this.ctx.translate(-this.cameraX, 0); //back 
         // ---- space for fixed object -------
         this.addObjectsToMap(this.statusBar);
+        if(this.character.x == 1700){
+            let endbossbar = new EndBossBar();
+            this.statusBar.push(endbossbar);
+        }
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
@@ -118,9 +122,13 @@ export class World{
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 this.character.hit();
-                this.statusBar[0].setPercentage(this.character.energy);
+                this.statusBar[0].setPercentage(this.character.energy); 
             }
         })
+    }
+
+    isGameOver(){
+        return this.character.energy === 0;
     }
     // #endregion
 }
