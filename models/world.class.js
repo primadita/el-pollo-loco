@@ -113,26 +113,39 @@ export class World{
     }
 
     checkThrowObjects(){
-        if(this.keyboard.D){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+        if(this.keyboard.D && !this.character.moveLeft()){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
         }
     }
 
     checkCollisions(){
-        console.log('pepes speed',this.character.ySpeed);
+        console.log('pepes energy',this.character.energy);
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
-                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight > enemy.realY){
-                    enemy.isDead = true;
-                    this.character.ySpeed = -this.character.ySpeed;
-                    console.log('enemy is hit');
+                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6* enemy.realHeight && !enemy.dead){
+                    enemy.dead = true;
+                    if(enemy instanceof Chicken){
+                        this.character.energy += 10;
+                    } else if (enemy instanceof Hen){
+                        this.character.energy += 20;
+                    } 
+                    if ( this.character.energy > 100){
+                        this.character.energy = 100;
+                    }
+                    if(this.character.canbounce){
+                        this.character.bounce(); // small jump after hitting enemy
+                    }
+                    
+                    console.log('enemy is hit', this.character.energy);
                 } else {
-                    this.character.hit();
-                    this.statusBar[0].setPercentage(this.character.energy);
-                    console.log('pepe is hit'); 
+                    if(!enemy.dead){
+                        this.character.hit();
+                    }
+                    
                 }
-                
+                    this.statusBar[0].setPercentage(this.character.energy);
+                    console.log('pepe is hit', this.character.energy); 
             }
         })
     }

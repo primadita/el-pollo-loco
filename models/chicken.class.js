@@ -10,13 +10,12 @@ export class Chicken extends MovableObject{
         bottom: 8,
         right: 5
     }
-    isDead = false;
     // #endregion
 
     constructor(){
         super({_img: ImageManager.CHICKEN.walk[0], _x: 300, _y: 375, _width: 50, _height: 50, _xSpeed : 0.2 + Math.random() * 0.25});
         this.loadImage(ImageManager.CHICKEN.walk[0]);
-        this.loadImage(ImageManager.CHICKEN.dead);
+        this.loadImages(ImageManager.CHICKEN.dead);
         this.loadImages(ImageManager.CHICKEN.walk);
         this.randomizedStartPosition();
         IntervalHub.startInterval(this.animate, 1000 / 9);
@@ -25,7 +24,7 @@ export class Chicken extends MovableObject{
 
     // #region METHODS
     animate = () => {
-        if (this.isDead){
+        if (this.dead){
             this.playAnimation(ImageManager.CHICKEN.dead);
         } else {
             this.playAnimation(ImageManager.CHICKEN.walk);

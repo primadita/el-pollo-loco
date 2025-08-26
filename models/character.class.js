@@ -11,6 +11,7 @@ export class Character extends MovableObject{
         bottom: 15,
         right: 35
     }
+    
     // #endregion
     
     constructor(){

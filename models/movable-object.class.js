@@ -20,10 +20,12 @@ export class MovableObject extends DrawableObject{
     ySpeed = 0;
     acceleration = 2.5; // or gravitation
     
-    
+    groundLevel = 165;
     otherDirection = false;
     energy = 100;
     lastHit = 0;
+    dead = false;
+    canbounce = true;
 
     // #endregion
 
@@ -54,11 +56,20 @@ export class MovableObject extends DrawableObject{
     }
 
     moveLeft = () => {
-        this.x -= this.xSpeed;
+        if (!this.dead){
+            this.x -= this.xSpeed;
+        } else {
+            this.xSpeed = 0;
+        }
     }
-
+        
     jump(){
         this.ySpeed = 30;
+    }
+
+    bounce(){
+        this.ySpeed = 5;
+        this.canbounce = false;
     }
 
     hit(){
@@ -74,11 +85,14 @@ export class MovableObject extends DrawableObject{
         if(this.isAboveGround() || this.ySpeed > 0){
             this.y -= this.ySpeed;
             this.ySpeed -= this.acceleration;
+        } else {
+            this.y = this.groundLevel;
+            this.ySpeed = 0;
         }
     }
 
     isAboveGround(){
-        return this.y < 165;
+        return this.y < this.groundLevel;
     }
 
     isColliding(mo){

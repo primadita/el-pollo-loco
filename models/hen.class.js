@@ -10,14 +10,14 @@ export class Hen extends MovableObject {
         bottom: 15,
         right: 5
     }
-    isDead = false;
+
     // #endregion
 
     constructor(){
         super({_img: ImageManager.HEN.walk[0], _x: 200, _y:350, _width: 80, _height: 80, _xSpeed: 0.5 + Math.random() * 0.25});
         this.loadImage(ImageManager.HEN.walk[0]);
         this.loadImages(ImageManager.HEN.walk);
-        this.loadImage(ImageManager.HEN.dead);
+        this.loadImages(ImageManager.HEN.dead);
         this.randomizedStartPosition();
         // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 5);
@@ -26,7 +26,7 @@ export class Hen extends MovableObject {
 
     // #region METHODS
     animate = () => {
-        if (this.isDead){
+        if (this.dead){
             this.playAnimation(ImageManager.HEN.dead);
         } else {
             this.playAnimation(ImageManager.HEN.walk);

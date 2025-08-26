@@ -64,7 +64,7 @@ export class ImageManager{
             './assets/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
             './assets/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
         ],
-        dead : './assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+        dead : ['./assets/img/3_enemies_chicken/chicken_normal/2_dead/dead.png']
     }
     static CHICKEN = {
         walk : [
@@ -72,7 +72,7 @@ export class ImageManager{
             './assets/img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
             './assets/img/3_enemies_chicken/chicken_small/1_walk/3_w.png'
         ],
-        dead : './assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png'
+        dead : ['./assets/img/3_enemies_chicken/chicken_small/2_dead/dead.png']
     }
     static HENBOSS = {
         walk : [
@@ -134,8 +134,8 @@ export class ImageManager{
             './assets/img/5_background/layers/4_clouds/1.png',
             './assets/img/5_background/layers/4_clouds/2.png'
         ],
-        air : './assets/img/5_background/layers/air.png',
-        fullCloud : './assets/img/5_background/layers/4_clouds/full.png'
+        air : ['./assets/img/5_background/layers/air.png'],
+        fullCloud : ['./assets/img/5_background/layers/4_clouds/full.png']
     }
     static BOTTLE = {
         onGround : [
