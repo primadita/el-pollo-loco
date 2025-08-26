@@ -6,6 +6,7 @@ export class ThrowableObject extends MovableObject{
     // #region ATTRIBUTES
     ySpeed = 30;
     thrown = false;
+    hit = false;
     // #endregion
 
     constructor({_x, _y} = {}){
@@ -34,9 +35,12 @@ export class ThrowableObject extends MovableObject{
     }
 
     animate = () => {
+        if(this.hit){
+            this.playAnimation(ImageManager.BOTTLE.splash);
+        }
         if(this.thrown){
             this.playAnimation(ImageManager.BOTTLE.rotation);
-        }
+        } 
     }
     // #endregion
 }

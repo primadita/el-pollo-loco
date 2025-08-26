@@ -88,12 +88,6 @@ export class MovableObject extends DrawableObject{
             this.realY < mo.realY + mo.realHeight;
     }
     
-    
-
-    isCharacterHit(mo){
-        return this.realX + this.realWidth > mo.realX || this.realX < mo.realX + mo.realY;
-    }
-
     isHurt(){
         let timepassed = (new Date().getTime() - this.lastHit) / 1000;
         return timepassed < 0.5

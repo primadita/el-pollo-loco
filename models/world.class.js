@@ -39,6 +39,7 @@ export class World{
         this.ctx.translate(-this.cameraX, 0); //back 
         // ---- space for fixed object -------
         this.addObjectsToMap(this.statusBar);
+        // statusbar for the endboss will appear when endboss appears
         if(this.character.x == 1700){
             let endbossbar = new EndBossBar();
             this.statusBar.push(endbossbar);
@@ -119,10 +120,19 @@ export class World{
     }
 
     checkCollisions(){
+        console.log('pepes speed',this.character.ySpeed);
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
-                this.character.hit();
-                this.statusBar[0].setPercentage(this.character.energy); 
+                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight > enemy.realY){
+                    enemy.isDead = true;
+                    this.character.ySpeed = -this.character.ySpeed;
+                    console.log('enemy is hit');
+                } else {
+                    this.character.hit();
+                    this.statusBar[0].setPercentage(this.character.energy);
+                    console.log('pepe is hit'); 
+                }
+                
             }
         })
     }

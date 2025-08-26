@@ -10,6 +10,7 @@ export class Chicken extends MovableObject{
         bottom: 8,
         right: 5
     }
+    isDead = false;
     // #endregion
 
     constructor(){
@@ -24,11 +25,12 @@ export class Chicken extends MovableObject{
 
     // #region METHODS
     animate = () => {
-        if (this.isDead()){
+        if (this.isDead){
             this.playAnimation(ImageManager.CHICKEN.dead);
         } else {
             this.playAnimation(ImageManager.CHICKEN.walk);
         }  
     }
+
     // #endregion
 }

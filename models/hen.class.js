@@ -10,6 +10,7 @@ export class Hen extends MovableObject {
         bottom: 15,
         right: 5
     }
+    isDead = false;
     // #endregion
 
     constructor(){
@@ -25,7 +26,7 @@ export class Hen extends MovableObject {
 
     // #region METHODS
     animate = () => {
-        if (this.isDead()){
+        if (this.isDead){
             this.playAnimation(ImageManager.HEN.dead);
         } else {
             this.playAnimation(ImageManager.HEN.walk);

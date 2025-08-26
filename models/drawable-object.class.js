@@ -1,7 +1,7 @@
 export class DrawableObject{
     // #region ATTRIBUTES
     img;
-    imageCache = {};
+    imageCache = [];
     currentImage = 0;
     x;
     y;

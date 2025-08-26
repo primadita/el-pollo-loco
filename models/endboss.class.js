@@ -19,7 +19,6 @@ export class Endboss extends MovableObject{
         this.loadImages(ImageManager.HENBOSS.angry);
         this.loadImages(ImageManager.HENBOSS.hurt);
         this.loadImages(ImageManager.HENBOSS.dead);
-        // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 9);
     }
 
