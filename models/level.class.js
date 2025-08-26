@@ -1,5 +1,7 @@
+import { Bottle } from "./bottle.class.js";
 import { Chicken } from "./chicken.class.js";
 import { Cloud } from "./cloud.class.js";
+import { Coin } from "./coin.class.js";
 import { DesertFirstLayer } from "./desert-first-layer.class.js";
 import { DesertSecondLayer } from "./desert-second-layer.class.js";
 import { DesertThirdLayer } from "./desert-third-layer.class.js";
@@ -12,6 +14,8 @@ export class Level{
     enemies;
     clouds;
     backgrounds;
+    bottles;
+    coins;
     levelEndX = 2160;
     // #endregion
 
@@ -39,5 +43,19 @@ export class Level{
             new DesertSecondLayer(), 
             new DesertFirstLayer()
         ];
+        this.coins = [
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin()
+        ];
+        this.bottles = [
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle()
+        ]
     }
 }

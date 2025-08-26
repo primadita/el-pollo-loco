@@ -49,6 +49,8 @@ export class World{
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         requestAnimationFrame(() => this.draw());
@@ -120,7 +122,8 @@ export class World{
     }
 
     checkCollisions(){
-        console.log('pepes energy',this.character.energy);
+        // console.log('pepes energy',this.character.energy);
+        // 
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6* enemy.realHeight && !enemy.dead){
