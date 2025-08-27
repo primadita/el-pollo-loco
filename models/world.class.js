@@ -137,7 +137,7 @@ export class World{
     checkCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
-                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6 * enemy.realHeight && !enemy.dead){
+                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.9 * enemy.realHeight && !enemy.dead){
                     enemy.dead = true;
                     if(enemy instanceof Chicken){
                         this.character.energy += 10;

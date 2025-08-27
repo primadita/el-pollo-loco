@@ -58,6 +58,7 @@ export class Character extends MovableObject{
         }
         if(this.world.keyboard.SPACE && !this.isAboveGround()){
             this.jump();
+            this.currentImage = 0;
         }
         this.world.cameraX = -this.x + this.width; 
     }
