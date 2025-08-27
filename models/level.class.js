@@ -12,6 +12,7 @@ import { Sky } from "./sky.class.js";
 export class Level{
     // #region ATTRIBUTES
     enemies;
+    endboss;
     clouds;
     backgrounds;
     bottles;
@@ -26,8 +27,8 @@ export class Level{
             new Hen(),
             new Chicken(),
             new Chicken(),
-            new Endboss()
         ];
+        this.endboss = new Endboss(); 
         this.clouds = [new Cloud()];
         this.backgrounds = [
             new Sky(), 

@@ -5,6 +5,7 @@ export class Coin extends DrawableObject{
     // #region ATTRIBUTES
     static X = 400;
     static Y = 100;
+    collected = false;
     // #endregion
 
     constructor(){

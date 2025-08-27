@@ -11,7 +11,9 @@ export class Character extends MovableObject{
         bottom: 15,
         right: 35
     }
-    
+    coinState = 0;
+    bottleState = 0;
+
     // #endregion
     
     constructor(){

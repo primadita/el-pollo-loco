@@ -30,6 +30,5 @@ export class Chicken extends MovableObject{
             this.playAnimation(ImageManager.CHICKEN.walk);
         }  
     }
-
     // #endregion
 }

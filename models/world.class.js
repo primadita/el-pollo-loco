@@ -1,4 +1,3 @@
-import { ImageManager } from "../js/image-manager.class.js";
 import { BottleBar } from "./bottle-bar.class.js";
 import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
@@ -47,10 +46,20 @@ export class World{
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
+        this.level.coins.forEach((coin) => {
+            if(!coin.collected){
+                this.addToMap(coin);
+            }
+        });
+        this.level.bottles.forEach((bottle) => {
+            if(!bottle.collected){
+                this.addToMap(bottle);
+            }
+        });
+
         this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.coins);
-        this.addObjectsToMap(this.level.bottles);
+        this.addToMap(this.level.endboss);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         requestAnimationFrame(() => this.draw());
@@ -140,7 +149,7 @@ export class World{
                         this.character.bounce(); // small jump after hitting enemy
                     }
                     
-                    console.log('enemy is hit', this.character.energy);
+                    // console.log('enemy is hit', this.character.energy);
                 } else {
                     if(!enemy.dead){
                         this.character.hit();
@@ -148,9 +157,26 @@ export class World{
                     
                 }
                     this.statusBar[0].setPercentage(this.character.energy);
-                    console.log('pepe is hit', this.character.energy); 
+                    // console.log('pepe is hit', this.character.energy); 
             }
-        })
+        });
+        this.level.bottles.forEach((bottle) => {
+            if(this.character.isColliding(bottle) && !bottle.collected){
+                console.log('bottle is hit');
+                bottle.collected = true;
+                this.character.bottleState += 20;
+                this.statusBar[2].setPercentage(this.character.bottleState);
+            }
+        });
+        this.level.coins.forEach((coin) => {
+            if(this.character.isColliding(coin) && !coin.collected){
+                console.log('coin is hit');
+                coin.collected = true;
+                this.character.coinState += 20;
+                this.statusBar[1].setPercentage(this.character.coinState);
+            }
+        });
+        
     }
 
     isGameOver(){
