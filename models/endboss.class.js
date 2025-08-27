@@ -6,10 +6,11 @@ export class Endboss extends MovableObject{
     // #region ATTRIBUTES
     offset = {
         top: 100,
-        left: 50,
+        left: 70,
         bottom: 80,
         right: 55
     }
+    hurt = false;
 
     // #endregion
 
@@ -26,7 +27,7 @@ export class Endboss extends MovableObject{
     animate = () => {
         if (this.isDead()){
             this.playAnimation(ImageManager.HENBOSS.dead);
-        } else if (this.isHurt()){
+        } else if (this.isHurt(1)){
             this.playAnimation(ImageManager.HENBOSS.hurt);
         } else {
             this.playAnimation(ImageManager.HENBOSS.angry);

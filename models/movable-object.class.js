@@ -72,8 +72,8 @@ export class MovableObject extends DrawableObject{
         this.canbounce = false;
     }
 
-    hit(){
-        this.energy -= 5;
+    hit(val){
+        this.energy -= val;
         if (this.energy < 0){
             this.energy = 0;
         } else {
@@ -95,16 +95,9 @@ export class MovableObject extends DrawableObject{
         return this.y < this.groundLevel;
     }
 
-    // isColliding(mo){
-    //     return this.realX + this.realWidth > mo.realX &&
-    //         this.realY + this.realHeight > mo.realY &&
-    //         this.realX < mo.realX + mo.realWidth &&
-    //         this.realY < mo.realY + mo.realHeight;
-    // }
-    
-    isHurt(){
+    isHurt(timelength){
         let timepassed = (new Date().getTime() - this.lastHit) / 1000;
-        return timepassed < 0.5
+        return timepassed < timelength;
     }
 
     isDead(){

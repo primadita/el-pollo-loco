@@ -38,8 +38,8 @@ export class World{
         this.ctx.translate(-this.cameraX, 0); //back 
         // ---- space for fixed object -------
         this.addObjectsToMap(this.statusBar);
-        // statusbar for the endboss will appear when endboss appears
-        if(this.character.x == 1700){
+        // statusbar for the endboss will appear when endboss appears and only if, endbossbar has not existed yet.
+        if(this.character.x == 1700 && this.statusBar.length == 3){
             let endbossbar = new EndBossBar();
             this.statusBar.push(endbossbar);
         }
@@ -124,15 +124,16 @@ export class World{
     }
 
     checkThrowObjects(){
-        if(this.keyboard.D && !this.character.moveLeft()){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+        if(this.keyboard.D && !this.character.moveLeft() && this.statusBar[2].percentage >= 20){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
+            this.statusBar[2].percentage -= 20;
+            this.statusBar[2].setPercentage(this.statusBar[2].percentage);
         }
+        
     }
 
     checkCollisions(){
-        // console.log('pepes energy',this.character.energy);
-        // 
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6* enemy.realHeight && !enemy.dead){
@@ -148,39 +149,48 @@ export class World{
                     if(this.character.canbounce){
                         this.character.bounce(); // small jump after hitting enemy
                     }
-                    
-                    // console.log('enemy is hit', this.character.energy);
                 } else {
                     if(!enemy.dead){
-                        this.character.hit();
-                    }
-                    
+                        this.character.hit(5);
+                    }   
                 }
-                    this.statusBar[0].setPercentage(this.character.energy);
-                    // console.log('pepe is hit', this.character.energy); 
+                this.statusBar[0].setPercentage(this.character.energy);
             }
         });
         this.level.bottles.forEach((bottle) => {
             if(this.character.isColliding(bottle) && !bottle.collected){
-                console.log('bottle is hit');
                 bottle.collected = true;
-                this.character.bottleState += 20;
-                this.statusBar[2].setPercentage(this.character.bottleState);
+                this.statusBar[2].percentage += 20;
+                this.statusBar[2].setPercentage(this.statusBar[2].percentage);
             }
         });
         this.level.coins.forEach((coin) => {
             if(this.character.isColliding(coin) && !coin.collected){
-                console.log('coin is hit');
                 coin.collected = true;
-                this.character.coinState += 20;
-                this.statusBar[1].setPercentage(this.character.coinState);
+                this.statusBar[1].percentage += 20;
+                this.statusBar[1].setPercentage(this.statusBar[1].percentage);
             }
         });
+        this.throwableObjects.forEach((bottle) => {
+            if (bottle.isColliding(this.level.endboss)){
+                this.level.endboss.hit(25);
+                this.statusBar[3].percentage -= 25;
+
+                if (this.statusBar[3].percentage < 0){
+                    this.statusBar[3].percentage = 0;
+                    this.level.endboss.energy = 0;
+                }
+                this.statusBar[3].setPercentage(this.statusBar[3].percentage);
+                console.log('bottle hits endboss', this.statusBar[3].percentage);
+            }
+        })
         
     }
 
     isGameOver(){
-        return this.character.energy === 0;
+        return this.character.energy === 0 ||
+        (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
+        this.level.endboss.isDead() ;
     }
     // #endregion
 }

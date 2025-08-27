@@ -11,9 +11,7 @@ export class Character extends MovableObject{
         bottom: 15,
         right: 35
     }
-    coinState = 0;
-    bottleState = 0;
-
+ 
     // #endregion
     
     constructor(){
@@ -36,12 +34,12 @@ export class Character extends MovableObject{
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
-        } else if(this.isHurt()){
+        } else if(this.isHurt(0.5)){
             this.playAnimation(ImageManager.PEPE.hurt);
         } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
             // TO DO: jump animation nur ein Durchlauf
-        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.D){
             this.playAnimation(ImageManager.PEPE.walk);
         }  else {
             this.playAnimation(ImageManager.PEPE.idle);
