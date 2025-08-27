@@ -15,7 +15,7 @@ export class ThrowableObject extends MovableObject{
         this.loadImages(ImageManager.BOTTLE.rotation);
         this.loadImages(ImageManager.BOTTLE.splash);
         this.throw();
-        IntervalHub.startInterval(this.animate, 1000 / 12);
+        IntervalHub.startInterval(this.animate, 1000 / 6);
     }
 
     // #region METHODS
@@ -37,8 +37,7 @@ export class ThrowableObject extends MovableObject{
     animate = () => {
         if(this.hit){
             this.playAnimation(ImageManager.BOTTLE.splash);
-        }
-        if(this.thrown){
+        } else {
             this.playAnimation(ImageManager.BOTTLE.rotation);
         } 
     }

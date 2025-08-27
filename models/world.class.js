@@ -57,9 +57,10 @@ export class World{
             }
         });
 
-        this.addObjectsToMap(this.throwableObjects);
+        
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
+        this.addObjectsToMap(this.throwableObjects);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         requestAnimationFrame(() => this.draw());
@@ -124,7 +125,7 @@ export class World{
     }
 
     checkThrowObjects(){
-        if(this.keyboard.D && !this.character.moveLeft() && this.statusBar[2].percentage >= 20){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+        if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 20){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
             this.statusBar[2].percentage -= 20;
@@ -136,7 +137,7 @@ export class World{
     checkCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
-                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6* enemy.realHeight && !enemy.dead){
+                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.6 * enemy.realHeight && !enemy.dead){
                     enemy.dead = true;
                     if(enemy instanceof Chicken){
                         this.character.energy += 10;
@@ -174,6 +175,7 @@ export class World{
         this.throwableObjects.forEach((bottle) => {
             if (bottle.isColliding(this.level.endboss)){
                 this.level.endboss.hit(25);
+                bottle.hit = true;
                 this.statusBar[3].percentage -= 25;
 
                 if (this.statusBar[3].percentage < 0){
