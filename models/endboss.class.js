@@ -33,4 +33,5 @@ export class Endboss extends MovableObject{
             this.playAnimation(ImageManager.HENBOSS.angry);
         }
     }
+    // #endregion
 }

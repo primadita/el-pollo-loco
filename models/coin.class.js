@@ -5,6 +5,12 @@ export class Coin extends DrawableObject{
     // #region ATTRIBUTES
     static X = 400;
     static Y = 100;
+    offset = {
+        top: 45,
+        left: 45,
+        bottom: 45,
+        right: 45
+    }
     collected = false;
     // #endregion
 

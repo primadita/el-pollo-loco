@@ -1,21 +1,7 @@
-import { ImageManager } from "../js/image-manager.class.js";
 import { DrawableObject } from "./drawable-object.class.js";
-import { IntervalHub } from "./interval-hub.class.js";
 
 export class MovableObject extends DrawableObject{
     // #region ATTRIBUTES
-   
-    // offset = {
-    //     top: 0,
-    //     left: 0,
-    //     bottom: 0,
-    //     right: 0
-    // }
-    // realX;
-    // realY;
-    // realWidth;
-    // realHeight;
-    
     xSpeed;
     ySpeed = 0;
     acceleration = 2.5; // or gravitation
@@ -26,20 +12,14 @@ export class MovableObject extends DrawableObject{
     lastHit = 0;
     dead = false;
     canbounce = true;
-
     // #endregion
 
     constructor({_img, _x, _y, _width, _height, _xSpeed} = {}){
         super({_img, _x, _y, _width, _height});
         this.xSpeed = _xSpeed;
-        // IntervalHub.startInterval(this.getRealFrame, 1000 / 60);
     }
 
     // #region METHODS
-    
-
-    
-
     playAnimation(arr){
         let i = this.currentImage % arr.length;
         let path = arr[i];
@@ -103,13 +83,5 @@ export class MovableObject extends DrawableObject{
     isDead(){
         return this.energy == 0;
     }
-
-    // getRealFrame = () => {
-    //     this.realX = this.x + this.offset.left;
-    //     this.realY = this.y + this.offset.top;
-    //     this.realWidth = this.width - this.offset.left - this.offset.right;
-    //     this.realHeight = this.height - this.offset.top - this.offset.bottom;
-    // }
-
     // #endregion
 }

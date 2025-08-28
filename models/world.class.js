@@ -1,7 +1,9 @@
 import { BottleBar } from "./bottle-bar.class.js";
+import { Bottle } from "./bottle.class.js";
 import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
 import { CoinBar } from "./coin-bar.class.js";
+import { Coin } from "./coin.class.js";
 import { EndBossBar } from "./endboss-bar.class.js";
 import { Endboss } from "./endboss.class.js";
 import { HealthBar } from "./health-bar.class.js";
@@ -31,37 +33,18 @@ export class World{
         IntervalHub.startInterval(this.run, 1000 / 5);
     }
     // #region METHODS
+    // #region Draw methods
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.cameraX, 0);
         this.addObjectsToMap(this.level.backgrounds);
         this.ctx.translate(-this.cameraX, 0); //back 
-        // ---- space for fixed object -------
-        this.addObjectsToMap(this.statusBar);
-        // statusbar for the endboss will appear when endboss appears and only if, endbossbar has not existed yet.
-        if(this.character.x == 1700 && this.statusBar.length == 3){
-            let endbossbar = new EndBossBar();
-            this.statusBar.push(endbossbar);
-        }
+        this.drawAllStatusBars();
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
-        this.level.coins.forEach((coin) => {
-            if(!coin.collected){
-                this.addToMap(coin);
-            }
-        });
-        this.level.bottles.forEach((bottle) => {
-            if(!bottle.collected){
-                this.addToMap(bottle);
-            }
-        });
-
-        
-        this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.level.endboss);
+        this.drawLevelObjects();
         this.addObjectsToMap(this.throwableObjects);
-        this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.cameraX, 0);
         requestAnimationFrame(() => this.draw());
     }
@@ -71,12 +54,10 @@ export class World{
             this.flipImage(mo);
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-        
-        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss){
+        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss || mo instanceof Coin || mo instanceof Bottle){
             this.drawFrame(mo);
             this.drawOffset(mo);
         }
-
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -86,6 +67,34 @@ export class World{
         objects.forEach(obj => {this.addToMap(obj)});
     }
 
+    addCollectingObjects(objects){
+        objects.forEach((obj) => {
+            if(!obj.collected){
+                this.addToMap(obj);
+            }
+        });
+    }
+
+    drawAllStatusBars(){
+        // ---- space for fixed object -------
+        this.addObjectsToMap(this.statusBar);
+        // statusbar for the endboss will appear when endboss appears and only if, endbossbar has not existed yet.
+        if(this.character.x == 1700 && this.statusBar.length == 3){
+            let endbossbar = new EndBossBar();
+            this.statusBar.push(endbossbar);
+        }
+    }
+
+    drawLevelObjects(){
+        this.addCollectingObjects(this.level.coins);
+        this.addCollectingObjects(this.level.bottles);
+        this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.level.endboss);
+        this.addObjectsToMap(this.level.clouds);
+    }
+    // #endregion
+
+    // #region Character
     setWorld(){
         this.character.world = this;
     }
@@ -101,7 +110,9 @@ export class World{
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+    // #endregion
 
+    // #region Frame/Offset
     drawFrame(mo){
         this.ctx.beginPath();
         this.ctx.lineWidth = 3;
@@ -118,7 +129,9 @@ export class World{
         this.ctx.rect(mo.realX, mo.realY, mo.realWidth, mo.realHeight);
         this.ctx.stroke();
     }
+    // #endregion
 
+    // #region Collisions
     run = () => {
         this.checkCollisions();
         this.checkThrowObjects();
@@ -131,22 +144,22 @@ export class World{
             this.statusBar[2].percentage -= 20;
             this.statusBar[2].setPercentage(this.statusBar[2].percentage);
         }
-        
     }
 
     checkCollisions(){
+        this.handlingCharacterVsEnemiesCollisions();
+        this.handlingCollisionsOfCharactervsFixedObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2});
+        this.handlingCollisionsOfCharactervsFixedObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1});
+        this.handlingCollisionsOfThrowablesAndEndboss();
+    }
+
+    handlingCharacterVsEnemiesCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.9 * enemy.realHeight && !enemy.dead){
                     enemy.dead = true;
-                    if(enemy instanceof Chicken){
-                        this.character.energy += 10;
-                    } else if (enemy instanceof Hen){
-                        this.character.energy += 20;
-                    } 
-                    if ( this.character.energy > 100){
-                        this.character.energy = 100;
-                    }
+                    this.hitEnemy(enemy);
+                    this.checkMaxEnergy();
                     if(this.character.canbounce){
                         this.character.bounce(); // small jump after hitting enemy
                     }
@@ -158,37 +171,49 @@ export class World{
                 this.statusBar[0].setPercentage(this.character.energy);
             }
         });
-        this.level.bottles.forEach((bottle) => {
-            if(this.character.isColliding(bottle) && !bottle.collected){
-                bottle.collected = true;
-                this.statusBar[2].percentage += 20;
-                this.statusBar[2].setPercentage(this.statusBar[2].percentage);
+    }
+
+    checkMaxEnergy(){
+        if ( this.character.energy > 100){
+            this.character.energy = 100;
+        }
+    }
+
+    handlingCollisionsOfCharactervsFixedObjects({objects, valuePerObj, statusbarId} = {}){
+        objects.forEach((obj) => {
+            if(this.character.isColliding(obj) && !obj.collected){
+                obj.collected = true;
+                this.statusBar[statusbarId].percentage += valuePerObj;
+                this.statusBar[statusbarId].setPercentage(this.statusBar[statusbarId].percentage);
             }
         });
-        this.level.coins.forEach((coin) => {
-            if(this.character.isColliding(coin) && !coin.collected){
-                coin.collected = true;
-                this.statusBar[1].percentage += 20;
-                this.statusBar[1].setPercentage(this.statusBar[1].percentage);
-            }
-        });
+    }
+
+    handlingCollisionsOfThrowablesAndEndboss(){
         this.throwableObjects.forEach((bottle) => {
             if (bottle.isColliding(this.level.endboss)){
                 this.level.endboss.hit(25);
                 bottle.hit = true;
                 this.statusBar[3].percentage -= 25;
-
                 if (this.statusBar[3].percentage < 0){
                     this.statusBar[3].percentage = 0;
                     this.level.endboss.energy = 0;
                 }
                 this.statusBar[3].setPercentage(this.statusBar[3].percentage);
-                console.log('bottle hits endboss', this.statusBar[3].percentage);
             }
-        })
-        
+        });   
     }
 
+    hitEnemy(enemy){
+        if(enemy instanceof Chicken){
+            this.character.energy += 10;
+        } else if (enemy instanceof Hen){
+            this.character.energy += 20;
+        } 
+    }
+    // #endregion
+
+    // #region End of game
     isGameOver(){
         return this.character.energy === 0 ||
         (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||

@@ -23,11 +23,9 @@ export class Character extends MovableObject{
         this.loadImages(ImageManager.PEPE.hurt);
         this.loadImages(ImageManager.PEPE.idle);
         this.loadImages(ImageManager.PEPE.longIdle);
-        // this.getRealFrame();
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
-        
     }
     
     // #region METHODS
@@ -45,7 +43,6 @@ export class Character extends MovableObject{
             this.playAnimation(ImageManager.PEPE.idle);
         }
     }
-    
 
     action = () => {
         if(this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX){

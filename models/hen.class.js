@@ -19,7 +19,6 @@ export class Hen extends MovableObject {
         this.loadImages(ImageManager.HEN.walk);
         this.loadImages(ImageManager.HEN.dead);
         this.randomizedStartPosition();
-        // this.getRealFrame();
         IntervalHub.startInterval(this.animate, 1000 / 5);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }
@@ -31,8 +30,6 @@ export class Hen extends MovableObject {
         } else {
             this.playAnimation(ImageManager.HEN.walk);
         }
-        
-        
     }
     // #endregion
 }

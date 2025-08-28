@@ -9,7 +9,4 @@ export class EndBossBar extends StatusBar{
     constructor(){
         super({_y: 10, _imgArray: ImageManager.STATUSBAR.endBossBar});
     }
-
-    // #region METHODS
-    // #endregion
 }
