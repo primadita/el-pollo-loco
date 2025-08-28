@@ -46,7 +46,12 @@ export class World{
         this.drawLevelObjects();
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.cameraX, 0);
-        requestAnimationFrame(() => this.draw());
+        if(!this.isGameOver()){
+            this.animationFrame = requestAnimationFrame(() => this.draw());
+        } else {
+            this.checkGameOver();
+        }
+        
     }
 
     addToMap(mo){
@@ -148,8 +153,8 @@ export class World{
 
     checkCollisions(){
         this.handlingCharacterVsEnemiesCollisions();
-        this.handlingCollisionsOfCharactervsFixedObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2});
-        this.handlingCollisionsOfCharactervsFixedObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1});
+        this.collectingObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2});
+        this.collectingObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1});
         this.handlingCollisionsOfThrowablesAndEndboss();
     }
 
@@ -179,7 +184,7 @@ export class World{
         }
     }
 
-    handlingCollisionsOfCharactervsFixedObjects({objects, valuePerObj, statusbarId} = {}){
+    collectingObjects({objects, valuePerObj, statusbarId} = {}){
         objects.forEach((obj) => {
             if(this.character.isColliding(obj) && !obj.collected){
                 obj.collected = true;
@@ -218,6 +223,19 @@ export class World{
         return this.character.energy === 0 ||
         (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
         this.level.endboss.isDead() ;
+    }
+    
+    checkGameOver(){
+        if(this.isGameOver()){
+            IntervalHub.stopAllIntervals();
+            cancelAnimationFrame(this.animationFrame);
+        }
+        if (this.level.endboss.isDead()){
+        }
+    }
+
+    showEndscreen(){
+
     }
     // #endregion
 }
