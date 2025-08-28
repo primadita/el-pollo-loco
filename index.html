@@ -9,10 +9,26 @@
     <script type="module" src="./js/game.js" defer></script>
 </head>
 <body>
-    <h1>El Pollo Loco</h1>
-    <div id="fullscreen">
-        <canvas id="canvas" width="720px" height="480px">
-        </canvas>
-    </div>
+    <main>
+        <h1>El Pollo Loco</h1>
+        <div id="wrapper">
+            <canvas id="canvas" width="720px" height="480px">
+            </canvas>
+            <div id="startscreen" class="d-flex">
+                <button id="audio-btn" onclick="toggleMute()"><img src="./assets/icons/mute.png" alt="mute button" id="audio-btn-img"></button>
+                <button id="play-btn" onclick="startGame()"><img src="./assets/icons/play4.png" alt="Play button"></button>
+                <div id="btn-explanation">
+                    <div><img src="./assets/icons/left.png" alt="keyboard left arrow">: Move left</img></div>
+                    <div><img src="./assets/icons/right.png" alt="keyboard right arrow">: Move right</img></div>
+                    <div><img src="./assets/icons/SPACE.png" alt="keyboard space">: Jump </img></div>
+                    <div><img src="./assets/icons/D.png" alt="keyboard D">: Throw bottle </img></div>
+                </div>
+            </div>
+        </div>
+    
+    </main>
+    <footer>
+         © 2025. Design by <img src="./assets/icons/Felicious.png" alt="felicious logo"> | <a href="impressum.html">Impressum</a>
+    </footer>
 </body>
 </html>

@@ -6,48 +6,142 @@
     scroll-behavior: smooth;
     list-style: none;
     box-sizing: border-box;
+    position: relative;
 }
 html{
     font-size: 10px;
+}
+.d-flex{
+    display: flex;
+}
+.d-none{
+    display: none;
 }
 /* #endregion */
 
 /* #region FONTS */
 @font-face {
-    font-family: 'Rye-Regular';
+    font-family: 'Rye';
     src: url('./assets/fonts/Rye-Regular.ttf');
 }
 @font-face {
-    font-family: 'Smokum-Regular';
+    font-family: 'Smokum';
     src: url('./assets/fonts/Smokum-Regular.ttf');
 }
 h1{
-    font-family: 'Rye-Regular','sans-serif';
+    font-family: 'Rye','sans-serif';
     font-size: min(60px, 64px);
     letter-spacing: 6px;
-    color: #ffbb00;
-    -webkit-text-stroke-color: black;
-    -webkit-text-stroke-width: 0.50px;
+    color: rgb(255, 166, 0);
+    text-shadow: 5px 2px 8px rgba(0,0,0,0.9);
+    /* -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 0.005px; */
     text-align: center;
-
 }
 /* #endregion */
 
 /* #region BODY */
 body{
     font-size: min(16px, 18px);
-    font-family: 'Smokum-Regular','sans-serif';
-    /* background: url('./assets/icons/road-8893160_1920.jpg'); */
-    background: url('./assets/icons/desert-6814275_1920.png');
+    font-family: 'Smokum','sans-serif';
+    background: url('./assets/icons/Comic2.png');
+    /* background: url('./assets/icons/chicken-2584740_1920.jpg'); */
+    backdrop-filter: saturate(30%);
     /* background: url('./assets/icons/cactus-9085905_1920.jpg'); */
     background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100dvh;
+    
+    main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        min-height: calc(100dvh - 3dvh);
+        #wrapper{
+            width: 720px;
+            height: 480px;
+            canvas{
+                background-color: black;
+                display: block;
+            }
+            #startscreen{
+                background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-size: cover;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                button{
+                    background: transparent;
+                    border: 0;
+                    cursor: pointer;
+                    img{
+                        width: 120px;
+                    }
+                }
+                #audio-btn{
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    img{
+                        width: 60px;
+                    }
+                }
+                #btn-explanation{
+                    position: absolute;
+                    bottom: 0;
+                    height: 50px;
+                    width: 100%;
+                    font-size: large;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    div{
+                        display: flex;
+                        align-items: center;
+                        img{
+                            height: 45px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        height: 3dvh;
+        img{
+            height: 100%;
+        }
+    }
 }
-canvas{
-    background-color: black;
-    display: block;
+
+
+
+
+@media only screen and (max-width: 720px){
+    h1{
+        display: none;
+    }
+    #wrapper{
+        canvas{
+            width: 100%;
+        }
+    }
+}
+@media only screen and (max-height: 480px){
+    #wrapper{
+        canvas{
+            height: 100dvh;
+        }
+    }
 }
