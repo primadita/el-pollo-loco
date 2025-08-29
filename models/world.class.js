@@ -221,7 +221,7 @@ export class World{
     // #region End of game
     isGameOver(){
         return this.character.energy === 0 ||
-        (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
+        // (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
         this.level.endboss.isDead() ;
     }
     
