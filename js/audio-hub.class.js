@@ -15,7 +15,7 @@ export class AudioHub{
     static PEPE_DAMAGE = new MyAudio('./assets/sounds/character/characterDamage.mp3');
     static PEPE_DEAD = new MyAudio('./assets/sounds/character/characterDead.wav');
     static PEPE_JUMP = new MyAudio('./assets/sounds/character/characterJump.wav');
-    static PEPE_RUN = new MyAudio('./assets/sounds/character/characterSnoring.mp3');
+    static PEPE_RUN = new MyAudio('./assets/sounds/character/characterRun.mp3');
     static PEPE_SNORE = new MyAudio('./assets/sounds/character/characterSnoring.mp3');
     
     // Enemy's sound
@@ -57,22 +57,24 @@ export class AudioHub{
     // #endregion
 
     // #region METHODS
-    static playOne(soundName){
-        if(soundName.sound.readyState === 4 || soundName.loaded){
-            soundName.loaded = true;
-            soundName.volume = 0;
-            soundName.currentTime = 0;
-            soundName.play();
+    static playOne({_soundName, _vol = 0.2, _loop = false}={}){
+        const audio = _soundName.sound;
+        if(audio.readyState === 4 || audio.loaded){
+            audio.loaded = true;
+            audio.volume = _vol;
+            audio.currentTime = 0;
+            audio.play();
+            audio.loop = _loop;
         }
     }
 
     static stopOne(soundName){
-        soundName.pause();
+        soundName.sound.pause();
     };
         
     static stopAll(){
         AudioHub.ALL_SOUNDS.forEach(soundName => {
-            soundName.pause();
+            soundName.sound.pause();
         })
     }
     // #endregion

@@ -1,3 +1,4 @@
+import { AudioHub } from "../js/audio-hub.class.js";
 import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
@@ -32,15 +33,20 @@ export class Character extends MovableObject{
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
+            ({_soundName: AudioHub.PEPE_DEAD});
         } else if(this.isHurt(0.5)){
             this.playAnimation(ImageManager.PEPE.hurt);
+            AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
         } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
+            AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
             // TO DO: jump animation nur ein Durchlauf
         } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
             this.playAnimation(ImageManager.PEPE.walk);
+            AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
         }  else {
             this.playAnimation(ImageManager.PEPE.idle);
+            AudioHub.stopOne(AudioHub.PEPE_RUN);
         }
     }
 

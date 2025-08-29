@@ -224,7 +224,7 @@ export class World{
         // (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
         this.level.endboss.isDead() ;
     }
-    
+    // TO DO: Endscreen
     checkGameOver(){
         if(this.isGameOver()){
             IntervalHub.stopAllIntervals();
