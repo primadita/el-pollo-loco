@@ -1,3 +1,4 @@
+import { AudioHub } from "../js/audio-hub.class.js";
 import { BottleBar } from "./bottle-bar.class.js";
 import { Bottle } from "./bottle.class.js";
 import { Character } from "./character.class.js";
@@ -19,15 +20,17 @@ export class World{
     level = new Level();
     canvas;
     keyboard;
+    soundVolume;
     cameraX = 0;
     statusBar = [new HealthBar(), new CoinBar(), new BottleBar()];
     throwableObjects = [];
     // #endregion
 
-    constructor(_canvas, _keyboard){
+    constructor(_canvas, _keyboard, _volume){
         this.ctx = _canvas.getContext('2d');
         this.canvas = _canvas;
         this.keyboard = _keyboard;
+        this.soundVolume = _volume;
         this.draw();
         this.setWorld();
         IntervalHub.startInterval(this.run, 1000 / 5);
@@ -153,8 +156,8 @@ export class World{
 
     checkCollisions(){
         this.handlingCharacterVsEnemiesCollisions();
-        this.collectingObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2});
-        this.collectingObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1});
+        this.collectingObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
+        this.collectingObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1, soundname: AudioHub.COIN_COLLECTED});
         this.handlingCollisionsOfThrowablesAndEndboss();
     }
 
@@ -184,12 +187,13 @@ export class World{
         }
     }
 
-    collectingObjects({objects, valuePerObj, statusbarId} = {}){
+    collectingObjects({objects, valuePerObj, statusbarId, soundname} = {}){
         objects.forEach((obj) => {
             if(this.character.isColliding(obj) && !obj.collected){
                 obj.collected = true;
                 this.statusBar[statusbarId].percentage += valuePerObj;
                 this.statusBar[statusbarId].setPercentage(this.statusBar[statusbarId].percentage);
+                AudioHub.playOne({_soundName: soundname, _vol: this.soundVolume});
             }
         });
     }
@@ -199,6 +203,7 @@ export class World{
             if (bottle.isColliding(this.level.endboss)){
                 this.level.endboss.hit(25);
                 bottle.hit = true;
+                AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN, _vol: this.soundVolume});
                 this.statusBar[3].percentage -= 25;
                 if (this.statusBar[3].percentage < 0){
                     this.statusBar[3].percentage = 0;
@@ -224,13 +229,26 @@ export class World{
         // (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
         this.level.endboss.isDead() ;
     }
+
+    won(){
+        return this.level.endboss.isDead();
+    }
+
+    lost(){
+        return this.character.energy === 0;
+    }
+
     // TO DO: Endscreen
     checkGameOver(){
         if(this.isGameOver()){
             IntervalHub.stopAllIntervals();
+            AudioHub.stopAll();
             cancelAnimationFrame(this.animationFrame);
-        }
-        if (this.level.endboss.isDead()){
+            if(this.won()){
+                AudioHub.playOne({_soundName: AudioHub.WIN_GAME, _vol: this.soundVolume});
+            } else {
+                AudioHub.playOne({_soundName: AudioHub.GAME_OVER, _vol: this.soundVolume});
+            }
         }
     }
 

@@ -1,3 +1,4 @@
+import { AudioHub } from "../js/audio-hub.class.js";
 import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
@@ -26,8 +27,10 @@ export class Chicken extends MovableObject{
     animate = () => {
         if (this.dead){
             this.playAnimation(ImageManager.CHICKEN.dead);
+            AudioHub.playOne({_soundName: AudioHub.CHICKEN_DEAD});
         } else {
             this.playAnimation(ImageManager.CHICKEN.walk);
+            AudioHub.playOne({_soundName: AudioHub.CHICKEN_WALK});
         }  
     }
     // #endregion

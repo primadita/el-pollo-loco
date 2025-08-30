@@ -1,3 +1,4 @@
+import { AudioHub } from "../js/audio-hub.class.js";
 import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
@@ -15,7 +16,7 @@ export class ThrowableObject extends MovableObject{
         this.loadImages(ImageManager.BOTTLE.rotation);
         this.loadImages(ImageManager.BOTTLE.splash);
         this.throw();
-        IntervalHub.startInterval(this.animate, 1000 / 6);
+        IntervalHub.startInterval(this.animate, 1000 / 60);
     }
 
     // #region METHODS

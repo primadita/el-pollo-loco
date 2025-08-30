@@ -11,6 +11,7 @@ export class MyAudio{
 
 export class AudioHub{
     // #region ATTRIBUTES
+    static VOLUME = 0; // default
     // Character sound
     static PEPE_DAMAGE = new MyAudio('./assets/sounds/character/characterDamage.mp3');
     static PEPE_DEAD = new MyAudio('./assets/sounds/character/characterDead.wav');
@@ -57,11 +58,18 @@ export class AudioHub{
     // #endregion
 
     // #region METHODS
-    static playOne({_soundName, _vol = 0.2, _loop = false}={}){
+    static setVolume(vol){
+        if(isNaN(vol) || typeof vol !== "number"){
+            vol = 0;
+        }
+        AudioHub.VOLUME = vol;
+    }
+
+    static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
         if(audio.readyState === 4 || audio.loaded){
             audio.loaded = true;
-            audio.volume = _vol;
+            audio.volume = AudioHub.VOLUME;
             audio.currentTime = 0;
             audio.play();
             audio.loop = _loop;
@@ -77,5 +85,7 @@ export class AudioHub{
             soundName.sound.pause();
         })
     }
+
+    
     // #endregion
 }

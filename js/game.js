@@ -12,10 +12,9 @@ let volumeRef;
 // #region INIT
 function init(){
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    world = new World(canvas, keyboard, volumeRef);
     audioRef = getFromLocalStorage().audioRef;
     volumeRef = getFromLocalStorage().volumeRef;
-    // AudioHub.playOne({_soundname: AudioHub.THEME_SOUND, _loop: true});
 }
 // #endregion
 
@@ -23,9 +22,10 @@ function init(){
 function startGame(){
     let startscreenRef = document.getElementById("startscreen");
     startscreenRef.classList.add('d-none');
-    volumeRef = checkVolume();
-    AudioHub.playOne({_soundName: AudioHub.GAME_START, _vol: volumeRef});
     init();
+    volumeRef = checkVolume();
+    AudioHub.playOne({_soundName: AudioHub.GAME_START});
+    
 }
 
 function getFromLocalStorage(){
@@ -48,19 +48,24 @@ function checkVolume(){
     return volumeRef;
 }
 function toggleMute(){
-    const audioBtnRef = document.getElementById("audio-btn-img");
     audioRef = !audioRef;
+    volumeRef = checkVolume();
+    AudioHub.setVolume(volumeRef);
+    checkVolumeSettings();
+    saveSoundSetting();
+}
+
+function checkVolumeSettings(){
+    const audioBtnRef = document.getElementById("audio-btn-img");
     if(!audioRef){
         audioBtnRef.src = "./assets/icons/mute.png";
         AudioHub.stopAll();
-        volumeRef = 0;
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
-        volumeRef = 0.2;
-        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: volumeRef});
+        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
     }
-    saveSoundSetting();
 }
+
 window.startGame = startGame;
 window.toggleMute = toggleMute;
 // #endregion
