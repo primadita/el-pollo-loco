@@ -17,7 +17,7 @@ export class Bottle extends DrawableObject{
         super({_img: ImageManager.BOTTLE.onGround[Bottle.randomizedBottle()], _x: Bottle.X, _y: 350, _width: 70, _height: 70});
         this.loadImage(ImageManager.BOTTLE.onGround[Bottle.randomizedBottle()]);
         this.loadImages(ImageManager.BOTTLE.onGround);
-        Bottle.randomizedPosition();
+        Bottle.randomizedPosition(400, 1500);
     }
 
     // #region METHODS
@@ -25,8 +25,8 @@ export class Bottle extends DrawableObject{
         return Math.round(Math.random());
     }
     
-    static randomizedPosition(){ 
-        Bottle.X += Math.random() * 200 + 250;
+    static randomizedPosition(min, max){ 
+        return Bottle.X = Math.random() * (max - min) + min;
     }
     // #endregion
 }

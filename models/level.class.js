@@ -27,6 +27,11 @@ export class Level{
             new Hen(),
             new Chicken(),
             new Chicken(),
+            new Hen(),
+            new Hen(),
+            new Chicken(),
+            new Chicken(),
+            new Chicken()
         ];
         this.endboss = new Endboss(); 
         this.clouds = [new Cloud()];
