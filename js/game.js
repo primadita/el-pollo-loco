@@ -12,9 +12,11 @@ let volumeRef;
 // #region INIT
 function init(){
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard, volumeRef);
     audioRef = getFromLocalStorage().audioRef;
     volumeRef = getFromLocalStorage().volumeRef;
+    world = null;
+    world = new World(canvas, keyboard, volumeRef);
+    console.log("Backgrounds:", world.level.backgrounds.length);
 }
 // #endregion
 
@@ -25,7 +27,6 @@ function startGame(){
     init();
     volumeRef = checkVolume();
     AudioHub.playOne({_soundName: AudioHub.GAME_START});
-    
 }
 
 function getFromLocalStorage(){
@@ -66,8 +67,17 @@ function checkVolumeSettings(){
     }
 }
 
+function restartGame(){
+    const endscreenRef = document.getElementById('endscreen');
+    endscreenRef.classList.add('d-none');
+    world.destroy();
+    init();  
+    AudioHub.playOne({_soundName: AudioHub.GAME_START});      
+};
+
 window.startGame = startGame;
 window.toggleMute = toggleMute;
+window.restartGame = restartGame;
 // #endregion
 
 // #region Keyboard Settings

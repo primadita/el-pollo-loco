@@ -33,7 +33,7 @@ export class Character extends MovableObject{
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
-            ({_soundName: AudioHub.PEPE_DEAD});
+            AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
         } else if(this.isHurt(0.5)){
             this.playAnimation(ImageManager.PEPE.hurt);
             AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});

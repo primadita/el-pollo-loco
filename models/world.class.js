@@ -146,18 +146,18 @@ export class World{
     }
 
     checkThrowObjects(){
-        if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 20){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+        if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
-            this.statusBar[2].percentage -= 20;
+            this.statusBar[2].percentage -= 10;
             this.statusBar[2].setPercentage(this.statusBar[2].percentage);
         }
     }
 
     checkCollisions(){
         this.handlingCharacterVsEnemiesCollisions();
-        this.collectingObjects({objects: this.level.bottles, valuePerObj: 20, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
-        this.collectingObjects({objects: this.level.coins, valuePerObj: 20, statusbarId: 1, soundname: AudioHub.COIN_COLLECTED});
+        this.collectingObjects({objects: this.level.bottles, valuePerObj: 10, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
+        this.collectingObjects({objects: this.level.coins, valuePerObj: 10, statusbarId: 1, soundname: AudioHub.COIN_COLLECTED});
         this.handlingCollisionsOfThrowablesAndEndboss();
     }
 
@@ -225,12 +225,8 @@ export class World{
 
     // #region End of game
     isGameOver(){
-        const hasEndbossbar = this.statusBar[3] !== undefined;
-        return (
-            (hasEndbossbar && this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
-            this.character.energy === 0 ||
-            this.level.endboss.isDead()
-         ) ;
+        return this.character.energy === 0 ||
+            this.level.endboss.isDead();
     }
 
     won(){
@@ -241,14 +237,17 @@ export class World{
         return this.character.energy === 0;
     }
 
-    // TO DO: Endscreen
     checkGameOver(){
         if(this.isGameOver()){
-            IntervalHub.stopAllIntervals();
-            AudioHub.stopAll();
-            cancelAnimationFrame(this.animationFrame);
+            this.destroy();
             this.showEndscreen();
         }
+    }
+
+    destroy(){
+        IntervalHub.stopAllIntervals();
+        AudioHub.stopAll();
+        cancelAnimationFrame(this.animationFrame);
     }
 
     showEndscreen(){
@@ -266,5 +265,7 @@ export class World{
             AudioHub.playOne({_soundName: AudioHub.GAME_OVER, _vol: this.soundVolume});
         }
     }
+
+    
     // #endregion
 }

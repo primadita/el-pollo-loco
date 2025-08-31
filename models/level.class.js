@@ -49,9 +49,19 @@ export class Level{
             new Coin(),
             new Coin(),
             new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
             new Coin()
         ];
         this.bottles = [
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
+            new Bottle(),
             new Bottle(),
             new Bottle(),
             new Bottle(),
