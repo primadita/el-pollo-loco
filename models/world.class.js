@@ -225,9 +225,12 @@ export class World{
 
     // #region End of game
     isGameOver(){
-        return this.character.energy === 0 ||
-        // (this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
-        this.level.endboss.isDead() ;
+        const hasEndbossbar = this.statusBar[3] !== undefined;
+        return (
+            (hasEndbossbar && this.statusBar[2].percentage === 0 && this.statusBar[3].percentage != 0) ||
+            this.character.energy === 0 ||
+            this.level.endboss.isDead()
+         ) ;
     }
 
     won(){
@@ -244,16 +247,24 @@ export class World{
             IntervalHub.stopAllIntervals();
             AudioHub.stopAll();
             cancelAnimationFrame(this.animationFrame);
-            if(this.won()){
-                AudioHub.playOne({_soundName: AudioHub.WIN_GAME, _vol: this.soundVolume});
-            } else {
-                AudioHub.playOne({_soundName: AudioHub.GAME_OVER, _vol: this.soundVolume});
-            }
+            this.showEndscreen();
         }
     }
 
     showEndscreen(){
-
+        const endscreenImgRef = document.getElementById("endscreen-img");
+        const endscreenRef = document.getElementById("endscreen");
+        endscreenRef.classList.remove('d-none');
+        endscreenRef.classList.add('d-flex');
+        if(this.won()){
+            endscreenImgRef.src = "./assets/img/You won, you lost/You won A.png";
+            endscreenImgRef.alt = "you won the game";
+            AudioHub.playOne({_soundName: AudioHub.WIN_GAME, _vol: this.soundVolume});
+        } else {
+            endscreenImgRef.src = "./assets/img/You won, you lost/You lost b.png";
+            endscreenImgRef.alt = "oh no, you lost";
+            AudioHub.playOne({_soundName: AudioHub.GAME_OVER, _vol: this.soundVolume});
+        }
     }
     // #endregion
 }
