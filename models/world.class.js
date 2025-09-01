@@ -33,7 +33,7 @@ export class World{
         this.soundVolume = _volume;
         this.draw();
         this.setWorld();
-        IntervalHub.startInterval(this.run, 1000 / 5);
+        IntervalHub.startInterval(this.run, 1000 / 60);
     }
     // #region METHODS
     // #region Draw methods
@@ -164,7 +164,7 @@ export class World{
     handlingCharacterVsEnemiesCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
-                if(this.character.ySpeed < 0 && this.character.realY + this.character.realHeight <= enemy.realY + 0.9 * enemy.realHeight && !enemy.dead){
+                if(this.character.ySpeed < 0 && !enemy.dead){
                     enemy.dead = true;
                     this.hitEnemy(enemy);
                     this.checkMaxEnergy();

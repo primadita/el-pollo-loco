@@ -12,12 +12,17 @@ let volumeRef;
 // #region INIT
 function init(){
     canvas = document.getElementById('canvas');
-    audioRef = getFromLocalStorage().audioRef;
-    volumeRef = getFromLocalStorage().volumeRef;
     world = null;
     world = new World(canvas, keyboard, volumeRef);
     console.log("Backgrounds:", world.level.backgrounds.length);
 }
+
+function initSound(){
+    audioRef = getFromLocalStorage().audioRef;
+    volumeRef = getFromLocalStorage().volumeRef;
+    checkVolumeSettings();
+}
+initSound();
 // #endregion
 
 // #region Startscreen & Local storage
@@ -42,12 +47,12 @@ function saveSoundSetting(){
 
 function checkVolume(){
     if(audioRef){
-        volumeRef = 0.2;
+        return 0.2;
     } else {
-        volumeRef = 0;
+        return 0;
     }
-    return volumeRef;
 }
+
 function toggleMute(){
     audioRef = !audioRef;
     volumeRef = checkVolume();
