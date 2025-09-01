@@ -7,6 +7,8 @@ let world;
 let keyboard = new Keyboard();
 let audioRef = false;
 let volumeRef;
+const endscreenRef = document.getElementById('endscreen');
+const startscreenRef = document.getElementById("startscreen");
 // #endregion
 
 // #region INIT
@@ -33,15 +35,9 @@ loadSite();
 
 // #region Startscreen & Local storage
 function startGame(){
-    let startscreenRef = document.getElementById("startscreen");
     startscreenRef.classList.add('d-none');
     init();
-    if(audioRef){
-        AudioHub.VOLUME = 0.2;
-    } else {
-        AudioHub.VOLUME = 0;
-    }
-    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    setThemeSound();
 }
 
 function toggleMute(){
@@ -67,20 +63,37 @@ function checkVolumeSettings(){
     }
 }
 
+function setThemeSound(){
+    if(audioRef){
+        AudioHub.VOLUME = 0.2;
+    } else {
+        AudioHub.VOLUME = 0;
+    }
+    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+}
+
 function saveVolumeSettings(){
     localStorage.setItem("audioRef", JSON.stringify(audioRef));
 }
 
 function restartGame(){
-    const endscreenRef = document.getElementById('endscreen');
     endscreenRef.classList.add('d-none');
     init();  
+    setThemeSound();
     AudioHub.playOne({_soundName: AudioHub.GAME_START});      
 };
+
+function backToHome(){
+    endscreenRef.classList.remove('d-flex');
+    endscreenRef.classList.add('d-none');
+    startscreenRef.classList.remove('d-none');
+    startscreenRef.classList.add('d-flex');
+}
 
 window.startGame = startGame;
 window.toggleMute = toggleMute;
 window.restartGame = restartGame;
+window.backToHome = backToHome;
 // #endregion
 
 // #region Keyboard Settings
