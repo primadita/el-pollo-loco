@@ -27,26 +27,29 @@ export class Character extends MovableObject{
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
+        IntervalHub.startInterval(this.soundEffect, 1000 / 2);
     }
     
     // #region METHODS
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
-            AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
+            // AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
         } else if(this.isHurt(0.5)){
             this.playAnimation(ImageManager.PEPE.hurt);
-            AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
+            // AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
         } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
-            AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
+            // AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
             // TO DO: jump animation nur ein Durchlauf
         } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
             this.playAnimation(ImageManager.PEPE.walk);
-            AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
-        }  else {
+            // AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
+        } else if (this.isSleeping()){
+            this.playAnimation(ImageManager.PEPE.longIdle);
+            // AudioHub.playOne({_soundName: AudioHub.PEPE_SNORE});
+        } else {
             this.playAnimation(ImageManager.PEPE.idle);
-            AudioHub.stopOne(AudioHub.PEPE_RUN);
         }
     }
 
@@ -64,6 +67,22 @@ export class Character extends MovableObject{
             this.currentImage = 0;
         }
         this.world.cameraX = -this.x + this.width; 
+    }
+
+    soundEffect = () => {
+        if(this.isDead()){
+            AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
+        } else if(this.isHurt(0.5)){
+            AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
+        } else if(this.isAboveGround()){
+            AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
+        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+            AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
+        } else if (this.isSleeping()){
+            AudioHub.playOne({_soundName: AudioHub.PEPE_SNORE});
+        } else {
+            AudioHub.stopOne(AudioHub.PEPE_RUN);
+        }
     }
     // #endregion
 }

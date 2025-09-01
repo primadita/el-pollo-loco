@@ -10,6 +10,7 @@ export class MovableObject extends DrawableObject{
     otherDirection = false;
     energy = 100;
     lastHit = 0;
+    lastMove = 0;
     dead = false;
     canbounce = true;
     // #endregion
@@ -31,8 +32,13 @@ export class MovableObject extends DrawableObject{
         this.x = this.x + Math.random() * 1800;
     }
     
+    registerLastMove(){
+        this.lastMove = new Date().getTime();
+    }
+
     moveRight = () => {
         this.x += this.xSpeed;
+        this.registerLastMove();
     }
 
     moveLeft = () => {
@@ -41,6 +47,7 @@ export class MovableObject extends DrawableObject{
         } else {
             this.xSpeed = 0;
         }
+        this.registerLastMove();
     }
         
     jump(){
@@ -78,6 +85,11 @@ export class MovableObject extends DrawableObject{
     isHurt(timelength){
         let timepassed = (new Date().getTime() - this.lastHit) / 1000;
         return timepassed < timelength;
+    }
+
+    isSleeping(){
+        let timepassed = (new Date().getTime() - this.lastMove)/ 1000;
+        return timepassed > 5;
     }
 
     isDead(){
