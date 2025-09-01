@@ -15,12 +15,14 @@ export class Endboss extends MovableObject{
     // #endregion
 
     constructor(){
-        super({_img: ImageManager.HENBOSS.angry[0], _x: 2300, _y: 60, _width: 400, _height: 400, _xSpeed : 0.2});
+        super({_img: ImageManager.HENBOSS.angry[0], _x: 2300, _y: 60, _width: 400, _height: 400, _xSpeed : 3});
         this.loadImage(ImageManager.HENBOSS.angry[0]);
         this.loadImages(ImageManager.HENBOSS.angry);
         this.loadImages(ImageManager.HENBOSS.hurt);
         this.loadImages(ImageManager.HENBOSS.dead);
+        this.loadImages(ImageManager.HENBOSS.walk);
         IntervalHub.startInterval(this.animate, 1000 / 9);
+        IntervalHub.startInterval(this.action, 1000 / 60);
     }
 
     // #region METHODS
@@ -29,8 +31,16 @@ export class Endboss extends MovableObject{
             this.playAnimation(ImageManager.HENBOSS.dead);
         } else if (this.isHurt(1)){
             this.playAnimation(ImageManager.HENBOSS.hurt);
+        } else if (this.isAngry(1)){
+            this.playAnimation(ImageManager.HENBOSS.walk);
         } else {
             this.playAnimation(ImageManager.HENBOSS.angry);
+        }
+    }
+
+    action = () => {
+        if (this.isAngry(1)){
+            this.moveLeft();
         }
     }
     // #endregion

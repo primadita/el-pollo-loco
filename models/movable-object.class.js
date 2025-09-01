@@ -87,6 +87,11 @@ export class MovableObject extends DrawableObject{
         return timepassed < timelength;
     }
 
+    isAngry(timelength){
+        let timepassed = (new Date().getTime() - this.lastHit) / 1000;
+        return timepassed > timelength && timepassed < timelength + 0.8;
+    }
+
     isSleeping(){
         let timepassed = (new Date().getTime() - this.lastMove)/ 1000;
         return timepassed > 5;
