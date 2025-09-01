@@ -3,7 +3,7 @@ import { StatusBar } from "./status-bar.class.js";
 
 export class EndBossBar extends StatusBar{
     // #region ATTRIBUTES
-    x = 500;
+    x = 450;
     // #endregion
 
     constructor(){

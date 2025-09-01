@@ -34,7 +34,7 @@ export class Character extends MovableObject{
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
-        IntervalHub.startInterval(this.soundEffect, 1000 / 2);
+        IntervalHub.startInterval(this.soundEffect, 1000 / 4);
     }
     
     // #region METHODS

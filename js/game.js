@@ -19,10 +19,6 @@ function init(){
 function loadSite(){
     getFromLocalStorage();
     checkVolumeSettings();
-    if (audioRef){
-        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: 0.2});
-    }
-
 }
 
 function getFromLocalStorage(){
@@ -40,11 +36,23 @@ function startGame(){
     let startscreenRef = document.getElementById("startscreen");
     startscreenRef.classList.add('d-none');
     init();
+    if(audioRef){
+        AudioHub.VOLUME = 0.2;
+    } else {
+        AudioHub.VOLUME = 0;
+    }
+    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
 }
 
 function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
+    if (!audioRef){
+        AudioHub.stopOne(AudioHub.THEME_SOUND);
+    } else {
+        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    }
+
     saveVolumeSettings();
 }
 
@@ -52,10 +60,10 @@ function checkVolumeSettings(){
     const audioBtnRef = document.getElementById("audio-btn-img");
     if(!audioRef){
         audioBtnRef.src = "./assets/icons/mute.png";
-        AudioHub.stopAll();
+        AudioHub.VOLUME = 0;
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
-        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: 0.2});
+        AudioHub.VOLUME = 0.2;
     }
 }
 

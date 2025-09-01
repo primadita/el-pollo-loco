@@ -23,7 +23,6 @@ export class World{
     level = new Level();
     canvas;
     keyboard;
-    soundVolume;
     cameraX = 0;
     statusBar = [new HealthBar(), new CoinBar(), new BottleBar()];
     throwableObjects = [];
@@ -42,7 +41,8 @@ export class World{
         this.soundVolume = _volume;
         this.draw();
         this.setWorld();
-        IntervalHub.startInterval(this.run, 1000 / 60);
+        IntervalHub.startInterval(this.checkCollisions, 1000 / 30);
+        IntervalHub.startInterval(this.checkThrowObjects, 1000 / 5);
     }
     // #region METHODS
     // #region Draw methods
@@ -191,15 +191,15 @@ export class World{
     /**
      * Main game loop for checking collisions and throwables.
      */
-    run = () => {
-        this.checkCollisions();
-        this.checkThrowObjects();
-    }
+    // run = () => {
+    //     this.checkCollisions();
+    //     this.checkThrowObjects();
+    // }
 
     /**
      * Checks if throwable objects should be created.
      */
-    checkThrowObjects(){
+    checkThrowObjects = () => {
         if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
@@ -211,7 +211,7 @@ export class World{
     /**
      * Checks collisions between character and objects.
      */
-    checkCollisions(){
+    checkCollisions = () => {
         this.handlingCharacterVsEnemiesCollisions();
         this.collectingObjects({objects: this.level.bottles, valuePerObj: 10, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
         this.collectingObjects({objects: this.level.coins, valuePerObj: 10, statusbarId: 1, soundname: AudioHub.COIN_COLLECTED});
@@ -260,7 +260,7 @@ export class World{
                 obj.collected = true;
                 this.statusBar[statusbarId].percentage += valuePerObj;
                 this.statusBar[statusbarId].setPercentage(this.statusBar[statusbarId].percentage);
-                AudioHub.playOne({_soundName: soundname, _vol: this.soundVolume});
+                AudioHub.playOne({_soundName: soundname});
             }
         });
     }
@@ -273,7 +273,7 @@ export class World{
             if (bottle.isColliding(this.level.endboss)){
                 this.level.endboss.hit(25);
                 bottle.hit = true;
-                AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN, _vol: this.soundVolume});
+                AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
                 this.statusBar[3].percentage -= 25;
                 if (this.statusBar[3].percentage < 0){
                     this.statusBar[3].percentage = 0;
@@ -290,9 +290,9 @@ export class World{
      */
     hitEnemy(enemy){
         if(enemy instanceof Chicken){
-            this.character.energy += 10;
+            this.character.energy += 5;
         } else if (enemy instanceof Hen){
-            this.character.energy += 20;
+            this.character.energy += 10;
         } 
     }
     // #endregion
@@ -334,7 +334,7 @@ export class World{
             this.showEndscreen();
         }
     }
-    
+
     /**
      * Shows the end screen.
      */

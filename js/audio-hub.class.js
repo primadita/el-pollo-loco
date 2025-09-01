@@ -58,17 +58,20 @@ export class AudioHub{
     // #endregion
 
     // #region METHOD
-
-    static playOne({_soundName, _loop = false, _vol}={}){
+    static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
-        console.log("auddio readyState", audio.readyState);
         if(audio.readyState === 4 || audio.loaded){
             audio.loaded = true;
-            audio.volume = _vol;
+            audio.volume = AudioHub.VOLUME;
             audio.currentTime = 0;
             audio.play();
             audio.loop = _loop;
         }
+        audio.play().catch(err => {
+        if (err.name !== "AbortError") {
+            console.error("Audio konnte nicht abgespielt werden:", err);
+        }
+});
     }
 
     static stopOne(soundName){
