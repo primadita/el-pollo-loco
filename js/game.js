@@ -1,3 +1,9 @@
+/**
+ * @file Main entry point for the game "El Pollo Loco".
+ * Handles initialization, game start, audio settings, local storage, keyboard input, and screen transitions.
+ * This file manages the game lifecycle, user interactions, and global state.
+ */
+
 import { DesertFirstLayer } from "../models/desert-first-layer.class.js";
 import { DesertSecondLayer } from "../models/desert-second-layer.class.js";
 import { DesertThirdLayer } from "../models/desert-third-layer.class.js";
@@ -5,17 +11,31 @@ import { Keyboard } from "../models/keyboard.class.js";
 import { Sky } from "../models/sky.class.js";
 import { World } from "../models/world.class.js";
 import { AudioHub } from "./audio-hub.class.js";
-// #region Global variables;
+
+// #region Global variables
+
+/** @type {HTMLCanvasElement} The main game canvas. */
 let canvas;
+/** @type {World} The current game world instance. */
 let world;
+/** @type {Keyboard} Keyboard input handler. */
 let keyboard = new Keyboard();
+/** @type {boolean} Whether audio is enabled. */
 let audioRef = false;
+/** @type {number} The current audio volume. */
 let volumeRef;
+/** @type {HTMLElement} Reference to the endscreen element. */
 const endscreenRef = document.getElementById('endscreen');
+/** @type {HTMLElement} Reference to the startscreen element. */
 const startscreenRef = document.getElementById("startscreen");
 // #endregion
 
 // #region INIT
+
+/**
+ * Initializes the game world and canvas.
+ * Resets background positions and creates a new World instance.
+ */
 function init(){
     canvas = document.getElementById('canvas');
     resetBackground();
@@ -23,11 +43,19 @@ function init(){
     world = new World(canvas, keyboard, volumeRef);
 }
 
+/**
+ * Loads site settings from local storage and applies audio settings.
+ * Called on page load.
+ */
 function loadSite(){
     getFromLocalStorage();
     checkVolumeSettings();
 }
 
+/**
+ * Retrieves audio settings from local storage.
+ * Updates the global audioRef variable.
+ */
 function getFromLocalStorage(){
     let soundSettings = JSON.parse(localStorage.getItem("audioRef"));
     if (soundSettings !== null){
@@ -39,12 +67,21 @@ loadSite();
 // #endregion
 
 // #region Startscreen & Local storage
+
+/**
+ * Starts the game by hiding the start screen and initializing the world.
+ * Also sets the theme sound.
+ */
 function startGame(){
     startscreenRef.classList.add('d-none');
     init();
     setThemeSound();
 }
 
+/**
+ * Toggles the mute state for game audio.
+ * Updates UI and saves the new setting to local storage.
+ */
 function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
@@ -57,6 +94,10 @@ function toggleMute(){
     saveVolumeSettings();
 }
 
+/**
+ * Updates the audio button UI and sets the global audio volume.
+ * Called whenever audioRef changes.
+ */
 function checkVolumeSettings(){
     const audioBtnRef = document.getElementById("audio-btn-img");
     if(!audioRef){
@@ -68,6 +109,10 @@ function checkVolumeSettings(){
     }
 }
 
+/**
+ * Sets the theme sound volume and starts playback.
+ * Called when the game starts or restarts.
+ */
 function setThemeSound(){
     if(audioRef){
         AudioHub.VOLUME = 0.2;
@@ -77,10 +122,17 @@ function setThemeSound(){
     AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
 }
 
+/**
+ * Saves the current audio setting to local storage.
+ */
 function saveVolumeSettings(){
     localStorage.setItem("audioRef", JSON.stringify(audioRef));
 }
 
+/**
+ * Resets the background layer positions to their initial values.
+ * Ensures backgrounds are correctly positioned when restarting the game.
+ */
 function resetBackground(){
     Sky.XPOS = -2 * canvas.width;
     DesertFirstLayer.XPOS = -2 * canvas.width;
@@ -88,6 +140,9 @@ function resetBackground(){
     DesertThirdLayer.XPOS = -2 * canvas.width;
 }
 
+/**
+ * Restarts the game by hiding the end screen, reinitializing the world, and playing the start sound.
+ */
 function restartGame(){
     endscreenRef.classList.add('d-none');
     init();  
@@ -95,6 +150,10 @@ function restartGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START});      
 };
 
+/**
+ * Returns to the home/start screen from the end screen.
+ * Updates the visibility of relevant UI elements.
+ */
 function backToHome(){
     endscreenRef.classList.remove('d-flex');
     endscreenRef.classList.add('d-none');
@@ -109,6 +168,11 @@ window.backToHome = backToHome;
 // #endregion
 
 // #region Keyboard Settings
+
+/**
+ * Handles keydown events for game controls.
+ * Sets the corresponding property in the keyboard object to true.
+ */
 window.addEventListener('keydown', (e) => {
     if(e.key == 'ArrowRight'){
         keyboard.RIGHT = true;
@@ -124,6 +188,10 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+/**
+ * Handles keyup events for game controls.
+ * Sets the corresponding property in the keyboard object to false.
+ */
 window.addEventListener("keyup",(e) => {
     if(e.key == 'ArrowRight'){
         keyboard.RIGHT = false;
