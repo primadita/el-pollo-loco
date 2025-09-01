@@ -90,7 +90,6 @@ function toggleMute(){
     } else {
         AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
     }
-
     saveVolumeSettings();
 }
 

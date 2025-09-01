@@ -17,6 +17,7 @@ export class MovableObject extends DrawableObject{
     lastMove = 0;
     dead = false;
     canbounce = true;
+    attacking = true;
     // #endregion
 
     /**

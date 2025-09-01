@@ -12,6 +12,7 @@ export class ThrowableObject extends MovableObject{
     ySpeed = 30;
     thrown = false;
     hit = false;
+    fly = false;
     // #endregion
 
     /**

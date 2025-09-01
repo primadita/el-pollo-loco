@@ -116,6 +116,7 @@ export class World{
         if(this.character.x == 1700 && this.statusBar.length == 3){
             let endbossbar = new EndBossBar();
             this.statusBar.push(endbossbar);
+            console.log('energy endboss', this.level.endboss.energy)
         }
     }
 
@@ -203,6 +204,7 @@ export class World{
         if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
+            this.throwableObjects.fly = true;
             this.statusBar[2].percentage -= 10;
             this.statusBar[2].setPercentage(this.statusBar[2].percentage);
         }
@@ -231,11 +233,23 @@ export class World{
                     if(this.character.canbounce){
                         this.character.bounce(); // small jump after hitting enemy
                     }
-                } else {
-                    if(!enemy.dead){
-                        this.character.hit(5);
-                    }   
+                } else if(this.character.ySpeed >= 0 && enemy.attacking) {
+                    enemy.attacking = false;
+                    if(enemy instanceof Chicken){
+                        this.character.hit(10);
+                    } else if (enemy instanceof Hen){
+                        this.character.hit(20);
+                    }
+                    
+                    this.statusBar[0].percentage = this.character.energy;
+                    console.log(this.character.energy);
                 }
+                // if(!enemy.dead && this.character.attacked){
+                //     this.character.attacked = false;
+                //     this.character.hit(5);
+                //     this.statusBar[0].percentage = this.character.energy;
+                //     console.log(this.character.energy);
+                // }
                 this.statusBar[0].setPercentage(this.character.energy);
             }
         });
@@ -270,11 +284,14 @@ export class World{
      */
     handlingCollisionsOfThrowablesAndEndboss(){
         this.throwableObjects.forEach((bottle) => {
-            if (bottle.isColliding(this.level.endboss)){
+            if (bottle.isColliding(this.level.endboss) && this.throwableObjects.fly ){
+                this.throwableObjects.fly = false;
                 this.level.endboss.hit(25);
                 bottle.hit = true;
+                console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
-                this.statusBar[3].percentage -= 25;
+                this.statusBar[3].percentage = this.level.endboss.energy;
+                // this.statusBar[3].percentage -= 25;
                 if (this.statusBar[3].percentage < 0){
                     this.statusBar[3].percentage = 0;
                     this.level.endboss.energy = 0;
