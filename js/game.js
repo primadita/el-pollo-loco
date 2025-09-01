@@ -16,13 +16,6 @@ function init(){
     world = new World(canvas, keyboard, volumeRef);
     console.log("Backgrounds:", world.level.backgrounds.length);
 }
-
-function initSound(){
-    audioRef = getFromLocalStorage().audioRef;
-    volumeRef = getFromLocalStorage().volumeRef;
-    checkVolumeSettings();
-}
-initSound();
 // #endregion
 
 // #region Startscreen & Local storage
@@ -30,35 +23,11 @@ function startGame(){
     let startscreenRef = document.getElementById("startscreen");
     startscreenRef.classList.add('d-none');
     init();
-    volumeRef = checkVolume();
-    AudioHub.playOne({_soundName: AudioHub.GAME_START});
-}
-
-function getFromLocalStorage(){
-    audioRef = JSON.parse(localStorage.getItem("soundSettings"));
-    volumeRef = JSON.parse(localStorage.getItem("volume"));
-    return {audioRef, volumeRef};
-}
-
-function saveSoundSetting(){
-    localStorage.setItem("soundSettings",JSON.stringify(audioRef));
-    localStorage.setItem("volume", JSON.stringify(volumeRef));
-}
-
-function checkVolume(){
-    if(audioRef){
-        return 0.2;
-    } else {
-        return 0;
-    }
 }
 
 function toggleMute(){
     audioRef = !audioRef;
-    volumeRef = checkVolume();
-    AudioHub.setVolume(volumeRef);
     checkVolumeSettings();
-    saveSoundSetting();
 }
 
 function checkVolumeSettings(){
@@ -68,14 +37,13 @@ function checkVolumeSettings(){
         AudioHub.stopAll();
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
-        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: 0.2});
     }
 }
 
 function restartGame(){
     const endscreenRef = document.getElementById('endscreen');
     endscreenRef.classList.add('d-none');
-    world.destroy();
     init();  
     AudioHub.playOne({_soundName: AudioHub.GAME_START});      
 };

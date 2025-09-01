@@ -57,19 +57,13 @@ export class AudioHub{
     ];
     // #endregion
 
-    // #region METHODS
-    static setVolume(vol){
-        if(isNaN(vol) || typeof vol !== "number"){
-            vol = 0;
-        }
-        AudioHub.VOLUME = vol;
-    }
+    // #region METHOD
 
-    static playOne({_soundName, _loop = false}={}){
+    static playOne({_soundName, _loop = false, _vol}={}){
         const audio = _soundName.sound;
         if(audio.readyState === 4 || audio.loaded){
             audio.loaded = true;
-            audio.volume = AudioHub.VOLUME;
+            audio.volume = _vol;
             audio.currentTime = 0;
             audio.play();
             audio.loop = _loop;
