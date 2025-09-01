@@ -291,7 +291,6 @@ export class World{
                 console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
                 this.statusBar[3].percentage = this.level.endboss.energy;
-                // this.statusBar[3].percentage -= 25;
                 if (this.statusBar[3].percentage < 0){
                     this.statusBar[3].percentage = 0;
                     this.level.endboss.energy = 0;
