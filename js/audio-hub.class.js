@@ -67,11 +67,6 @@ export class AudioHub{
             audio.play();
             audio.loop = _loop;
         }
-        audio.play().catch(err => {
-        if (err.name !== "AbortError") {
-            console.error("Audio konnte nicht abgespielt werden:", err);
-        }
-});
     }
 
     static stopOne(soundName){

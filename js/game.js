@@ -1,4 +1,8 @@
+import { DesertFirstLayer } from "../models/desert-first-layer.class.js";
+import { DesertSecondLayer } from "../models/desert-second-layer.class.js";
+import { DesertThirdLayer } from "../models/desert-third-layer.class.js";
 import { Keyboard } from "../models/keyboard.class.js";
+import { Sky } from "../models/sky.class.js";
 import { World } from "../models/world.class.js";
 import { AudioHub } from "./audio-hub.class.js";
 // #region Global variables;
@@ -14,6 +18,7 @@ const startscreenRef = document.getElementById("startscreen");
 // #region INIT
 function init(){
     canvas = document.getElementById('canvas');
+    resetBackground();
     world = null;
     world = new World(canvas, keyboard, volumeRef);
 }
@@ -74,6 +79,13 @@ function setThemeSound(){
 
 function saveVolumeSettings(){
     localStorage.setItem("audioRef", JSON.stringify(audioRef));
+}
+
+function resetBackground(){
+    Sky.XPOS = -2 * canvas.width;
+    DesertFirstLayer.XPOS = -2 * canvas.width;
+    DesertSecondLayer.XPOS = -2 * canvas.width;
+    DesertThirdLayer.XPOS = -2 * canvas.width;
 }
 
 function restartGame(){
