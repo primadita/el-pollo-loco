@@ -14,8 +14,25 @@ function init(){
     canvas = document.getElementById('canvas');
     world = null;
     world = new World(canvas, keyboard, volumeRef);
-    console.log("Backgrounds:", world.level.backgrounds.length);
 }
+
+function loadSite(){
+    getFromLocalStorage();
+    checkVolumeSettings();
+    if (audioRef){
+        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: 0.2});
+    }
+
+}
+
+function getFromLocalStorage(){
+    let soundSettings = JSON.parse(localStorage.getItem("audioRef"));
+    if (soundSettings !== null){
+        audioRef = soundSettings;
+    }
+}
+
+loadSite();
 // #endregion
 
 // #region Startscreen & Local storage
@@ -28,6 +45,7 @@ function startGame(){
 function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
+    saveVolumeSettings();
 }
 
 function checkVolumeSettings(){
@@ -39,6 +57,10 @@ function checkVolumeSettings(){
         audioBtnRef.src = "./assets/icons/soundon.png";
         AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true, _vol: 0.2});
     }
+}
+
+function saveVolumeSettings(){
+    localStorage.setItem("audioRef", JSON.stringify(audioRef));
 }
 
 function restartGame(){
