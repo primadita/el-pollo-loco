@@ -13,6 +13,9 @@ import { IntervalHub } from "./interval-hub.class.js";
 import { Level } from "./level.class.js";
 import { ThrowableObject } from "./throwable-object.class.js";
 
+/**
+ * Represents the game world, including rendering and game logic.
+ */
 export class World{
     // #region ATTRIBUTES
     ctx;
@@ -26,6 +29,12 @@ export class World{
     throwableObjects = [];
     // #endregion
 
+    /**
+     * Creates a new World.
+     * @param {HTMLCanvasElement} _canvas - The canvas element.
+     * @param {Object} _keyboard - Keyboard input object.
+     * @param {number} _volume - Sound volume.
+     */
     constructor(_canvas, _keyboard, _volume){
         this.ctx = _canvas.getContext('2d');
         this.canvas = _canvas;
@@ -37,6 +46,9 @@ export class World{
     }
     // #region METHODS
     // #region Draw methods
+    /**
+     * Draws all objects and status bars on the canvas.
+     */
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.cameraX, 0);
@@ -54,9 +66,12 @@ export class World{
         } else {
             this.checkGameOver();
         }
-        
     }
 
+    /**
+     * Adds a single object to the map.
+     * @param {Object} mo - Movable or drawable object.
+     */
     addToMap(mo){
         if(mo.otherDirection){
             this.flipImage(mo);
@@ -71,10 +86,18 @@ export class World{
         }
     }
 
+    /**
+     * Adds multiple objects to the map.
+     * @param {Object[]} objects - Array of objects.
+     */
     addObjectsToMap(objects){
         objects.forEach(obj => {this.addToMap(obj)});
     }
 
+    /**
+     * Adds collecting objects to the map if not collected yet.
+     * @param {Object[]} objects - Array of objects.
+     */
     addCollectingObjects(objects){
         objects.forEach((obj) => {
             if(!obj.collected){
@@ -83,6 +106,9 @@ export class World{
         });
     }
 
+    /**
+     * Draws all status bars.
+     */
     drawAllStatusBars(){
         // ---- space for fixed object -------
         this.addObjectsToMap(this.statusBar);
@@ -93,6 +119,9 @@ export class World{
         }
     }
 
+    /**
+     * Draws all level objects.
+     */
     drawLevelObjects(){
         this.addCollectingObjects(this.level.coins);
         this.addCollectingObjects(this.level.bottles);
@@ -103,10 +132,17 @@ export class World{
     // #endregion
 
     // #region Character
+    /**
+     * Sets the world reference for the character.
+     */
     setWorld(){
         this.character.world = this;
     }
 
+    /**
+     * Flips the image horizontally.
+     * @param {Object} mo - Movable object.
+     */
     flipImage(mo){
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -114,6 +150,10 @@ export class World{
         mo.x = mo.x * -1;
     }
 
+    /**
+     * Restores the image orientation.
+     * @param {Object} mo - Movable object.
+     */
     flipImageBack(mo){
         this.ctx.restore();
         mo.x = mo.x * -1;
@@ -121,6 +161,10 @@ export class World{
     // #endregion
 
     // #region Frame/Offset
+    /**
+     * Draws the frame around an object.
+     * @param {Object} mo - Movable object.
+     */
     drawFrame(mo){
         this.ctx.beginPath();
         this.ctx.lineWidth = 3;
@@ -129,6 +173,10 @@ export class World{
         this.ctx.stroke();
     }
 
+    /**
+     * Draws the offset frame around an object.
+     * @param {Object} mo - Movable object.
+     */
     drawOffset(mo){
         mo.getRealFrame();
         this.ctx.beginPath();
@@ -140,11 +188,17 @@ export class World{
     // #endregion
 
     // #region Collisions
+    /**
+     * Main game loop for checking collisions and throwables.
+     */
     run = () => {
         this.checkCollisions();
         this.checkThrowObjects();
     }
 
+    /**
+     * Checks if throwable objects should be created.
+     */
     checkThrowObjects(){
         if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
@@ -154,6 +208,9 @@ export class World{
         }
     }
 
+    /**
+     * Checks collisions between character and objects.
+     */
     checkCollisions(){
         this.handlingCharacterVsEnemiesCollisions();
         this.collectingObjects({objects: this.level.bottles, valuePerObj: 10, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
@@ -161,6 +218,9 @@ export class World{
         this.handlingCollisionsOfThrowablesAndEndboss();
     }
 
+    /**
+     * Handles collisions between character and enemies.
+     */
     handlingCharacterVsEnemiesCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
@@ -181,12 +241,19 @@ export class World{
         });
     }
 
+    /**
+     * Checks and limits character's max energy.
+     */
     checkMaxEnergy(){
         if ( this.character.energy > 100){
             this.character.energy = 100;
         }
     }
 
+    /**
+     * Handles collecting objects.
+     * @param {Object} params - Parameters for collecting.
+     */
     collectingObjects({objects, valuePerObj, statusbarId, soundname} = {}){
         objects.forEach((obj) => {
             if(this.character.isColliding(obj) && !obj.collected){
@@ -198,6 +265,9 @@ export class World{
         });
     }
 
+    /**
+     * Handles collisions between throwable objects and endboss.
+     */
     handlingCollisionsOfThrowablesAndEndboss(){
         this.throwableObjects.forEach((bottle) => {
             if (bottle.isColliding(this.level.endboss)){
@@ -214,6 +284,10 @@ export class World{
         });   
     }
 
+    /**
+     * Handles hitting an enemy.
+     * @param {Object} enemy - Enemy object.
+     */
     hitEnemy(enemy){
         if(enemy instanceof Chicken){
             this.character.energy += 10;
@@ -224,32 +298,46 @@ export class World{
     // #endregion
 
     // #region End of game
+    /**
+     * Checks if the game is over.
+     * @returns {boolean}
+     */
     isGameOver(){
         return this.character.energy === 0 ||
             this.level.endboss.isDead();
     }
 
+    /**
+     * Checks if the player won.
+     * @returns {boolean}
+     */
     won(){
         return this.level.endboss.isDead();
     }
 
+    /**
+     * Checks if the player lost.
+     * @returns {boolean}
+     */
     lost(){
         return this.character.energy === 0;
     }
 
+    /**
+     * Handles game over logic.
+     */
     checkGameOver(){
         if(this.isGameOver()){
-            this.destroy();
+            IntervalHub.stopAllIntervals();
+            AudioHub.stopAll();
+            cancelAnimationFrame(this.animationFrame);
             this.showEndscreen();
         }
     }
-
-    destroy(){
-        IntervalHub.stopAllIntervals();
-        AudioHub.stopAll();
-        cancelAnimationFrame(this.animationFrame);
-    }
-
+    
+    /**
+     * Shows the end screen.
+     */
     showEndscreen(){
         const endscreenImgRef = document.getElementById("endscreen-img");
         const endscreenRef = document.getElementById("endscreen");

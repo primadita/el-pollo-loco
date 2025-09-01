@@ -9,6 +9,9 @@ import { Endboss } from "./endboss.class.js";
 import { Hen } from "./hen.class.js";
 import { Sky } from "./sky.class.js";
 
+/**
+ * Represents a game level with enemies, collectable items and all backgrounds.
+ */
 export class Level{
     // #region ATTRIBUTES
     enemies;
@@ -20,6 +23,9 @@ export class Level{
     levelEndX = 2160;
     // #endregion
 
+    /**
+     * Creates a new Level.
+     */
     constructor(){
         this.enemies = [
             new Hen(),

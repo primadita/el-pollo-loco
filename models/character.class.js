@@ -3,6 +3,10 @@ import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
 
+/**
+ * Represents the main character controlled by the player.
+ * @extends MovableObject
+ */
 export class Character extends MovableObject{
     // #region ATTRIBUTES
     world;
@@ -15,6 +19,9 @@ export class Character extends MovableObject{
  
     // #endregion
     
+    /**
+     * Creates a new Character.
+     */
     constructor(){
         super({_img: ImageManager.PEPE.walk[0], _x: 100, _y: 65, _width: 120, _height: 270, _xSpeed: 5});
         this.loadImage(ImageManager.PEPE.walk[0]);
@@ -31,6 +38,9 @@ export class Character extends MovableObject{
     }
     
     // #region METHODS
+    /**
+     * Handles character animation based on state.
+     */
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
@@ -53,6 +63,9 @@ export class Character extends MovableObject{
         }
     }
 
+    /**
+     * Handles character actions based on keyboard input.
+     */
     action = () => {
         if(this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX){
             this.otherDirection = false;
@@ -69,6 +82,9 @@ export class Character extends MovableObject{
         this.world.cameraX = -this.x + this.width; 
     }
 
+    /**
+     * Plays sound effects based on character state.
+     */
     soundEffect = () => {
         if(this.isDead()){
             AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
