@@ -64,6 +64,17 @@ body{
                 background-color: black;
                 display: block;
             }
+            #audio-btn{
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                background: transparent;
+                border: 0;
+                cursor: pointer;
+                img{
+                    width: 50px;
+                }
+            }
             #startscreen{
                 background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
                 width: 100%;
@@ -81,14 +92,6 @@ body{
                     cursor: pointer;
                     img{
                         width: 120px;
-                    }
-                }
-                #audio-btn{
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    img{
-                        width: 60px;
                     }
                 }
                 #btn-explanation{

@@ -61,6 +61,7 @@ export class AudioHub{
 
     static playOne({_soundName, _loop = false, _vol}={}){
         const audio = _soundName.sound;
+        console.log("auddio readyState", audio.readyState);
         if(audio.readyState === 4 || audio.loaded){
             audio.loaded = true;
             audio.volume = _vol;

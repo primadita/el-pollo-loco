@@ -15,7 +15,6 @@
             <canvas id="canvas" width="720px" height="480px">
             </canvas>
             <div id="startscreen" class="d-flex">
-                <button id="audio-btn" onclick="toggleMute()"><img src="./assets/icons/mute.png" alt="mute button" id="audio-btn-img"></button>
                 <button id="play-btn" onclick="startGame()"><img src="./assets/icons/play4.png" alt="Play button"></button>
                 <div id="btn-explanation">
                     <div><img src="./assets/icons/left.png" alt="keyboard left arrow">: Move left</img></div>
@@ -24,6 +23,9 @@
                     <div><img src="./assets/icons/D.png" alt="keyboard D">: Throw bottle </img></div>
                 </div>
             </div>
+            <button id="audio-btn" onclick="toggleMute()">
+                <img src="./assets/icons/mute.png" alt="mute button" id="audio-btn-img">
+            </button>
             <div id="endscreen" class="d-none">
                 <img id="endscreen-img" src="./assets/img/You won, you lost/Game over A.png" alt="">
                 <div>
