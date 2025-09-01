@@ -2,6 +2,10 @@ import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
 
+/**
+ * Represents the endboss enemy in the game.
+ * @extends MovableObject
+ */
 export class Endboss extends MovableObject{
     // #region ATTRIBUTES
     offset = {
@@ -14,6 +18,9 @@ export class Endboss extends MovableObject{
 
     // #endregion
 
+    /**
+     * Creates a new Endboss.
+     */
     constructor(){
         super({_img: ImageManager.HENBOSS.angry[0], _x: 2300, _y: 60, _width: 400, _height: 400, _xSpeed : 3});
         this.loadImage(ImageManager.HENBOSS.angry[0]);
@@ -26,6 +33,9 @@ export class Endboss extends MovableObject{
     }
 
     // #region METHODS
+    /**
+     * Handles endboss animation based on state.
+     */
     animate = () => {
         if (this.isDead()){
             this.playAnimation(ImageManager.HENBOSS.dead);
@@ -38,6 +48,9 @@ export class Endboss extends MovableObject{
         }
     }
 
+    /**
+     * Handles endboss actions (movement) based on state.
+     */
     action = () => {
         if (this.isAngry(1)){
             this.moveLeft();
