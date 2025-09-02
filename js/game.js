@@ -76,6 +76,7 @@ function startGame(){
     startscreenRef.classList.add('d-none');
     init();
     setThemeSound();
+    AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
 }
 
 /**

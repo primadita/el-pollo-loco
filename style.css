@@ -10,6 +10,9 @@
 }
 html{
     font-size: 10px;
+    @media (max-width: 600px) {
+        font-size: 8px;
+    }
 }
 .d-flex{
     display: flex;
@@ -34,8 +37,6 @@ h1{
     letter-spacing: 6px;
     color: rgb(255, 166, 0);
     text-shadow: 5px 2px 8px rgba(0,0,0,0.9);
-    /* -webkit-text-stroke-color: black;
-    -webkit-text-stroke-width: 0.005px; */
     text-align: center;
 }
 /* #endregion */
@@ -45,9 +46,8 @@ body{
     font-size: min(16px, 18px);
     font-family: 'Smokum','sans-serif';
     background: url('./assets/icons/Comic2.png');
-    /* background: url('./assets/icons/chicken-2584740_1920.jpg'); */
-    backdrop-filter: saturate(30%);
-    /* background: url('./assets/icons/cactus-9085905_1920.jpg'); */
+    background-repeat: no-repeat;
+    backdrop-filter: saturate(30%); 
     background-size: cover;
     
     main{
@@ -58,21 +58,23 @@ body{
         height: auto;
         min-height: calc(100dvh - 3dvh);
         #wrapper{
-            width: 720px;
-            height: 480px;
+            width: 100%;
+            max-width: 720px;
+            height: 100%;
+            max-height: 480px;
             canvas{
                 background-color: black;
                 display: block;
             }
             #audio-btn{
                 position: absolute;
-                top: 5px;
-                right: 5px;
+                top: 0.5rem;
+                right: 0.5rem;
                 background: transparent;
                 border: 0;
                 cursor: pointer;
                 img{
-                    width: 50px;
+                    width: 5rem;
                 }
             }
             button:hover{
@@ -94,10 +96,10 @@ body{
                     border: 0;
                     cursor: pointer;
                     img{
-                        width: 120px;
+                        width: 12rem;
                     }
                     img:hover{
-                        width: 130px;
+                        width: 13rem;
                     }
                 }
                 button:hover{
@@ -107,7 +109,7 @@ body{
                 #btn-explanation{
                     position: absolute;
                     bottom: 0;
-                    height: 50px;
+                    height: 5rem;
                     width: 100%;
                     font-size: large;
                     display: flex;
@@ -117,7 +119,7 @@ body{
                         display: flex;
                         align-items: center;
                         img{
-                            height: 45px;
+                            height: 4.5rem;
                         }
                     }
                 }
@@ -127,17 +129,58 @@ body{
                 top: 0;
                 left: 0;
                 flex-direction: column;
-                padding: 100px;
-                gap: 50px;
+                padding: 10rem;
+                gap: 5rem;
                 background: url('./assets/img/5_background/first_half_background.png');
                 background-size: cover;
                 width: 100%;
                 height: 100%;
                 h2{
-                    font-size: 40px;
+                    font-size: 4rem;
                 }
                 p{
-                    font-size: 24px;
+                    font-size: 2.4rem;
+                }
+            }
+            #mobile-btn{
+                position: absolute;
+                bottom: 0;
+                justify-content: space-between;
+                width: 100%;
+                height: 5rem;
+                padding-left: 2.5rem;
+                padding-right: 2.5rem;
+                #run-key-panel{
+                    #left-btn{
+                        background: url('./assets/icons/left.png');
+                        height: 5rem;
+                        width: 5rem;
+                        border: 1rem black;
+                        border-radius: 50%;
+                    }
+                    #right-btn{
+                        background: url('./assets/icons/right.png');
+                        height: 5rem;
+                        width: 5rem;
+                        border: 1rem black;
+                        border-radius: 50%;
+                    }
+                }
+                #jump-throw-key-panel{
+                    #jump-btn{
+                        background: url('./assets/icons/up.png');
+                        height: 5rem;
+                        width: 5rem;
+                        border: 1rem black;
+                        border-radius: 50%;
+                    }
+                    #throw-btn{
+                        background: url('./assets/icons/bottle.png');
+                        height: 5rem;
+                        width: 5rem;
+                        border: 1rem black;
+                        border-radius: 50%;
+                    }
                 }
             }
             #endscreen{
@@ -198,11 +241,17 @@ body{
             width: 100%;
         }
     }
+    footer{
+        display: none;
+    }
 }
 @media only screen and (max-height: 480px){
     #wrapper{
         canvas{
             height: 100dvh;
         }
+    }
+    footer{
+        display: none;
     }
 }

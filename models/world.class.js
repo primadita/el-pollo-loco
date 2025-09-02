@@ -233,7 +233,7 @@ export class World{
                     if(this.character.canbounce){
                         this.character.bounce(); // small jump after hitting enemy
                     }
-                } else if(this.character.ySpeed >= 0 && enemy.attacking) {
+                } else if(this.character.ySpeed >= 0 && enemy.attacking) { //die Bedingungen, wann energy runtergeht wurde geändert,damit die Energy nicht so schnell runtergeht.
                     enemy.attacking = false;
                     if(enemy instanceof Chicken){
                         this.character.hit(10);
@@ -242,9 +242,8 @@ export class World{
                     }
                     
                     this.statusBar[0].percentage = this.character.energy;
-                    console.log(this.character.energy);
                 }
-                // if(!enemy.dead && this.character.attacked){
+                // if(!enemy.dead && this.character.attacked){ //Die alte Bedingungen, wann Energy reduziert wurde.
                 //     this.character.attacked = false;
                 //     this.character.hit(5);
                 //     this.statusBar[0].percentage = this.character.energy;
