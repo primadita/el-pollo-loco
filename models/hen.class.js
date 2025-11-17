@@ -9,12 +9,15 @@ import { MovableObject } from "./movable-object.class.js";
  */
 export class Hen extends MovableObject {
     // #region ATTRIBUTES
+    static ALIVECOUNTER = 0;
     offset = {
         top: 5,
         left: 5,
         bottom: 15,
         right: 5
     }
+    deathSoundPlayed = false;
+    isWalking = false;
 
     // #endregion
 
@@ -27,6 +30,7 @@ export class Hen extends MovableObject {
         this.loadImages(ImageManager.HEN.walk);
         this.loadImages(ImageManager.HEN.dead);
         this.randomizedStartPosition();
+        Hen.ALIVECOUNTER++;
         IntervalHub.startInterval(this.animate, 1000 / 5);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }
@@ -38,10 +42,19 @@ export class Hen extends MovableObject {
     animate = () => {
         if (this.dead){
             this.playAnimation(ImageManager.HEN.dead);
-            AudioHub.playOne({_soundName: AudioHub.HEN_DEAD});
+            this.isWalking = false;
+            
+            if(!this.deathSoundPlayed){
+                AudioHub.playOne({_soundName: AudioHub.HEN_DEAD});
+                this.deathSoundPlayed = true;
+                Hen.ALIVECOUNTER--;
+            } 
         } else {
             this.playAnimation(ImageManager.HEN.walk);
-            AudioHub.playOne({_soundName: AudioHub.HEN_WALK});
+            this.isWalking = true;
+            if(Hen.ALIVECOUNTER > 0 && this.isWalking){
+                AudioHub.playOne({_soundName: AudioHub.HEN_WALK});
+            }
         }
     }
     // #endregion

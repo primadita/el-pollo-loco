@@ -5,12 +5,15 @@ import { MovableObject } from "./movable-object.class.js";
 
 export class Chicken extends MovableObject{
     // #region ATTRIBUTES
+    static ALIVECOUNTER = 0;
     offset = {
         top: 5,
         left: 6,
         bottom: 8,
         right: 5
     }
+    deathSoundPlayed = false;
+    isWalking = false;
     // #endregion
 
     constructor(){
@@ -19,6 +22,7 @@ export class Chicken extends MovableObject{
         this.loadImages(ImageManager.CHICKEN.dead);
         this.loadImages(ImageManager.CHICKEN.walk);
         this.randomizedStartPosition();
+        Chicken.ALIVECOUNTER++;
         IntervalHub.startInterval(this.animate, 1000 / 9);
         IntervalHub.startInterval(this.moveLeft, 1000 / 10);
     }
@@ -27,10 +31,19 @@ export class Chicken extends MovableObject{
     animate = () => {
         if (this.dead){
             this.playAnimation(ImageManager.CHICKEN.dead);
-            AudioHub.playOne({_soundName: AudioHub.CHICKEN_DEAD});
+            this.isWalking = false;
+            
+            if(!this.deathSoundPlayed){
+                AudioHub.playOne({_soundName: AudioHub.CHICKEN_DEAD});
+                this.deathSoundPlayed = true;
+                Chicken.ALIVECOUNTER--;
+            }
         } else {
             this.playAnimation(ImageManager.CHICKEN.walk);
-            AudioHub.playOne({_soundName: AudioHub.CHICKEN_WALK});
+            this.isWalking = true;
+            if(Chicken.ALIVECOUNTER > 0 && this.isWalking){
+                AudioHub.playOne({_soundName: AudioHub.CHICKEN_WALK});
+            }
         }  
     }
     // #endregion

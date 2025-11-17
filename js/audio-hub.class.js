@@ -6,6 +6,11 @@ export class MyAudio{
 
     constructor(_sound){
         this.sound = new Audio(_sound);
+        this.sound.preload = 'auto';
+        this.sound.addEventListener('canplaythrough', () => {
+            this.loaded = true;
+        });
+        this.sound.load();
     }
 }
 
@@ -47,6 +52,7 @@ export class AudioHub{
         AudioHub.CHICKEN_DEAD,
         AudioHub.HEN_WALK,
         AudioHub.HEN_DEAD,
+        AudioHub.ENDBOSS_APPROACH,
         AudioHub.COIN_COLLECTED,
         AudioHub.BOTTLE_COLLECTED,
         AudioHub.BOTTLE_BROKEN,
@@ -60,12 +66,16 @@ export class AudioHub{
     // #region METHOD
     static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
-        if(audio.readyState === 4 || audio.loaded){
-            audio.loaded = true;
+        if(!_soundName.loaded){
+            return;
+        }
+        // if(audio.readyState === 4 || _soundName.loaded){
+        if(audio.paused){
+            _soundName.loaded = true;
             audio.volume = AudioHub.VOLUME;
             audio.currentTime = 0;
-            audio.play();
             audio.loop = _loop;
+            audio.play();
         }
     }
 
