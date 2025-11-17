@@ -13,30 +13,30 @@ export class Keyboard{
     bindKeyPressEvent(){
         window.addEventListener('keydown', (e) => {
             if(e.key == 'ArrowRight'){
-                keyboard.RIGHT = true;
+                Keyboard.RIGHT = true;
             }
             if(e.key == 'ArrowLeft'){
-                keyboard.LEFT = true;
+                Keyboard.LEFT = true;
             }
             if(e.key == ' '){
-                keyboard.SPACE = true;
+                Keyboard.SPACE = true;
             }
             if(e.key == 'd'){
-                keyboard.D = true;
+                Keyboard.D = true;
             }
         });
         window.addEventListener("keyup",(e) => {
             if(e.key == 'ArrowRight'){
-                keyboard.RIGHT = false;
+                Keyboard.RIGHT = false;
             }
             if(e.key == 'ArrowLeft'){
-                keyboard.LEFT = false;
+                Keyboard.LEFT = false;
             }
             if(e.key == ' '){
-                keyboard.SPACE = false;
+                Keyboard.SPACE = false;
             }
             if(e.key == 'd'){
-                keyboard.D = false;
+                Keyboard.D = false;
             }
         });
     }
