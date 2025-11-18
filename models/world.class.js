@@ -53,12 +53,13 @@ export class World{
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.cameraX, 0);
         this.addObjectsToMap(this.level.backgrounds);
+        this.drawLevelObjects();
+        
         this.ctx.translate(-this.cameraX, 0); //back 
         this.drawAllStatusBars();
         this.ctx.translate(this.cameraX, 0); // forward
 
         this.addToMap(this.character);
-        this.drawLevelObjects();
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.cameraX, 0);
         if(!this.isGameOver()){
@@ -124,11 +125,12 @@ export class World{
      * Draws all level objects.
      */
     drawLevelObjects(){
+        this.addObjectsToMap(this.level.clouds);
         this.addCollectingObjects(this.level.coins);
         this.addCollectingObjects(this.level.bottles);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
-        this.addObjectsToMap(this.level.clouds);
+       
     }
     // #endregion
 
@@ -190,14 +192,6 @@ export class World{
 
     // #region Collisions
     /**
-     * Main game loop for checking collisions and throwables.
-     */
-    // run = () => {
-    //     this.checkCollisions();
-    //     this.checkThrowObjects();
-    // }
-
-    /**
      * Checks if throwable objects should be created.
      */
     checkThrowObjects = () => {
@@ -218,6 +212,7 @@ export class World{
         this.collectingObjects({objects: this.level.bottles, valuePerObj: 10, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
         this.collectingObjects({objects: this.level.coins, valuePerObj: 10, statusbarId: 1, soundname: AudioHub.COIN_COLLECTED});
         this.handlingCollisionsOfThrowablesAndEndboss();
+        this.handlingCharacterVsEndbossCollisions();
     }
 
     /**
@@ -233,25 +228,27 @@ export class World{
                     if(this.character.canbounce){
                         this.character.bounce(); // small jump after hitting enemy
                     }
-                } else if(this.character.ySpeed >= 0 && enemy.attacking) { //die Bedingungen, wann energy runtergeht wurde geändert,damit die Energy nicht so schnell runtergeht.
-                    enemy.attacking = false;
+                } else if(this.character.ySpeed >= 0 && !enemy.dead && enemy.attacking) { //die Bedingungen, wann energy runtergeht wurde geändert,damit die Energy nicht so schnell runtergeht.
                     if(enemy instanceof Chicken){
                         this.character.hit(10);
                     } else if (enemy instanceof Hen){
                         this.character.hit(20);
                     }
-                    
-                    this.statusBar[0].percentage = this.character.energy;
+                    enemy.attacking = false;  
                 }
-                // if(!enemy.dead && this.character.attacked){ //Die alte Bedingungen, wann Energy reduziert wurde.
-                //     this.character.attacked = false;
-                //     this.character.hit(5);
-                //     this.statusBar[0].percentage = this.character.energy;
-                //     console.log(this.character.energy);
-                // }
                 this.statusBar[0].setPercentage(this.character.energy);
+                // console.log('Pepe:', this.character.energy);
+            } else {
+                enemy.attacking = true;
             }
         });
+    }
+
+    handlingCharacterVsEndbossCollisions(){
+        if(this.character.isColliding(this.level.endboss)){
+            this.character.hit(50);
+        }
+        this.statusBar[0].percentage = this.character.energy;
     }
 
     /**
@@ -305,10 +302,11 @@ export class World{
      */
     hitEnemy(enemy){
         if(enemy instanceof Chicken){
-            this.character.energy += 5;
+            return this.character.energy += 5;
         } else if (enemy instanceof Hen){
-            this.character.energy += 10;
-        } 
+            return this.character.energy += 10;
+        }
+        console.log(this.character.energy); 
     }
     // #endregion
 

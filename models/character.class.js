@@ -16,7 +16,6 @@ export class Character extends MovableObject{
         bottom: 15,
         right: 35
     }
- 
     // #endregion
     
     /**
@@ -34,7 +33,7 @@ export class Character extends MovableObject{
         IntervalHub.startInterval(this.applyGravity, 1000 / 25);
         IntervalHub.startInterval(this.animate, 1000 / 12);
         IntervalHub.startInterval(this.action, 1000 / 60);
-        IntervalHub.startInterval(this.soundEffect, 1000 / 4);
+        IntervalHub.startInterval(this.soundEffect, 1000 / 25);
     }
     
     // #region METHODS
@@ -44,8 +43,7 @@ export class Character extends MovableObject{
     animate = () => {
         if(this.isDead()){
             this.playAnimation(ImageManager.PEPE.dead);
-            // AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
-        } else if(this.isHurt(0.5)){
+        } else if(this.hurt){
             this.playAnimation(ImageManager.PEPE.hurt);
             // AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
         } else if(this.isAboveGround()){
@@ -88,9 +86,10 @@ export class Character extends MovableObject{
     soundEffect = () => {
         if(this.isDead()){
             AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
-        } else if(this.isHurt(0.5)){
+        } else if(this.hurt){
             AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
         } else if(this.isAboveGround()){
+            AudioHub.stopOne(AudioHub.PEPE_RUN);
             AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
         } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
             AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});

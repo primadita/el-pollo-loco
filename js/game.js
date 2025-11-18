@@ -119,7 +119,8 @@ function setThemeSound(){
     } else {
         AudioHub.VOLUME = 0;
     }
-    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    // TODO: Nochmal einkommentieren
+    // AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
 }
 
 /**

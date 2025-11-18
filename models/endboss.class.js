@@ -1,4 +1,6 @@
+import { AudioHub } from "../js/audio-hub.class.js";
 import { ImageManager } from "../js/image-manager.class.js";
+import { Character } from "./character.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
 import { MovableObject } from "./movable-object.class.js";
 
@@ -15,6 +17,7 @@ export class Endboss extends MovableObject{
         right: 55
     }
     hurt = false;
+    attacking = false;
 
     // #endregion
 
@@ -30,6 +33,7 @@ export class Endboss extends MovableObject{
         this.loadImages(ImageManager.HENBOSS.walk);
         IntervalHub.startInterval(this.animate, 1000 / 9);
         IntervalHub.startInterval(this.action, 1000 / 60);
+        IntervalHub.startInterval(this.soundEffect, 1000 / 12);
     }
 
     // #region METHODS
@@ -39,11 +43,20 @@ export class Endboss extends MovableObject{
     animate = () => {
         if (this.isDead()){
             this.playAnimation(ImageManager.HENBOSS.dead);
-        } else if (this.isHurt(1)){
+        } else if (this.hurt){
+            console.log('animate hurt', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.hurt);
-        } else if (this.isAngry(1)){
+            // setTimeout(() => {
+            //     this.playAnimation(ImageManager.HENBOSS.walk)
+            // }, 1000);
+        } else if (this.attacking){
+            console.log('animate walk', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.walk);
+            // setTimeout(() => {
+            //     this.attacking = false;
+            // }, 1500);
         } else {
+            console.log('animate angry', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.angry);
         }
     }
@@ -52,8 +65,26 @@ export class Endboss extends MovableObject{
      * Handles endboss actions (movement) based on state.
      */
     action = () => {
-        if (this.isAngry(1)){
+        if (this.hurt){
+            if(this.attackingTimeout) return;
+            this.attackingTimeout = setTimeout(() => {
+                this.attacking = true;
+                const attackDuration = 1000; // in milliseconds
+
+                setTimeout(() => {
+                    this.attacking = false;
+                    this.attackingTimeout = null;
+                }, attackDuration);
+            }, 300);
+        }
+        if(this.attacking){
             this.moveLeft();
+        }// this.attacking = false;
+    }
+
+    soundEffect = () => {
+        if (this.hurt){
+            AudioHub.playOne({_soundName: AudioHub.ENDBOSS_APPROACH});
         }
     }
     // #endregion

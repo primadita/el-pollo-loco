@@ -16,8 +16,11 @@ export class MovableObject extends DrawableObject{
     lastHit = 0;
     lastMove = 0;
     dead = false;
+    hurt = false;
+    hurtTimeout = null;
     canbounce = true;
-    attacking = true;
+    attacking = false;
+    attackingTimeout = null;
     // #endregion
 
     /**
@@ -86,6 +89,7 @@ export class MovableObject extends DrawableObject{
      */
     jump(){
         this.ySpeed = 30;
+        this.registerLastMove();
     }
 
     /**
@@ -100,15 +104,21 @@ export class MovableObject extends DrawableObject{
      * Reduces the object's energy by a value.
      * @param {number} val - Amount to reduce.
      */
-    hit(val){
-        this.energy -= val;
+    hit(energyLoss){
+        this.energy -= energyLoss;
         if (this.energy < 0){
             this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-        }
-    }
+        } 
+        this.hurt  = true;
 
+        if(this.hurtTimeout){
+            clearTimeout(this.hurtTimeout);
+        }
+        this.hurtTimeout = setTimeout(() => {
+            this.hurt = false;
+            this.hurtTimeout = null;
+        }, 700);
+    }
     /**
      * Applies gravity to the object.
      */
