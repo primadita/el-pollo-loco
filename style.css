@@ -43,7 +43,6 @@ h1{
 
 /* #region BODY */
 body{
-    font-size: min(16px, 18px);
     font-family: 'Smokum','sans-serif';
     background: url('./assets/icons/Comic2.png');
     background-repeat: no-repeat;
@@ -83,7 +82,9 @@ body{
             #startscreen{
                 background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
                 width: 100%;
+                max-width: 720px;
                 height: 100%;
+                max-height: 480px;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -111,7 +112,7 @@ body{
                     bottom: 0;
                     height: 5rem;
                     width: 100%;
-                    font-size: large;
+                    font-size: 2.6rem;
                     display: flex;
                     justify-content: space-around;
                     align-items: center;
@@ -120,6 +121,23 @@ body{
                         align-items: center;
                         img{
                             height: 4.5rem;
+                        }
+                    }
+                    @media (max-width: 480px){
+                        font-size: 2.2rem;
+                        justify-content: space-between;
+                        div{
+                            img{
+                                height: 3rem;
+                            }
+                        }
+                    }
+                    @media (max-width: 380px){
+                        font-size: 2rem;
+                        div{
+                            img{
+                                height: 2.1rem;
+                            }
                         }
                     }
                 }
@@ -134,7 +152,9 @@ body{
                 background: url('./assets/img/5_background/first_half_background.png');
                 background-size: cover;
                 width: 100%;
+                max-width: 720px;
                 height: 100%;
+                max-height: 480px;
                 h2{
                     font-size: 40px;
                 }
@@ -211,23 +231,23 @@ body{
                 top: 0;
                 left: 0;
                 width: 100%;
+                max-width: 720px;
                 height: 100%;
+                max-height: 480px;
                 background: radial-gradient(circle,rgba(252, 247, 247, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
                 flex-direction: column;
-                gap: 50px;
-                justify-content: center;
+                justify-content: space-evenly;
                 align-items: center;
                 img{
-                    width:500px ;
-                    height: 250px;
+                    width:70% ;
                 }
                 div{
                     display: flex;
                     justify-content: center;
-                    gap: 50px;
+                    gap: 5rem;
                     button{
                         font-family: 'Smokum','sans-serif';
-                        font-size: x-large;
+                        font-size: 2.6rem;
                         color: yellow;
                         background-color: #ffa700;
                         border-radius: 10px;
@@ -249,6 +269,9 @@ body{
         img{
             height: 100%;
         }
+        @media only screen and (max-height: 480px){
+            display: none;
+        }
     }
 }
 
@@ -264,17 +287,11 @@ body{
             width: 100%;
         }
     }
-    footer{
-        display: none;
-    }
 }
 @media only screen and (max-height: 480px){
     #wrapper{
         canvas{
             height: 100dvh;
         }
-    }
-    footer{
-        display: none;
     }
 }
