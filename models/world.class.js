@@ -357,7 +357,7 @@ export class World{
         endscreenRef.classList.remove('d-none');
         endscreenRef.classList.add('d-flex');
         if(this.won()){
-            endscreenImgRef.src = "./assets/img/You won, you lost/You won A.png";
+            endscreenImgRef.src = "./assets/img/You won, you lost/You won B.png";
             endscreenImgRef.alt = "you won the game";
             AudioHub.playOne({_soundName: AudioHub.WIN_GAME, _vol: this.soundVolume});
         } else {
