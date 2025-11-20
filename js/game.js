@@ -29,7 +29,7 @@ const endscreenRef = document.getElementById('endscreen');
 /** @type {HTMLElement} Reference to the startscreen element. */
 const startscreenRef = document.getElementById("startscreen");
 // #endregion
-
+const loadingscreenRef = document.getElementById("loading-scr");
 // #region INIT
 
 /**
@@ -47,9 +47,10 @@ function init(){
  * Loads site settings from local storage and applies audio settings.
  * Called on page load.
  */
-function loadSite(){
+function loadSiteInBackground(){
     getFromLocalStorage();
     checkVolumeSettings();
+    setThemeSound();
 }
 
 /**
@@ -63,7 +64,20 @@ function getFromLocalStorage(){
     }
 }
 
-loadSite();
+function showLoadScreen(){
+    // startscreenRef.classList.add('d-none');
+    // loadingscreenRef.classList.remove('d-none');
+    loadingscreenRef.classList.add('d-flex');
+}
+
+function openGameCanvas(){
+    loadingscreenRef.classList.remove('d-flex');
+    loadingscreenRef.classList.add('d-none');
+    init();
+    console.log('the game starts');
+}
+
+// loadSite();
 // #endregion
 
 // #region Startscreen & Local storage
@@ -73,10 +87,28 @@ loadSite();
  * Also sets the theme sound.
  */
 function startGame(){
-    startscreenRef.classList.add('d-none');
-    init();
-    setThemeSound();
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
+    startscreenRef.classList.add('d-none');
+    loadingscreenRef.classList.remove('d-none');
+    setTimeout(() => {
+        setTimeout(() => {
+            showLoadScreen();
+            loadSiteInBackground();
+        },3000);
+        openGameCanvas();
+        // loadingscreenRef.classList.remove('d-flex');
+        // loadingscreenRef.classList.add('d-none');
+        // init();
+        // console.log('the game starts');
+        setThemeSound();
+        
+    }, 3000);
+    
+
+    // init();
+    // console.log('the game starts');
+    // setThemeSound();
+    // AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
 }
 
 /**
@@ -86,11 +118,11 @@ function startGame(){
 function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
-    if (!audioRef){
-        AudioHub.stopOne(AudioHub.THEME_SOUND);
-    } else {
-        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
-    }
+    // if (!audioRef){
+    //     AudioHub.stopOne(AudioHub.THEME_SOUND);
+    // } else {
+    //     AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    // }
     saveVolumeSettings();
 }
 
