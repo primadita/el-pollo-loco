@@ -65,8 +65,6 @@ function getFromLocalStorage(){
 }
 
 function showLoadScreen(){
-    // startscreenRef.classList.add('d-none');
-    // loadingscreenRef.classList.remove('d-none');
     loadingscreenRef.classList.add('d-flex');
 }
 
@@ -76,8 +74,6 @@ function openGameCanvas(){
     init();
     console.log('the game starts');
 }
-
-// loadSite();
 // #endregion
 
 // #region Startscreen & Local storage
@@ -96,19 +92,9 @@ function startGame(){
             loadSiteInBackground();
         },3000);
         openGameCanvas();
-        // loadingscreenRef.classList.remove('d-flex');
-        // loadingscreenRef.classList.add('d-none');
-        // init();
-        // console.log('the game starts');
         setThemeSound();
         
     }, 3000);
-    
-
-    // init();
-    // console.log('the game starts');
-    // setThemeSound();
-    // AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
 }
 
 /**
@@ -118,11 +104,6 @@ function startGame(){
 function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
-    // if (!audioRef){
-    //     AudioHub.stopOne(AudioHub.THEME_SOUND);
-    // } else {
-    //     AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
-    // }
     saveVolumeSettings();
 }
 
