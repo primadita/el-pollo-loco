@@ -81,6 +81,7 @@ body{
             }
             #startscreen{
                 background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
+                background-position: center;
                 width: 100%;
                 max-width: 720px;
                 height: 100%;
@@ -117,6 +118,7 @@ body{
                 
                 #btn-explanation{
                     position: absolute;
+                    background-color: #a0220ab3;
                     bottom: 0;
                     height: 5rem;
                     width: 100%;
@@ -195,45 +197,45 @@ body{
             }
             #mobile-btn{
                 position: absolute;
-                bottom: 0;
+                bottom: 1rem;
+                display: none;
                 justify-content: space-between;
                 width: 100%;
                 height: 5rem;
-                padding-left: 2.5rem;
-                padding-right: 2.5rem;
-                #run-key-panel{
-                    #left-btn{
-                        background: url('./assets/icons/left.png');
-                        height: 5rem;
-                        width: 5rem;
-                        border: 1rem black;
-                        border-radius: 50%;
-                    }
-                    #right-btn{
+                padding-left: 5rem;
+                padding-right: 5rem;
+                /* @media only screen and (max-width: 720px),
+                only screen and (max-height: 480px){
+                    display: flex;
+                } */
+                /* #run-key-panel{ */
+
+                    
+                    /* {
                         background: url('./assets/icons/right.png');
                         height: 5rem;
                         width: 5rem;
                         border: 1rem black;
                         border-radius: 50%;
                     }
-                }
-                #jump-throw-key-panel{
-                    #jump-btn{
+                } */
+                /* #jump-throw-key-panel{ */
+                    /* #jump-btn{
                         background: url('./assets/icons/up.png');
                         height: 5rem;
                         width: 5rem;
                         border: 1rem black;
                         border-radius: 50%;
-                    }
-                    #throw-btn{
+                    } */
+                    /* #throw-btn{
                         background: url('./assets/icons/bottle.png');
                         height: 5rem;
                         width: 5rem;
                         border: 1rem black;
                         border-radius: 50%;
-                    }
+                    } */
                 }
-            }
+            /* } */
             #endscreen{
                 position: absolute;
                 top: 0;
@@ -285,6 +287,24 @@ body{
     }
 }
 
+#run-key-panel, #jump-throw-key-panel{
+    display: flex;
+    gap: 1rem;
+}
+#left-btn, #right-btn, #jump-btn, #throw-btn{
+    height: 5rem;
+    width: 5rem;
+    background: black;
+    border: 1rem black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+        width: 4rem;
+        height: 4rem;
+    }
+}
 
 
 
@@ -297,11 +317,17 @@ body{
             width: 100%;
         }
     }
+    #mobile-btn.allowed{
+        display: flex !important; /*diese  verursacht, dass in portrait modus die mobile btn sichtbar ist. Wenn nicht gewünscht, dann -!important- löschen*/
+    }
 }
 @media only screen and (max-height: 480px){
     #wrapper{
         canvas{
             height: 100dvh;
         }
+    }
+    #mobile-btn.allowed{
+        display: flex !important;
     }
 }

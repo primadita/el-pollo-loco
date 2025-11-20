@@ -30,6 +30,7 @@ const endscreenRef = document.getElementById('endscreen');
 const startscreenRef = document.getElementById("startscreen");
 // #endregion
 const loadingscreenRef = document.getElementById("loading-scr");
+const mobileButtonRef = document.getElementById("mobile-btn");
 // #region INIT
 
 /**
@@ -41,6 +42,10 @@ function init(){
     resetBackground();
     world = null;
     world = new World(canvas, keyboard, volumeRef);
+    if(mobileButtonRef){
+        mobileButtonRef.classList.remove("d-none");
+        mobileButtonRef.classList.add("d-flex");
+    }
 }
 
 /**
@@ -86,6 +91,10 @@ function startGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
     startscreenRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
+    mobileButtonRef.classList.remove("allowed");
+    // if(mobileButtonRef){
+    //     mobileButtonRef.classList.add("d-none");
+    // }
     setTimeout(() => {
         setTimeout(() => {
             showLoadScreen();
@@ -93,6 +102,9 @@ function startGame(){
         },3000);
         openGameCanvas();
         setThemeSound();
+        if(window.innerWidth <= 720 || window.innerHeight <= 480){
+            mobileButtonRef.classList.add("allowed");
+        }
         
     }, 3000);
 }
@@ -187,39 +199,39 @@ window.backToHome = backToHome;
  * Handles keydown events for game controls.
  * Sets the corresponding property in the keyboard object to true.
  */
-window.addEventListener('keydown', (e) => {
-    if(e.key == 'ArrowRight'){
-        keyboard.RIGHT = true;
-    }
-    if(e.key == 'ArrowLeft'){
-        keyboard.LEFT = true;
-    }
-    if(e.key == ' '){
-        keyboard.SPACE = true;
-    }
-    if(e.key == 'd'){
-        keyboard.D = true;
-    }
-})
+// window.addEventListener('keydown', (e) => {
+//     if(e.key == 'ArrowRight'){
+//         keyboard.RIGHT = true;
+//     }
+//     if(e.key == 'ArrowLeft'){
+//         keyboard.LEFT = true;
+//     }
+//     if(e.key == ' '){
+//         keyboard.SPACE = true;
+//     }
+//     if(e.key == 'd'){
+//         keyboard.D = true;
+//     }
+// })
 
-/**
- * Handles keyup events for game controls.
- * Sets the corresponding property in the keyboard object to false.
- */
-window.addEventListener("keyup",(e) => {
-    if(e.key == 'ArrowRight'){
-        keyboard.RIGHT = false;
-    }
-    if(e.key == 'ArrowLeft'){
-        keyboard.LEFT = false;
-    }
-    if(e.key == ' '){
-        keyboard.SPACE = false;
-    }
-    if(e.key == 'd'){
-        keyboard.D = false;
-    }
-});
+// /**
+//  * Handles keyup events for game controls.
+//  * Sets the corresponding property in the keyboard object to false.
+//  */
+// window.addEventListener("keyup",(e) => {
+//     if(e.key == 'ArrowRight'){
+//         keyboard.RIGHT = false;
+//     }
+//     if(e.key == 'ArrowLeft'){
+//         keyboard.LEFT = false;
+//     }
+//     if(e.key == ' '){
+//         keyboard.SPACE = false;
+//     }
+//     if(e.key == 'd'){
+//         keyboard.D = false;
+//     }
+// });
 // #endregion
 
 

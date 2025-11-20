@@ -10,6 +10,7 @@ import { Endboss } from "./endboss.class.js";
 import { HealthBar } from "./health-bar.class.js";
 import { Hen } from "./hen.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
+import { Keyboard } from "./keyboard.class.js";
 import { Level } from "./level.class.js";
 import { ThrowableObject } from "./throwable-object.class.js";
 
@@ -37,7 +38,7 @@ export class World{
     constructor(_canvas, _keyboard, _volume){
         this.ctx = _canvas.getContext('2d');
         this.canvas = _canvas;
-        this.keyboard = _keyboard;
+        // this.keyboard = _keyboard;
         this.soundVolume = _volume;
         this.draw();
         this.setWorld();
@@ -195,7 +196,7 @@ export class World{
      * Checks if throwable objects should be created.
      */
     checkThrowObjects = () => {
-        if(this.keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
+        if(Keyboard.D && !this.character.otherDirection && this.statusBar[2].percentage >= 10){ // TO DO: nur werfen, wenn Flaschen vorhanden sind
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
             this.throwableObjects.fly = true;

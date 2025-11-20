@@ -1,6 +1,7 @@
 import { AudioHub } from "../js/audio-hub.class.js";
 import { ImageManager } from "../js/image-manager.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
+import { Keyboard } from "./keyboard.class.js";
 import { MovableObject } from "./movable-object.class.js";
 
 /**
@@ -50,7 +51,7 @@ export class Character extends MovableObject{
             this.playAnimation(ImageManager.PEPE.jump);
             // AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
             // TO DO: jump animation nur ein Durchlauf
-        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+        } else if(Keyboard.RIGHT || Keyboard.LEFT){
             this.playAnimation(ImageManager.PEPE.walk);
             // AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
         } else if (this.isSleeping()){
@@ -65,15 +66,15 @@ export class Character extends MovableObject{
      * Handles character actions based on keyboard input.
      */
     action = () => {
-        if(this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX){
+        if(Keyboard.RIGHT && this.x < this.world.level.levelEndX){
             this.otherDirection = false;
             this.moveRight();
         }
-        if(this.world.keyboard.LEFT && this.x > 0){
+        if(Keyboard.LEFT && this.x > 0){
             this.otherDirection = true;
             this.moveLeft();
         }
-        if(this.world.keyboard.SPACE && !this.isAboveGround()){
+        if(Keyboard.SPACE && !this.isAboveGround()){
             this.jump();
             this.currentImage = 0;
         }
@@ -91,7 +92,7 @@ export class Character extends MovableObject{
         } else if(this.isAboveGround()){
             AudioHub.stopOne(AudioHub.PEPE_RUN);
             AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
-        } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+        } else if(Keyboard.RIGHT || Keyboard.LEFT){
             AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
         } else if (this.isSleeping()){
             AudioHub.playOne({_soundName: AudioHub.PEPE_SNORE});

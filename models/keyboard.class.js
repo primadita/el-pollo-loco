@@ -7,7 +7,8 @@ export class Keyboard{
     // #endregion
 
     constructor(){
-        // this.bindKeyPressEvent();
+        this.bindKeyPressEvent();
+        this.bindMobileBtnPressEvents();
     }
     // region METHODS
     bindKeyPressEvent(){
