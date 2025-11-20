@@ -42,28 +42,57 @@ export class Keyboard{
         });
     }
     bindMobileBtnPressEvents(){
-        document.getElementById('left-btn').addEventListener('touchstart', () => {
+        const leftBtn = document.getElementById('left-btn');
+        const rightBtn = document.getElementById('right-btn');
+        const jumpBtn = document.getElementById('jump-btn');
+        const throwBtn = document.getElementById('throw-btn');
+
+        leftBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             Keyboard.LEFT = true;
         });
-        document.getElementById('left-btn').addEventListener('touchend', () => {
+        leftBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             Keyboard.LEFT = false;
         });
-        document.getElementById('right-btn').addEventListener('touchstart', () => {
+        leftBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            Keyboard.LEFT = false;
+        });
+        rightBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             Keyboard.RIGHT = true;
         });
-        document.getElementById('right-btn').addEventListener('touchend', () => {
+        rightBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             Keyboard.RIGHT = false;
         });
-        document.getElementById('jump-btn').addEventListener('touchstart', () => {
+        rightBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            Keyboard.RIGHT = false;
+        });
+        jumpBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             Keyboard.SPACE = true;
         });
-        document.getElementById('jump-btn').addEventListener('touchend', () => {
+        jumpBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             Keyboard.SPACE = false;
         });
-        document.getElementById('throw-btn').addEventListener('touchstart', () => {
+        jumpBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            Keyboard.SPACE = false;
+        });
+        throwBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             Keyboard.D = true;
         });
-        document.getElementById('throw-btn').addEventListener('touchend', () => {
+        throwBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            Keyboard.D = false;
+        });
+        throwBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
             Keyboard.D = false;
         });
     }
