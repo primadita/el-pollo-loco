@@ -31,6 +31,7 @@ const startscreenRef = document.getElementById("startscreen");
 // #endregion
 const loadingscreenRef = document.getElementById("loading-scr");
 const mobileButtonRef = document.getElementById("mobile-btn");
+const legalNoticeRef = document.getElementById("imprint-btn");
 // #region INIT
 
 /**
@@ -69,6 +70,20 @@ function getFromLocalStorage(){
     }
 }
 
+function showLegalNotice(){
+    startscreenRef.classList.remove("d-flex");
+    startscreenRef.classList.add("d-none");
+    legalNoticeRef.classList.remove("d-none");
+    legalNoticeRef.classList.add("d-flex");
+}
+
+function closeLegalNotice(){
+    legalNoticeRef.classList.remove("d-flex");
+    legalNoticeRef.classList.add("d-none");
+    startscreenRef.classList.remove("d-none");
+    startscreenRef.classList.add("d-flex");
+}
+
 function showLoadScreen(){
     loadingscreenRef.classList.add('d-flex');
 }
@@ -90,6 +105,8 @@ function openGameCanvas(){
 function startGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
     startscreenRef.classList.add('d-none');
+    legalNoticeRef.classList.remove('d-flex');
+    legalNoticeRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
     mobileButtonRef.classList.remove("allowed");
     // if(mobileButtonRef){
@@ -191,6 +208,8 @@ window.startGame = startGame;
 window.toggleMute = toggleMute;
 window.restartGame = restartGame;
 window.backToHome = backToHome;
+window.showLegalNotice = showLegalNotice;
+window.closeLegalNotice = closeLegalNotice;
 // #endregion
 
 // #region Keyboard Settings

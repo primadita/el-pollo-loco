@@ -31,6 +31,10 @@ html{
     font-family: 'Smokum';
     src: url('./assets/fonts/Smokum-Regular.ttf');
 }
+@font-face{
+    font-family: 'Bricolage Grotesque';
+    src: url('./assets/fonts/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf');
+}
 h1{
     font-family: 'Rye','sans-serif';
     font-size: min(60px, 64px);
@@ -38,6 +42,14 @@ h1{
     color: rgb(255, 166, 0);
     text-shadow: 5px 2px 8px rgba(0,0,0,0.9);
     text-align: center;
+}
+h2{
+    font-family: 'Rye','sans-serif';
+    font-size: min(35px, 39px);
+    letter-spacing: 6px;
+    color: #f4d4a0;
+    text-shadow: 5px 2px 8px rgba(0,0,0,0.9);
+    text-align: left;
 }
 /* #endregion */
 
@@ -55,7 +67,7 @@ body{
         align-items: center;
         justify-content: center;
         height: auto;
-        min-height: calc(100dvh - 3dvh);
+        min-height: calc(100dvh - 5dvh);
         #wrapper{
             width: 100%;
             max-width: 720px;
@@ -64,6 +76,22 @@ body{
             canvas{
                 background-color: black;
                 display: block;
+            }
+            #imprint-btn{
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                background: #ffa700;
+                width: 18rem;
+                height: 5rem;
+                font-size: 2.4rem;
+                font-family: 'Rye','sans-serif';
+                border: 0;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            #imprint-btn:hover{
+                border: 3px solid white;
             }
             #audio-btn{
                 position: absolute;
@@ -149,6 +177,50 @@ body{
                                 height: 2.1rem;
                             }
                         }
+                    }
+                }
+            }
+            #imprint{
+                background-image: url('./assets/img/5_background/first_half_background.png');
+                background-size: cover;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                max-width: 720px;
+                height: 100%;
+                max-height: 480px;
+                /* display: flex; */
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                gap: 2rem;
+                .close-btn{
+                    width: 3rem;
+                    height: 3rem;
+                    position: absolute;
+                    top: 3rem;
+                    right: 10rem;
+                    background: #a0220a;
+                    text-align: center;
+                    border-radius: 8px;
+                    color: white;
+                    font-size: 2.4rem;
+                    border: 2px solid black;
+                    cursor: pointer;
+                }
+                .close-btn:hover{
+                    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+                }
+                .imprint-text{
+                    background: white;
+                    width: 90%;
+                    height: 65%;
+                    padding: 2rem;
+                    overflow-y: auto;
+                    p{
+                        font-size: 1.8rem;
+                        font-family: 'Bricolage Grotesque','sans-serif';
                     }
                 }
             }
@@ -277,7 +349,8 @@ body{
         justify-content: center;
         align-items: center;
         background: white;
-        height: 3dvh;
+        font-size: 18px;
+        height: 5dvh;
         img{
             height: 100%;
         }
