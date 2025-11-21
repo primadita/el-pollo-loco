@@ -31,7 +31,8 @@ const startscreenRef = document.getElementById("startscreen");
 // #endregion
 const loadingscreenRef = document.getElementById("loading-scr");
 const mobileButtonRef = document.getElementById("mobile-btn");
-const legalNoticeRef = document.getElementById("imprint-btn");
+const legalNoticeButtonRef = document.getElementById("imprint-btn");
+const legalNoticeRef = document.getElementById("imprint");
 // #region INIT
 
 /**
@@ -105,8 +106,8 @@ function openGameCanvas(){
 function startGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
     startscreenRef.classList.add('d-none');
-    legalNoticeRef.classList.remove('d-flex');
-    legalNoticeRef.classList.add('d-none');
+    legalNoticeButtonRef.classList.remove('d-flex');
+    legalNoticeButtonRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
     mobileButtonRef.classList.remove("allowed");
     // if(mobileButtonRef){
@@ -157,7 +158,7 @@ function checkVolumeSettings(){
  */
 function setThemeSound(){
     if(audioRef){
-        AudioHub.VOLUME = 0.2;
+        AudioHub.VOLUME = 0.15;
     } else {
         AudioHub.VOLUME = 0;
     }
