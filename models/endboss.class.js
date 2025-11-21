@@ -12,13 +12,13 @@ export class Endboss extends MovableObject{
     // #region ATTRIBUTES
     offset = {
         top: 100,
-        left: 70,
+        left: 80,
         bottom: 80,
         right: 55
     }
     hurt = false;
     attacking = false;
-
+    deathSoundPlayed = false;
     // #endregion
 
     /**

@@ -118,6 +118,7 @@ export class MovableObject extends DrawableObject{
             this.hurt = false;
             this.hurtTimeout = null;
         }, 700);
+        this.registerLastMove();
     }
     /**
      * Applies gravity to the object.

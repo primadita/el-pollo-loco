@@ -20,7 +20,7 @@ export class Level{
     backgrounds;
     bottles;
     coins;
-    levelEndX = 2160;
+    levelEndX = 2360;
     // #endregion
 
     /**
@@ -46,6 +46,10 @@ export class Level{
             new DesertThirdLayer(),
             new DesertSecondLayer(), 
             new DesertFirstLayer(), 
+            new Sky(), 
+            new DesertThirdLayer(),
+            new DesertSecondLayer(), 
+            new DesertFirstLayer(),
             new Sky(), 
             new DesertThirdLayer(),
             new DesertSecondLayer(), 

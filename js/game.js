@@ -148,7 +148,7 @@ function checkVolumeSettings(){
         AudioHub.VOLUME = 0;
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
-        AudioHub.VOLUME = 0.2;
+        AudioHub.VOLUME = 0.15;
     }
 }
 

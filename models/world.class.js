@@ -247,7 +247,11 @@ export class World{
 
     handlingCharacterVsEndbossCollisions(){
         if(this.character.isColliding(this.level.endboss)){
-            this.character.hit(50);
+            if(!this.level.endboss.dead){
+                this.character.hit(50);
+
+            }
+            
         }
         this.statusBar[0].percentage = this.character.energy;
     }
@@ -284,6 +288,7 @@ export class World{
             if (bottle.isColliding(this.level.endboss) && this.throwableObjects.fly ){
                 this.throwableObjects.fly = false;
                 this.level.endboss.hit(25);
+                this.character.registerLastMove();
                 bottle.hit = true;
                 console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
