@@ -200,6 +200,7 @@ export class World{
             let bottle = new ThrowableObject({ _x: this.character.realX, _y: this.character.realY });
             this.throwableObjects.push(bottle);
             this.throwableObjects.fly = true;
+            this.character.registerLastMove();
             this.statusBar[2].percentage -= 10;
             this.statusBar[2].setPercentage(this.statusBar[2].percentage);
         }
@@ -285,7 +286,7 @@ export class World{
      */
     handlingCollisionsOfThrowablesAndEndboss(){
         this.throwableObjects.forEach((bottle) => {
-            this.character.registerLastMove(); //FIXME: diese Zeile muss noch irgendwo anders, da nach dem 1.Werfen, kommt Pepe nicht mehr in long idle mode
+            // this.character.registerLastMove(); //FIXME: diese Zeile muss noch irgendwo anders, da nach dem 1.Werfen, kommt Pepe nicht mehr in long idle mode
             if (bottle.isColliding(this.level.endboss) && this.throwableObjects.fly ){
                 this.throwableObjects.fly = false;
                 this.level.endboss.hit(25);
