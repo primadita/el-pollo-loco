@@ -146,6 +146,7 @@ function checkVolumeSettings(){
     if(!audioRef){
         audioBtnRef.src = "./assets/icons/mute.png";
         AudioHub.VOLUME = 0;
+        AudioHub.stopAll();
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
         AudioHub.VOLUME = 0.15;

@@ -71,7 +71,7 @@ export class AudioHub{
     static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
         // let playPromise = audio.play();
-        if(!_soundName.loaded || AudioHub.BLOCKING){
+        if(!_soundName.loaded || AudioHub.BLOCKING || !audio.paused){
             return;
         }
         // if(audio.readyState === 4 || _soundName.loaded){
@@ -120,7 +120,7 @@ export class AudioHub{
         AudioHub.BLOCKING = true;
         AudioHub.ALL_SOUNDS.forEach(soundName => {
             soundName.sound.pause();
-            soundName.currentTime = 0;
+            soundName.sound.currentTime = 0;
             soundName.playPromise = null;
         });
         // AudioHub.ALL_SOUNDS.playing = [];
