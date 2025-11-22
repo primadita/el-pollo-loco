@@ -2,6 +2,8 @@ export class MyAudio{
     // #region ATTRIBUTES
     sound;
     loaded = false;
+    playPromise = null;
+    
     // #endregion
 
     constructor(_sound){
@@ -17,6 +19,8 @@ export class MyAudio{
 export class AudioHub{
     // #region ATTRIBUTES
     static VOLUME = 0; // default
+    // playPromise = null;
+    static BLOCKING = false;
     // Character sound
     static PEPE_DAMAGE = new MyAudio('./assets/sounds/character/characterDamage.mp3');
     static PEPE_DEAD = new MyAudio('./assets/sounds/character/characterDead.wav');
@@ -66,7 +70,8 @@ export class AudioHub{
     // #region METHOD
     static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
-        if(!_soundName.loaded){
+        // let playPromise = audio.play();
+        if(!_soundName.loaded || AudioHub.BLOCKING){
             return;
         }
         // if(audio.readyState === 4 || _soundName.loaded){
@@ -74,19 +79,52 @@ export class AudioHub{
             _soundName.loaded = true;
             audio.volume = AudioHub.VOLUME;
             audio.currentTime = 0;
-            audio.loop = _loop;
-            audio.play();
+            audio.loop = !!_loop;
+
+            if(_soundName.playPromise) return;
+
+            _soundName.playPromise = audio.play();
+            // audio.play();
+            if(_soundName.playPromise !== undefined){
+                _soundName.playPromise
+                    .catch(err => {
+                        if(err.name !== "AbortError")
+                            console.error(err);
+                    })
+                    .finally(() => {
+                        _soundName.playPromise = null;
+                    })
+            }
         }
+            
+
+            // if (audio.play() !== undefined){
+            //     audio.play().catch(err => {
+            //         if(err.name !== 'AbortError'){
+            //             console.error(err);
+            //         }
+            //     })
+            // }
+        // }
     }
 
     static stopOne(soundName){
+        if(soundName.playPromise){
+            soundName.playPromise = null;
+        }
         soundName.sound.pause();
+        soundName.sound.currentTime = 0;
     };
         
     static stopAll(){
+        AudioHub.BLOCKING = true;
         AudioHub.ALL_SOUNDS.forEach(soundName => {
             soundName.sound.pause();
-        })
+            soundName.currentTime = 0;
+            soundName.playPromise = null;
+        });
+        // AudioHub.ALL_SOUNDS.playing = [];
+        setTimeout(() => {AudioHub.BLOCKING = false}, 50);
     }
 
     

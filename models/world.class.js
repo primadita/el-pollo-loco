@@ -285,10 +285,10 @@ export class World{
      */
     handlingCollisionsOfThrowablesAndEndboss(){
         this.throwableObjects.forEach((bottle) => {
+            this.character.registerLastMove(); //FIXME: diese Zeile muss noch irgendwo anders, da nach dem 1.Werfen, kommt Pepe nicht mehr in long idle mode
             if (bottle.isColliding(this.level.endboss) && this.throwableObjects.fly ){
                 this.throwableObjects.fly = false;
                 this.level.endboss.hit(25);
-                this.character.registerLastMove();
                 bottle.hit = true;
                 console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
