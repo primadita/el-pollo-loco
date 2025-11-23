@@ -27,6 +27,7 @@ export class World{
     cameraX = 0;
     statusBar = [new HealthBar(), new CoinBar(), new BottleBar()];
     throwableObjects = [];
+    state = "running";
     // #endregion
 
     /**
@@ -63,11 +64,10 @@ export class World{
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.cameraX, 0);
-        if(!this.isGameOver()){
+        if(this.state === "running"){
+            // this.state = "running";
             this.animationFrame = requestAnimationFrame(() => this.draw());
-        } else {
-            this.checkGameOver();
-        }
+        } 
     }
 
     /**
@@ -141,6 +141,7 @@ export class World{
      */
     setWorld(){
         this.character.world = this;
+        this.level.endboss.world = this;
     }
 
     /**
@@ -249,7 +250,7 @@ export class World{
     handlingCharacterVsEndbossCollisions(){
         if(this.character.isColliding(this.level.endboss)){
             if(!this.level.endboss.dead){
-                this.character.hit(50);
+                this.character.hit(100);
 
             }
             
@@ -322,8 +323,14 @@ export class World{
      * @returns {boolean}
      */
     isGameOver(){
-        return this.character.energy === 0 ||
-            this.level.endboss.isDead();
+        // if(this.character.energy === 0){
+        //     return this.lost();
+        // } else if(this.level.endboss.energy === 0){
+        //     return this.won();
+        // } else{
+        //     return false;
+        // }
+        return this.state === "won" || this.state === "lost";
     }
 
     /**
@@ -331,7 +338,7 @@ export class World{
      * @returns {boolean}
      */
     won(){
-        return this.level.endboss.isDead();
+        return this.state === "won";
     }
 
     /**
@@ -339,19 +346,34 @@ export class World{
      * @returns {boolean}
      */
     lost(){
-        return this.character.energy === 0;
+        return this.state === "lost";
     }
 
     /**
      * Handles game over logic.
      */
-    checkGameOver(){
-        if(this.isGameOver()){
-            IntervalHub.stopAllIntervals();
-            AudioHub.stopAll();
-            cancelAnimationFrame(this.animationFrame);
-            this.showEndscreen();
-        }
+    // checkGameOver(){
+    //     if(this.isGameOver()){
+    //         // if(this.finishDeathAnimation()){
+    //             // IntervalHub.stopAllIntervals();
+    //             // AudioHub.stopAll();
+    //             // cancelAnimationFrame(this.animationFrame);
+    //             // this.showEndscreen();
+    //         // }
+            
+    //     }
+    // }
+
+    finishDeathAnimation(_state){
+        this.state = _state;
+       
+        // if(this.state === "gameover") return;
+        // this.state === "gameover";
+        IntervalHub.stopAllIntervals();
+        AudioHub.stopAll();
+        cancelAnimationFrame(this.animationFrame);
+        this.showEndscreen();
+
     }
 
     /**

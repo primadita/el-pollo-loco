@@ -41,8 +41,12 @@ export class Endboss extends MovableObject{
      * Handles endboss animation based on state.
      */
     animate = () => {
-        if (this.isDead()){
+        if (this.isDying()){
             this.playAnimation(ImageManager.HENBOSS.dead);
+            if(this.currentImage > ImageManager.HENBOSS.dead.length){
+                this.world.finishDeathAnimation("won");
+            }
+
         } else if (this.hurt){
             console.log('animate hurt', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.hurt);

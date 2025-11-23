@@ -42,8 +42,11 @@ export class Character extends MovableObject{
      * Handles character animation based on state.
      */
     animate = () => {
-        if(this.isDead()){
+        if(this.isDying()){
             this.playAnimation(ImageManager.PEPE.dead);
+            if(this.currentImage >= ImageManager.PEPE.dead.length - 1){
+                this.world.finishDeathAnimation("lost");
+            }
         } else if(this.hurt){
             this.playAnimation(ImageManager.PEPE.hurt);
             // AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
@@ -85,7 +88,7 @@ export class Character extends MovableObject{
      * Plays sound effects based on character state.
      */
     soundEffect = () => {
-        if(this.isDead()){
+        if(this.isDying()){
             AudioHub.playOne({_soundName: AudioHub.PEPE_DEAD});
         } else if(this.hurt){
             AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});

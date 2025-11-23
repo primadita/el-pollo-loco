@@ -106,10 +106,15 @@ export class MovableObject extends DrawableObject{
      */
     hit(energyLoss){
         this.energy -= energyLoss;
-        if (this.energy < 0){
+        if (this.energy <= 0){
             this.energy = 0;
-        } 
-        this.hurt  = true;
+            this.dead = true;
+            this.currentImage = 0;
+            this.hurt = false;
+        } else{
+            this.hurt  = true;
+        }
+        
 
         if(this.hurtTimeout){
             clearTimeout(this.hurtTimeout);
@@ -174,8 +179,8 @@ export class MovableObject extends DrawableObject{
      * Checks if the object is dead.
      * @returns {boolean}
      */
-    isDead(){
-        return this.energy == 0;
+    isDying(){
+        return this.dead;
     }
     // #endregion
 }
