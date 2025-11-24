@@ -10,21 +10,35 @@
 </head>
 <body>
     <main>
+        <div id="rotate-device-wrapper">
+            <div class="phone">
+            </div>
+            <div class="message">
+                Please rotate your device!
+            </div>
+        </div>
+        
         <h1>El Pollo Loco</h1>
         <div id="wrapper">
             <canvas id="canvas" width="720px" height="480px">
             </canvas>
+            
             <div id="startscreen" class="d-flex">
                 <button id="play-btn" onclick="startGame()"><img src="./assets/icons/play4.png" alt="Play button"></button>
                 <div id="btn-explanation">
-                    <div><img src="./assets/icons/left.png" alt="keyboard left arrow">: Move left</img></div>
-                    <div><img src="./assets/icons/right.png" alt="keyboard right arrow">: Move right</img></div>
-                    <div><img src="./assets/icons/SPACE.png" alt="keyboard space">: Jump </img></div>
-                    <div><img src="./assets/icons/D.png" alt="keyboard D">: Throw bottle </img></div>
+                    <div class="all-view"><img src="./assets/icons/left.png" alt="keyboard left arrow">: Move left</img></div>
+                    <div class="all-view"><img src="./assets/icons/right.png" alt="keyboard right arrow">: Move right</img></div>
+                    <div class="desktop-view"><img src="./assets/icons/SPACE.png" alt="keyboard space">: Jump </img></div>
+                    <div class="mobile-view"><img src="./assets/icons/up.png" alt="button for jump">: Jump </img></div>
+                    <div class="desktop-view"><img src="./assets/icons/D.png" alt="keyboard D">: Throw bottle </img></div>
+                    <div class="mobile-view"><img src="./assets/icons/bottle.png" alt="button to throw bottle">: Throw bottle </img></div>
                 </div>
             </div>
             
             <button id="imprint-btn" onclick="showLegalNotice()">Legal notice</button>
+            <button id="fullscreen-btn">
+                <img src="./assets/icons/fullscreen.png" alt="rotate phone button">
+            </button>
             <button id="audio-btn" onclick="toggleMute()">
                 <img src="./assets/icons/mute.png" alt="mute button" id="audio-btn-img">
             </button>
