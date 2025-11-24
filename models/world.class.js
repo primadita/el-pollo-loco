@@ -307,12 +307,15 @@ export class World{
                 bottle.hit = true;
                 console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
-                this.statusBar[3].percentage = this.level.endboss.energy;
-                if (this.statusBar[3].percentage < 0){
-                    this.statusBar[3].percentage = 0;
-                    this.level.endboss.energy = 0;
+                if(this.statusBar[3]){
+                    this.statusBar[3].percentage = this.level.endboss.energy;
+                    if (this.statusBar[3].percentage < 0){
+                        this.statusBar[3].percentage = 0;
+                        this.level.endboss.energy = 0;
+                    }
+                    this.statusBar[3].setPercentage(this.statusBar[3].percentage);
                 }
-                this.statusBar[3].setPercentage(this.statusBar[3].percentage);
+                
             }
         });   
     }
@@ -399,17 +402,21 @@ export class World{
         const endscreenRef = document.getElementById("endscreen");
         endscreenRef.classList.remove('d-none');
         endscreenRef.classList.add('d-flex');
-        if(this.won()){
-            endscreenImgRef.src = "./assets/img/You won, you lost/You won B.png";
-            endscreenImgRef.alt = "you won the game";
-            AudioHub.playOne({_soundName: AudioHub.WIN_GAME});
-        } else {
-            endscreenImgRef.src = "./assets/img/You won, you lost/You lost b.png";
-            endscreenImgRef.alt = "oh no, you lost";
-            AudioHub.playOne({_soundName: AudioHub.GAME_OVER});
-            // AudioHub.stopAll();
-        }
+        AudioHub.stopAll();
+        setTimeout(() => {
+            if(this.won()){
+                endscreenImgRef.src = "./assets/img/You won, you lost/You won B.png";
+                endscreenImgRef.alt = "you won the game";
+                AudioHub.playOne({_soundName: AudioHub.WIN_GAME});
+            } else {
+                endscreenImgRef.src = "./assets/img/You won, you lost/You lost b.png";
+                endscreenImgRef.alt = "oh no, you lost";
+                AudioHub.playOne({_soundName: AudioHub.GAME_OVER});
+                // AudioHub.stopAll();
+            }
+        }, 100);
         
+        // AudioHub.stopAll();
     }
 
     
