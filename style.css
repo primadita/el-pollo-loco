@@ -272,6 +272,7 @@ body{
                 flex-direction: column;
                 padding: 10rem;
                 gap: 5rem;
+                z-index: 3;
                 background: url('./assets/img/5_background/first_half_background.png');
                 background-size: cover;
                 width: 100%;
