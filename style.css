@@ -87,7 +87,7 @@ body{
                 position: absolute;
                 top: 1rem;
                 left: 1rem;
-                z-index: 2;
+                z-index: 3;
                 background: #ffa700;
                 width: 18rem;
                 height: 5rem;
@@ -124,9 +124,9 @@ body{
                     width: 5rem;
                 }
             }
-            button:hover{
+            /* button:hover{
                 box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
-            }
+            } */
             #startscreen{
                 background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
                 background-position: center;
@@ -223,6 +223,7 @@ body{
                 position: absolute;
                 top: 0;
                 left: 0;
+                z-index: 3;
                 width: 100%;
                 max-width: 720px;
                 height: 100%;
@@ -377,6 +378,9 @@ body{
                         border-radius: 10px;
                         padding: 2px 8px;
                         cursor: pointer;
+                    }
+                    button:hover{
+                        box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 6px;
                     }
                 }
                 

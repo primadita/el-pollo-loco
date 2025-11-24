@@ -106,10 +106,10 @@ function openGameCanvas(){
 function startGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
     startscreenRef.classList.add('d-none');
-    legalNoticeButtonRef.classList.remove('d-flex');
+    // legalNoticeButtonRef.classList.remove('d-flex');
     legalNoticeButtonRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
-    mobileButtonRef.classList.remove("allowed");
+    // mobileButtonRef.classList.remove("allowed");
     // if(mobileButtonRef){
     //     mobileButtonRef.classList.add("d-none");
     // }
@@ -120,9 +120,9 @@ function startGame(){
         },3000);
         openGameCanvas();
         setThemeSound();
-        if(window.innerWidth <= 720 || window.innerHeight <= 480){
-            mobileButtonRef.classList.add("allowed");
-        }
+        // if(window.innerWidth <= 720 || window.innerHeight <= 480){
+        //     mobileButtonRef.classList.add("allowed");
+        // }
         
     }, 3000);
 }
@@ -150,6 +150,7 @@ function checkVolumeSettings(){
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
         AudioHub.VOLUME = 0.15;
+        setThemeSound();
     }
 }
 
@@ -163,8 +164,7 @@ function setThemeSound(){
     } else {
         AudioHub.VOLUME = 0;
     }
-    // TODO: Nochmal einkommentieren
-    // AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
 }
 
 /**
@@ -202,8 +202,11 @@ function restartGame(){
 function backToHome(){
     endscreenRef.classList.remove('d-flex');
     endscreenRef.classList.add('d-none');
+    legalNoticeButtonRef.classList.remove('d-none');
+    // legalNoticeButtonRef.classList.add('d-flex');
     startscreenRef.classList.remove('d-none');
-    startscreenRef.classList.add('d-flex');
+    // startscreenRef.classList.add('d-flex');
+
 }
 
 window.startGame = startGame;
