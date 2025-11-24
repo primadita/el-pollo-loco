@@ -249,13 +249,27 @@ export class World{
 
     handlingCharacterVsEndbossCollisions(){
         if(this.character.isColliding(this.level.endboss)){
-            if(!this.level.endboss.dead){
-                this.character.hit(100);
-
+            if(!this.level.endboss.dead && !this.level.endboss.collided){
+                this.character.hit(40);
+                this.level.endboss.collided = true;
+                console.log("pepes energy", this.character.energy);
+                this.statusBar[0].setPercentage(this.character.energy);
+                if(this.character.energy > 0){
+                    this.character.hurt = true;
+                    this.level.endboss.hurt = true;
+                } else {
+                    this.character.dead = true;
+                    this.level.endboss.attacking = false;
+                }
+            } else {
+                this.level.endboss.hurt = false;
             }
-            
+        } else {
+            this.level.endboss.collided = false;
+            // this.level.endboss.hurt = false;
+            // this.level.endboss.attacking = false;
         }
-        this.statusBar[0].percentage = this.character.energy;
+        
     }
 
     /**
@@ -370,9 +384,10 @@ export class World{
         // if(this.state === "gameover") return;
         // this.state === "gameover";
         IntervalHub.stopAllIntervals();
-        AudioHub.stopAll();
+        // AudioHub.stopAll();
         cancelAnimationFrame(this.animationFrame);
         this.showEndscreen();
+        // AudioHub.stopAll();
 
     }
 
@@ -387,12 +402,14 @@ export class World{
         if(this.won()){
             endscreenImgRef.src = "./assets/img/You won, you lost/You won B.png";
             endscreenImgRef.alt = "you won the game";
-            AudioHub.playOne({_soundName: AudioHub.WIN_GAME, _vol: this.soundVolume});
+            AudioHub.playOne({_soundName: AudioHub.WIN_GAME});
         } else {
             endscreenImgRef.src = "./assets/img/You won, you lost/You lost b.png";
             endscreenImgRef.alt = "oh no, you lost";
-            AudioHub.playOne({_soundName: AudioHub.GAME_OVER, _vol: this.soundVolume});
+            AudioHub.playOne({_soundName: AudioHub.GAME_OVER});
+            // AudioHub.stopAll();
         }
+        
     }
 
     

@@ -16,8 +16,10 @@ export class Endboss extends MovableObject{
         bottom: 80,
         right: 55
     }
-    hurt = false;
-    attacking = false;
+    // hurt = false;
+    // attacking = false;
+    // dead = false;
+    collided = false;
     deathSoundPlayed = false;
     // #endregion
 
@@ -73,7 +75,7 @@ export class Endboss extends MovableObject{
             if(this.attackingTimeout) return;
             this.attackingTimeout = setTimeout(() => {
                 this.attacking = true;
-                const attackDuration = 1000; // in milliseconds
+                const attackDuration = 1500; // in milliseconds
 
                 setTimeout(() => {
                     this.attacking = false;
