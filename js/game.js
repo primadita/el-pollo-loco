@@ -22,7 +22,9 @@ let world;
 let keyboard = new Keyboard();
 /** @type {boolean} Whether audio is enabled. */
 let audioRef = false;
+/** @type {boolean} Whether theme sound is played. */
 let soundThemePlaying = false;
+/** @type {boolean} Whether theme sound is allowed. */
 let soundThemeAllowed = false;
 /** @type {number} The current audio volume. */
 let volumeRef;
@@ -30,14 +32,17 @@ let volumeRef;
 const endscreenRef = document.getElementById('endscreen');
 /** @type {HTMLElement} Reference to the startscreen element. */
 const startscreenRef = document.getElementById("startscreen");
-// #endregion
+/** @type {HTMLElement} Reference to the loading screen element. */
 const loadingscreenRef = document.getElementById("loading-scr");
+/** @type {HTMLElement} Reference to the control buttons for touchscreen devices */
 const mobileButtonRef = document.getElementById("mobile-btn");
+/** @type {HTMLElement} Reference to the legal notice button element. */
 const legalNoticeButtonRef = document.getElementById("imprint-btn");
+/** @type {HTMLElement} Reference to the legal notice element. */
 const legalNoticeRef = document.getElementById("imprint");
+// #endregion
 
 // #region INIT
-
 /**
  * Initializes the game world and canvas.
  * Resets background positions and creates a new World instance.
@@ -51,6 +56,17 @@ function init(){
         mobileButtonRef.classList.remove("d-none");
         mobileButtonRef.classList.add("d-flex");
     }
+}
+
+/**
+ * Resets the background layer positions to their initial values.
+ * Ensures backgrounds are correctly positioned when restarting the game.
+ */
+function resetBackground(){
+    Sky.XPOS = -2 * canvas.width;
+    DesertFirstLayer.XPOS = -2 * canvas.width;
+    DesertSecondLayer.XPOS = -2 * canvas.width;
+    DesertThirdLayer.XPOS = -2 * canvas.width;
 }
 
 /**
@@ -73,31 +89,22 @@ function getFromLocalStorage(){
     }
 }
 
-function showLegalNotice(){
-    startscreenRef.classList.remove("d-flex");
-    startscreenRef.classList.add("d-none");
-    legalNoticeRef.classList.remove("d-none");
-    legalNoticeRef.classList.add("d-flex");
-}
-
-function closeLegalNotice(){
-    legalNoticeRef.classList.remove("d-flex");
-    legalNoticeRef.classList.add("d-none");
-    startscreenRef.classList.remove("d-none");
-    startscreenRef.classList.add("d-flex");
-}
-
+/**
+ * Makes the loading screen visible.
+ */
 function showLoadScreen(){
     loadingscreenRef.classList.add('d-flex');
 }
 
+/**
+ * Hides the loading screen, sets up the canvas, and initializes the game world.
+ */
 function openGameCanvas(){
     loadingscreenRef.classList.remove('d-flex');
     loadingscreenRef.classList.add('d-none');
     init();
     console.log('the game starts');
 }
-// #endregion
 
 /**
  * Starts the game by hiding the start screen and initializing the world.
@@ -120,6 +127,7 @@ function startGame(){
     }, 3000);
 }
 
+// #region VOLUME & SOUNDS
 /**
  * Toggles the mute state for game audio.
  * Updates UI and saves the new setting to local storage.
@@ -145,9 +153,15 @@ function checkVolumeSettings(){
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
         AudioHub.VOLUME = 0.15;
-        // soundThemePlaying = true;
         setThemeSound();
     }
+}
+
+/**
+ * Saves the current audio setting to local storage.
+ */
+function saveVolumeSettings(){
+    localStorage.setItem("audioRef", JSON.stringify(audioRef));
 }
 
 /**
@@ -162,25 +176,9 @@ function setThemeSound(){
         soundThemePlaying = true;
     }
 }
+// #endregion
 
-/**
- * Saves the current audio setting to local storage.
- */
-function saveVolumeSettings(){
-    localStorage.setItem("audioRef", JSON.stringify(audioRef));
-}
-
-/**
- * Resets the background layer positions to their initial values.
- * Ensures backgrounds are correctly positioned when restarting the game.
- */
-function resetBackground(){
-    Sky.XPOS = -2 * canvas.width;
-    DesertFirstLayer.XPOS = -2 * canvas.width;
-    DesertSecondLayer.XPOS = -2 * canvas.width;
-    DesertThirdLayer.XPOS = -2 * canvas.width;
-}
-
+// #region ENDSCREEN
 /**
  * Restarts the game by hiding the end screen, reinitializing the world, and playing the start sound.
  */
@@ -191,7 +189,6 @@ function restartGame(){
     init();  
     setThemeSound();
     AudioHub.playOne({_soundName: AudioHub.GAME_START});  
-     
 };
 
 /**
@@ -207,6 +204,29 @@ function backToHome(){
     soundThemePlaying = false;
     soundThemeAllowed = false;
 }
+// #endregion
+
+// #region LEGAL NOTICE
+/**
+ * Displays the legal notice screen and hides the start screen.
+ */
+function showLegalNotice(){
+    startscreenRef.classList.remove("d-flex");
+    startscreenRef.classList.add("d-none");
+    legalNoticeRef.classList.remove("d-none");
+    legalNoticeRef.classList.add("d-flex");
+}
+
+/**
+ * Hides the legal notice and returns to the start screen.
+ */
+function closeLegalNotice(){
+    legalNoticeRef.classList.remove("d-flex");
+    legalNoticeRef.classList.add("d-none");
+    startscreenRef.classList.remove("d-none");
+    startscreenRef.classList.add("d-flex");
+}
+// #endregion 
 
 window.startGame = startGame;
 window.toggleMute = toggleMute;

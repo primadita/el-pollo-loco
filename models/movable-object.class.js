@@ -114,7 +114,6 @@ export class MovableObject extends DrawableObject{
             this.hurt  = true;
         }
         
-
         if(this.hurtTimeout){
             clearTimeout(this.hurtTimeout);
         }

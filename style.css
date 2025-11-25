@@ -71,7 +71,6 @@ body{
         justify-content: center;
         height: auto;
         min-height: calc(100dvh - 5dvh);
-        
         #wrapper{
             width: 100%;
             max-width: 720px;
@@ -125,6 +124,7 @@ body{
             #startscreen{
                 background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_2.png');
                 background-position: center;
+                background-size: cover;
                 width: 100%;
                 max-width: 720px;
                 height: 100%;
@@ -133,7 +133,6 @@ body{
                 top: 0;
                 left: 0;
                 z-index: 2;
-                background-size: cover;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;

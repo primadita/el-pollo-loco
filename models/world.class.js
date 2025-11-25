@@ -19,14 +19,58 @@ import { ThrowableObject } from "./throwable-object.class.js";
  */
 export class World{
     // #region ATTRIBUTES
+    /**
+     * The 2D rendering context of the canvas.
+     * @type {CanvasRenderingContext2D}
+     */
     ctx;
+
+    /**
+     * The main controllable character.
+     * @type {Character}
+     */
     character = new Character();
+
+    /**
+     * The level configuration containing enemies, clouds, coins, etc.
+     * @type {Level}
+     */
     level = new Level();
+    
+    /**
+     * The canvas element where the game is rendered.
+     * @type {HTMLCanvasElement}
+     */
     canvas;
+
+    /**
+     * Keyboard input reference.
+     * @type {Keyboard}
+     */
     keyboard;
+
+    /**
+     * Horizontal camera offset for side-scrolling.
+     * @type {number}
+     */
     cameraX = 0;
+
+    /**
+     * List of status bars (health, coins, bottles, endboss when available).
+     * @type {(StatusBar[]) }
+     */
     statusBar = [new HealthBar(), new CoinBar(), new BottleBar()];
+    
+    /**
+     * Array of active throwable objects (bottles).
+     * @type {ThrowableObject[]}
+     */
     throwableObjects = [];
+
+    /**
+     * Current game state: `"running"`, `"won"`, `"lost"`.
+     * @type {"running" | "won" | "lost"}
+     */
     state = "running";
     // #endregion
 
@@ -47,8 +91,10 @@ export class World{
     }
     // #region METHODS
     // #region Draw methods
-    /**
-     * Draws all objects and status bars on the canvas.
+     /**
+     * Continuously draws the entire world, including:
+     * backgrounds, objects, status bars, character, enemies.
+     * Uses the camera translation for scrolling.
      */
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -329,7 +375,7 @@ export class World{
 
     // #region End of game
     /**
-     * Checks if the game is over.
+     * Returns whether the game is over.
      * @returns {boolean}
      */
     isGameOver(){
@@ -337,7 +383,7 @@ export class World{
     }
 
     /**
-     * Checks if the player won.
+     * Returns true if the player won the game.
      * @returns {boolean}
      */
     won(){
@@ -345,13 +391,18 @@ export class World{
     }
 
     /**
-     * Checks if the player lost.
+     * Returns true if the player lost the game.
      * @returns {boolean}
      */
     lost(){
         return this.state === "lost";
     }
 
+    /**
+     * Ends the game after the character’s death animation finishes.
+     *
+     * @param {"won" | "lost"} _state
+     */
     finishDeathAnimation(_state){
         this.state = _state;
         IntervalHub.stopAllIntervals();
@@ -360,7 +411,7 @@ export class World{
     }
 
     /**
-     * Shows the end screen.
+     * Displays the end screen and plays the final sound.
      */
     showEndscreen(){
         const endscreenImgRef = document.getElementById("endscreen-img");

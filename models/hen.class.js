@@ -18,7 +18,6 @@ export class Hen extends MovableObject {
     }
     deathSoundPlayed = false;
     isWalking = false;
-
     // #endregion
 
     /**

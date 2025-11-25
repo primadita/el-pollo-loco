@@ -1,16 +1,37 @@
+/**
+ * Handles user input for the game from both keyboard and mobile touch buttons.
+ * Provides static flags representing the current state of movement and action keys.
+ */
 export class Keyboard{
     // #region ATTRIBUTES
+    /** Flag indicating whether the left arrow key (or left mobile button) is pressed. */
     static LEFT = false;
+    /** Flag indicating whether the right arrow key (or right mobile button) is pressed. */
     static RIGHT = false;
+    /** Flag indicating whether the spacebar (or jump mobile button) is pressed. */
     static SPACE = false;
+    /** Flag indicating whether the "D" key (or throw mobile button) is pressed. */
     static D = false;
     // #endregion
 
+    /**
+     * Creates a new Keyboard handler instance.
+     * Binds event listeners for both desktop keyboard input and mobile touch buttons.
+     */
     constructor(){
         this.bindKeyPressEvent();
         this.bindMobileBtnPressEvents();
     }
     // region METHODS
+    /**
+     * Binds desktop keyboard events to update the static key flags.
+     * - `ArrowRight` → RIGHT
+     * - `ArrowLeft` → LEFT
+     * - `Space` → SPACE
+     * - `d` → D
+     *
+     * Handles both `keydown` and `keyup` events.
+     */
     bindKeyPressEvent(){
         window.addEventListener('keydown', (e) => {
             if(e.key == 'ArrowRight'){
@@ -41,6 +62,16 @@ export class Keyboard{
             }
         });
     }
+
+    /**
+     * Binds mobile touch button events to update the static key flags.
+     * Supports `touchstart`, `touchend`, and `touchcancel` events.
+     * Buttons:
+     * - Left → LEFT
+     * - Right → RIGHT
+     * - Jump → SPACE
+     * - Throw → D
+     */
     bindMobileBtnPressEvents(){
         const leftBtn = document.getElementById('left-btn');
         const rightBtn = document.getElementById('right-btn');
