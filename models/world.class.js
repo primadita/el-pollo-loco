@@ -65,7 +65,6 @@ export class World{
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.cameraX, 0);
         if(this.state === "running"){
-            // this.state = "running";
             this.animationFrame = requestAnimationFrame(() => this.draw());
         } 
     }
@@ -131,7 +130,6 @@ export class World{
         this.addCollectingObjects(this.level.bottles);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.level.endboss);
-       
     }
     // #endregion
 
@@ -240,7 +238,6 @@ export class World{
                     enemy.attacking = false;  
                 }
                 this.statusBar[0].setPercentage(this.character.energy);
-                // console.log('Pepe:', this.character.energy);
             } else {
                 enemy.attacking = true;
             }
@@ -266,10 +263,7 @@ export class World{
             }
         } else {
             this.level.endboss.collided = false;
-            // this.level.endboss.hurt = false;
-            // this.level.endboss.attacking = false;
         }
-        
     }
 
     /**

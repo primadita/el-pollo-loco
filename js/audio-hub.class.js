@@ -19,7 +19,6 @@ export class MyAudio{
 export class AudioHub{
     // #region ATTRIBUTES
     static VOLUME = 0; // default
-    // playPromise = null;
     static BLOCKING = false;
     // Character sound
     static PEPE_DAMAGE = new MyAudio('./assets/sounds/character/characterDamage.mp3');
@@ -70,11 +69,9 @@ export class AudioHub{
     // #region METHOD
     static playOne({_soundName, _loop = false}={}){
         const audio = _soundName.sound;
-        // let playPromise = audio.play();
-        if(!_soundName.loaded || AudioHub.BLOCKING || !audio.paused){
-            return;
-        }
-        // if(audio.readyState === 4 || _soundName.loaded){
+        
+        if(!_soundName.loaded || AudioHub.BLOCKING || !audio.paused) return;
+
         if(audio.paused){
             _soundName.loaded = true;
             audio.volume = AudioHub.VOLUME;
@@ -84,7 +81,6 @@ export class AudioHub{
             if(_soundName.playPromise) return;
 
             _soundName.playPromise = audio.play();
-            // audio.play();
             if(_soundName.playPromise !== undefined){
                 _soundName.playPromise
                     .catch(err => {
@@ -96,16 +92,6 @@ export class AudioHub{
                     })
             }
         }
-            
-
-            // if (audio.play() !== undefined){
-            //     audio.play().catch(err => {
-            //         if(err.name !== 'AbortError'){
-            //             console.error(err);
-            //         }
-            //     })
-            // }
-        // }
     }
 
     static stopOne(soundName){
@@ -123,10 +109,7 @@ export class AudioHub{
             soundName.sound.currentTime = 0;
             soundName.playPromise = null;
         });
-        // AudioHub.ALL_SOUNDS.playing = [];
         setTimeout(() => {AudioHub.BLOCKING = false}, 50);
     }
-
-    
     // #endregion
 }

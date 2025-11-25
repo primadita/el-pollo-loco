@@ -49,17 +49,12 @@ export class Character extends MovableObject{
             }
         } else if(this.hurt){
             this.playAnimation(ImageManager.PEPE.hurt);
-            // AudioHub.playOne({_soundName: AudioHub.PEPE_DAMAGE});
         } else if(this.isAboveGround()){
             this.playAnimation(ImageManager.PEPE.jump);
-            // AudioHub.playOne({_soundName: AudioHub.PEPE_JUMP});
-            // TO DO: jump animation nur ein Durchlauf
         } else if(Keyboard.RIGHT || Keyboard.LEFT){
             this.playAnimation(ImageManager.PEPE.walk);
-            // AudioHub.playOne({_soundName: AudioHub.PEPE_RUN});
         } else if (this.isSleeping()){
             this.playAnimation(ImageManager.PEPE.longIdle);
-            // AudioHub.playOne({_soundName: AudioHub.PEPE_SNORE});
         } else {
             this.playAnimation(ImageManager.PEPE.idle);
         }

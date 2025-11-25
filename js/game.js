@@ -60,7 +60,6 @@ function init(){
 function loadSiteInBackground(){
     getFromLocalStorage();
     checkVolumeSettings();
-    // setThemeSound();
 }
 
 /**
@@ -100,8 +99,6 @@ function openGameCanvas(){
 }
 // #endregion
 
-// #region Startscreen & Local storage
-
 /**
  * Starts the game by hiding the start screen and initializing the world.
  * Also sets the theme sound.
@@ -109,14 +106,10 @@ function openGameCanvas(){
 function startGame(){
     AudioHub.playOne({_soundName: AudioHub.GAME_START}); 
     startscreenRef.classList.add('d-none');
-    // legalNoticeButtonRef.classList.remove('d-flex');
     legalNoticeButtonRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
     soundThemeAllowed = true;
-    // mobileButtonRef.classList.remove("allowed");
-    // if(mobileButtonRef){
-    //     mobileButtonRef.classList.add("d-none");
-    // }
+   
     setTimeout(() => {
         setTimeout(() => {
             showLoadScreen();
@@ -124,10 +117,6 @@ function startGame(){
         },3000);
         openGameCanvas();
         setThemeSound();
-        // if(window.innerWidth <= 720 || window.innerHeight <= 480){
-        //     mobileButtonRef.classList.add("allowed");
-        // }
-        
     }, 3000);
 }
 
@@ -166,18 +155,12 @@ function checkVolumeSettings(){
  * Called when the game starts or restarts.
  */
 function setThemeSound(){
-    // if(audioRef){
-    //     AudioHub.VOLUME = 0.15;
-    // } else {
-    //     AudioHub.VOLUME = 0;
-    // }
     if(soundThemePlaying) return;
 
     if(soundThemeAllowed){
         AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
         soundThemePlaying = true;
     }
-    
 }
 
 /**
@@ -219,13 +202,10 @@ function backToHome(){
     endscreenRef.classList.remove('d-flex');
     endscreenRef.classList.add('d-none');
     legalNoticeButtonRef.classList.remove('d-none');
-    // legalNoticeButtonRef.classList.add('d-flex');
     startscreenRef.classList.remove('d-none');
     loadSiteInBackground();
     soundThemePlaying = false;
     soundThemeAllowed = false;
-    // startscreenRef.classList.add('d-flex');
-
 }
 
 window.startGame = startGame;
@@ -235,46 +215,3 @@ window.backToHome = backToHome;
 window.showLegalNotice = showLegalNotice;
 window.closeLegalNotice = closeLegalNotice;
 // #endregion
-
-// #region Keyboard Settings
-
-/**
- * Handles keydown events for game controls.
- * Sets the corresponding property in the keyboard object to true.
- */
-// window.addEventListener('keydown', (e) => {
-//     if(e.key == 'ArrowRight'){
-//         keyboard.RIGHT = true;
-//     }
-//     if(e.key == 'ArrowLeft'){
-//         keyboard.LEFT = true;
-//     }
-//     if(e.key == ' '){
-//         keyboard.SPACE = true;
-//     }
-//     if(e.key == 'd'){
-//         keyboard.D = true;
-//     }
-// })
-
-// /**
-//  * Handles keyup events for game controls.
-//  * Sets the corresponding property in the keyboard object to false.
-//  */
-// window.addEventListener("keyup",(e) => {
-//     if(e.key == 'ArrowRight'){
-//         keyboard.RIGHT = false;
-//     }
-//     if(e.key == 'ArrowLeft'){
-//         keyboard.LEFT = false;
-//     }
-//     if(e.key == ' '){
-//         keyboard.SPACE = false;
-//     }
-//     if(e.key == 'd'){
-//         keyboard.D = false;
-//     }
-// });
-// #endregion
-
-

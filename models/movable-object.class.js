@@ -9,7 +9,6 @@ export class MovableObject extends DrawableObject{
     xSpeed;
     ySpeed = 0;
     acceleration = 2.5; // or gravitation
-    
     groundLevel = 165;
     otherDirection = false;
     energy = 100;

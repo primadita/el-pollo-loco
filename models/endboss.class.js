@@ -16,9 +16,6 @@ export class Endboss extends MovableObject{
         bottom: 80,
         right: 55
     }
-    // hurt = false;
-    // attacking = false;
-    // dead = false;
     collided = false;
     deathSoundPlayed = false;
     // #endregion
@@ -52,15 +49,9 @@ export class Endboss extends MovableObject{
         } else if (this.hurt){
             console.log('animate hurt', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.hurt);
-            // setTimeout(() => {
-            //     this.playAnimation(ImageManager.HENBOSS.walk)
-            // }, 1000);
         } else if (this.attacking){
             console.log('animate walk', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.walk);
-            // setTimeout(() => {
-            //     this.attacking = false;
-            // }, 1500);
         } else {
             console.log('animate angry', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.angry);
@@ -85,7 +76,7 @@ export class Endboss extends MovableObject{
         }
         if(this.attacking){
             this.moveLeft();
-        }// this.attacking = false;
+        }
     }
 
     soundEffect = () => {
