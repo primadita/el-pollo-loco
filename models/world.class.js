@@ -98,22 +98,58 @@ export class World{
      */
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.cameraX, 0);
-        this.addObjectsToMap(this.level.backgrounds);
-        this.drawLevelObjects();
+        // this.ctx.translate(this.cameraX, 0);
+        // this.shiftCameraX("forward");
+        // this.addObjectsToMap(this.level.backgrounds);
+        // this.drawLevelObjects();
+        this.renderAllLevelObjects();
         
-        this.ctx.translate(-this.cameraX, 0); //back 
-        this.drawAllStatusBars();
-        this.ctx.translate(this.cameraX, 0); // forward
+        this.renderStatusBars();
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
-        this.ctx.translate(-this.cameraX, 0);
+        // this.ctx.translate(-this.cameraX, 0);
+        this.shiftCameraX("back");
+        this.renderAnimationFrame();
+        // if(this.state === "running"){
+        //     this.animationFrame = requestAnimationFrame(() => this.draw());
+        // } 
+    }
+
+    shiftCameraX(direction){
+        switch (direction) {
+            case "back":
+                this.ctx.translate(-this.cameraX, 0);
+                break;
+            case "forward":
+                this.ctx.translate(this.cameraX, 0);
+                break;
+            default:
+                this.ctx.translate(this.cameraX, 0);
+                break;
+        }
+    }
+
+    renderAllLevelObjects(){
+        // this.ctx.translate(this.cameraX, 0);
+        this.shiftCameraX("forward");
+        this.addObjectsToMap(this.level.backgrounds);
+        this.drawLevelObjects();
+    }
+
+    renderStatusBars(){
+        // this.ctx.translate(-this.cameraX, 0); //back
+        this.shiftCameraX("back"); 
+        this.drawAllStatusBars();
+        // this.ctx.translate(this.cameraX, 0); // forward
+        this.shiftCameraX("forward");
+    }
+
+    renderAnimationFrame(){
         if(this.state === "running"){
             this.animationFrame = requestAnimationFrame(() => this.draw());
         } 
     }
-
     /**
      * Adds a single object to the map.
      * @param {Object} mo - Movable or drawable object.
@@ -167,7 +203,8 @@ export class World{
     }
 
     /**
-     * Draws all level objects.
+     * Draws all objects related to the level:
+     * clouds, enemies, collectibles, endboss.
      */
     drawLevelObjects(){
         this.addObjectsToMap(this.level.clouds);
@@ -268,12 +305,13 @@ export class World{
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 if(this.character.ySpeed < 0 && !enemy.dead){
-                    enemy.dead = true;
-                    this.hitEnemy(enemy);
-                    this.checkMaxEnergy();
-                    if(this.character.canbounce){
-                        this.character.bounce(); // small jump after hitting enemy
-                    }
+                    // enemy.dead = true;
+                    // this.hitEnemy(enemy);
+                    // this.checkMaxEnergy();
+                    // if(this.character.canbounce){
+                    //     this.character.bounce(); // small jump after hitting enemy
+                    // }
+                    this.characterAttacks(enemy);
                 } else if(this.character.ySpeed >= 0 && !enemy.dead && enemy.attacking) { //die Bedingungen, wann energy runtergeht wurde geändert,damit die Energy nicht so schnell runtergeht.
                     if(enemy instanceof Chicken){
                         this.character.hit(10);
@@ -289,6 +327,15 @@ export class World{
         });
     }
 
+    characterAttacks(enemy){
+        enemy.dead = true;
+        this.hitEnemy(enemy);
+        this.checkMaxEnergy();
+        if(this.character.canbounce){
+            this.character.bounce(); // small jump after hitting enemy
+        }
+    }
+
     handlingCharacterVsEndbossCollisions(){
         if(this.character.isColliding(this.level.endboss)){
             if(!this.level.endboss.dead && !this.level.endboss.collided){
@@ -296,13 +343,14 @@ export class World{
                 this.level.endboss.collided = true;
                 console.log("pepes energy", this.character.energy);
                 this.statusBar[0].setPercentage(this.character.energy);
-                if(this.character.energy > 0){
-                    this.character.hurt = true;
-                    this.level.endboss.hurt = true;
-                } else {
-                    this.character.dead = true;
-                    this.level.endboss.attacking = false;
-                }
+                this.checkCharacterState();
+                // if(this.character.energy > 0){
+                //     this.character.hurt = true;
+                //     this.level.endboss.hurt = true;
+                // } else {
+                //     this.character.dead = true;
+                //     this.level.endboss.attacking = false;
+                // }
             } else {
                 this.level.endboss.hurt = false;
             }
@@ -311,6 +359,15 @@ export class World{
         }
     }
 
+    checkCharacterState(){
+        if(this.character.energy > 0){
+            this.character.hurt = true;
+            this.level.endboss.hurt = true;
+        } else {
+            this.character.dead = true;
+            this.level.endboss.attacking = false;
+        }
+    }
     /**
      * Checks and limits character's max energy.
      */
@@ -348,10 +405,11 @@ export class World{
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
                 if(this.statusBar[3]){
                     this.statusBar[3].percentage = this.level.endboss.energy;
-                    if (this.statusBar[3].percentage < 0){
-                        this.statusBar[3].percentage = 0;
-                        this.level.endboss.energy = 0;
-                    }
+                    this.checkMinPercentageOnEndbossBar();
+                    // if (this.statusBar[3].percentage < 0){
+                    //     this.statusBar[3].percentage = 0;
+                    //     this.level.endboss.energy = 0;
+                    // }
                     this.statusBar[3].setPercentage(this.statusBar[3].percentage);
                 }
                 
@@ -359,6 +417,12 @@ export class World{
         });   
     }
 
+    checkMinPercentageOnEndbossBar(){
+        if (this.statusBar[3].percentage < 0){
+            this.statusBar[3].percentage = 0;
+            this.level.endboss.energy = 0;
+        }
+    }
     /**
      * Handles hitting an enemy.
      * @param {Object} enemy - Enemy object.
@@ -407,17 +471,18 @@ export class World{
         this.state = _state;
         IntervalHub.stopAllIntervals();
         cancelAnimationFrame(this.animationFrame);
-        this.showEndscreen();
+        this.playOutro();
     }
 
     /**
      * Displays the end screen and plays the final sound.
      */
-    showEndscreen(){
+    playOutro(){
         const endscreenImgRef = document.getElementById("endscreen-img");
-        const endscreenRef = document.getElementById("endscreen");
-        endscreenRef.classList.remove('d-none');
-        endscreenRef.classList.add('d-flex');
+        this.showEndscreen();
+        // const endscreenRef = document.getElementById("endscreen");
+        // endscreenRef.classList.remove('d-none');
+        // endscreenRef.classList.add('d-flex');
         AudioHub.stopAll();
         setTimeout(() => {
             if(this.won()){
@@ -430,6 +495,12 @@ export class World{
                 AudioHub.playOne({_soundName: AudioHub.GAME_OVER});
             }
         }, 100);
+    }
+
+    showEndscreen(){
+        const endscreenRef = document.getElementById("endscreen");
+        endscreenRef.classList.remove('d-none');
+        endscreenRef.classList.add('d-flex');
     }
     // #endregion
 }
