@@ -22,6 +22,8 @@ let world;
 let keyboard = new Keyboard();
 /** @type {boolean} Whether audio is enabled. */
 let audioRef = false;
+let soundThemePlaying = false;
+let soundThemeAllowed = false;
 /** @type {number} The current audio volume. */
 let volumeRef;
 /** @type {HTMLElement} Reference to the endscreen element. */
@@ -33,6 +35,7 @@ const loadingscreenRef = document.getElementById("loading-scr");
 const mobileButtonRef = document.getElementById("mobile-btn");
 const legalNoticeButtonRef = document.getElementById("imprint-btn");
 const legalNoticeRef = document.getElementById("imprint");
+
 // #region INIT
 
 /**
@@ -57,7 +60,7 @@ function init(){
 function loadSiteInBackground(){
     getFromLocalStorage();
     checkVolumeSettings();
-    setThemeSound();
+    // setThemeSound();
 }
 
 /**
@@ -109,6 +112,7 @@ function startGame(){
     // legalNoticeButtonRef.classList.remove('d-flex');
     legalNoticeButtonRef.classList.add('d-none');
     loadingscreenRef.classList.remove('d-none');
+    soundThemeAllowed = true;
     // mobileButtonRef.classList.remove("allowed");
     // if(mobileButtonRef){
     //     mobileButtonRef.classList.add("d-none");
@@ -135,6 +139,7 @@ function toggleMute(){
     audioRef = !audioRef;
     checkVolumeSettings();
     saveVolumeSettings();
+
 }
 
 /**
@@ -147,9 +152,11 @@ function checkVolumeSettings(){
         audioBtnRef.src = "./assets/icons/mute.png";
         AudioHub.VOLUME = 0;
         AudioHub.stopAll();
+        soundThemePlaying = false;
     } else {
         audioBtnRef.src = "./assets/icons/soundon.png";
         AudioHub.VOLUME = 0.15;
+        // soundThemePlaying = true;
         setThemeSound();
     }
 }
@@ -159,12 +166,18 @@ function checkVolumeSettings(){
  * Called when the game starts or restarts.
  */
 function setThemeSound(){
-    if(audioRef){
-        AudioHub.VOLUME = 0.15;
-    } else {
-        AudioHub.VOLUME = 0;
+    // if(audioRef){
+    //     AudioHub.VOLUME = 0.15;
+    // } else {
+    //     AudioHub.VOLUME = 0;
+    // }
+    if(soundThemePlaying) return;
+
+    if(soundThemeAllowed){
+        AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+        soundThemePlaying = true;
     }
-    AudioHub.playOne({_soundName: AudioHub.THEME_SOUND, _loop: true});
+    
 }
 
 /**
@@ -190,9 +203,12 @@ function resetBackground(){
  */
 function restartGame(){
     endscreenRef.classList.add('d-none');
+    soundThemePlaying = false;  
+    soundThemeAllowed = true; 
     init();  
     setThemeSound();
-    AudioHub.playOne({_soundName: AudioHub.GAME_START});      
+    AudioHub.playOne({_soundName: AudioHub.GAME_START});  
+     
 };
 
 /**
@@ -205,6 +221,9 @@ function backToHome(){
     legalNoticeButtonRef.classList.remove('d-none');
     // legalNoticeButtonRef.classList.add('d-flex');
     startscreenRef.classList.remove('d-none');
+    loadSiteInBackground();
+    soundThemePlaying = false;
+    soundThemeAllowed = false;
     // startscreenRef.classList.add('d-flex');
 
 }
