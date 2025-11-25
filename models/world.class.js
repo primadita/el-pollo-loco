@@ -39,7 +39,6 @@ export class World{
     constructor(_canvas, _keyboard, _volume){
         this.ctx = _canvas.getContext('2d');
         this.canvas = _canvas;
-        // this.keyboard = _keyboard;
         this.soundVolume = _volume;
         this.draw();
         this.setWorld();
@@ -78,10 +77,10 @@ export class World{
             this.flipImage(mo);
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-        if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss || mo instanceof Coin || mo instanceof Bottle){
-            this.drawFrame(mo);
-            this.drawOffset(mo);
-        }
+        // if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss || mo instanceof Coin || mo instanceof Bottle){
+        //     this.drawFrame(mo);
+        //     this.drawOffset(mo);
+        // }
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -334,13 +333,6 @@ export class World{
      * @returns {boolean}
      */
     isGameOver(){
-        // if(this.character.energy === 0){
-        //     return this.lost();
-        // } else if(this.level.endboss.energy === 0){
-        //     return this.won();
-        // } else{
-        //     return false;
-        // }
         return this.state === "won" || this.state === "lost";
     }
 
@@ -360,32 +352,11 @@ export class World{
         return this.state === "lost";
     }
 
-    /**
-     * Handles game over logic.
-     */
-    // checkGameOver(){
-    //     if(this.isGameOver()){
-    //         // if(this.finishDeathAnimation()){
-    //             // IntervalHub.stopAllIntervals();
-    //             // AudioHub.stopAll();
-    //             // cancelAnimationFrame(this.animationFrame);
-    //             // this.showEndscreen();
-    //         // }
-            
-    //     }
-    // }
-
     finishDeathAnimation(_state){
         this.state = _state;
-       
-        // if(this.state === "gameover") return;
-        // this.state === "gameover";
         IntervalHub.stopAllIntervals();
-        // AudioHub.stopAll();
         cancelAnimationFrame(this.animationFrame);
         this.showEndscreen();
-        // AudioHub.stopAll();
-
     }
 
     /**
@@ -406,13 +377,8 @@ export class World{
                 endscreenImgRef.src = "./assets/img/You won, you lost/You lost b.png";
                 endscreenImgRef.alt = "oh no, you lost";
                 AudioHub.playOne({_soundName: AudioHub.GAME_OVER});
-                // AudioHub.stopAll();
             }
         }, 100);
-        
-        // AudioHub.stopAll();
     }
-
-    
     // #endregion
 }
