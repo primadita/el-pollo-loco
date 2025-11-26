@@ -103,6 +103,13 @@ export class World{
         this.renderAnimationFrame();
     }
 
+    /**
+     * Shifts the camera horizontally by translating the canvas context.
+     *
+     * @param {"back" | "forward"} direction - Determines translation direction.
+     *  - `"back"` resets translation using negative camera offset.
+     *  - `"forward"` applies the current camera offset.
+     */
     shiftCameraX(direction){
         switch (direction) {
             case "back":
@@ -117,18 +124,30 @@ export class World{
         }
     }
 
+    /**
+    * Renders all objects belonging to the level, including backgrounds
+    * and foreground objects. Uses camera shifting to handle scrolling.
+    */
     renderAllLevelObjects(){
         this.shiftCameraX("forward");
         this.addObjectsToMap(this.level.backgrounds);
         this.drawLevelObjects();
     }
 
+    /**
+    * Renders all status bars (health, coins, bottles, endboss).
+    * Temporarily resets camera translation so the UI stays fixed.
+    */
     renderStatusBars(){
         this.shiftCameraX("back"); 
         this.drawAllStatusBars();
         this.shiftCameraX("forward");
     }
 
+    /**
+    * Requests the next animation frame if the game is still running.
+    * Stops automatically once state is "won" or "lost".
+    */
     renderAnimationFrame(){
         if(this.state === "running"){
             this.animationFrame = requestAnimationFrame(() => this.draw());
@@ -172,9 +191,7 @@ export class World{
      * Draws all status bars.
      */
     drawAllStatusBars(){
-        // ---- space for fixed object -------
         this.addObjectsToMap(this.statusBar);
-        // statusbar for the endboss will appear when endboss appears and only if, endbossbar has not existed yet.
         if(this.character.x == 1700 && this.statusBar.length == 3){
             let endbossbar = new EndBossBar();
             this.statusBar.push(endbossbar);
@@ -196,17 +213,19 @@ export class World{
 
     // #region Character
     /**
-     * Sets the world reference for the character.
-     */
+    * Assigns the world reference to character and endboss,
+    * enabling them to access world-level logic (camera, collisions etc.).
+    */
     setWorld(){
         this.character.world = this;
         this.level.endboss.world = this;
     }
 
     /**
-     * Flips the image horizontally.
-     * @param {Object} mo - Movable object.
-     */
+    * Mirrors the sprite horizontally for left-facing movement.
+    *
+    * @param {MovableObject} mo - The object whose sprite to flip.
+    */
     flipImage(mo){
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -238,8 +257,9 @@ export class World{
     }
 
     /**
-     * Draws the offset frame around an object.
-     * @param {Object} mo - Movable object.
+     * Draws the object's collision offset box (real hitbox) in red.
+     *
+     * @param {MovableObject} mo - The object whose offset frame to draw.
      */
     drawOffset(mo){
         mo.getRealFrame();
@@ -267,8 +287,12 @@ export class World{
     }
 
     /**
-     * Checks collisions between character and objects.
-     */
+ * Runs all collision checks:
+ * - Character vs enemies
+ * - Collecting coins and bottles
+ * - Throwables vs endboss
+ * - Character vs endboss
+ */
     checkCollisions = () => {
         this.handlingCharacterVsEnemiesCollisions();
         this.collectingObjects({objects: this.level.bottles, valuePerObj: 10, statusbarId: 2, soundname: AudioHub.BOTTLE_COLLECTED});
@@ -278,8 +302,11 @@ export class World{
     }
 
     /**
-     * Handles collisions between character and enemies.
-     */
+ * Handles all interactions between the character and regular enemies:
+ * - Jumping on enemies kills them
+ * - Running into attacking enemies damages the character
+ * - Updates health bar accordingly
+ */
     handlingCharacterVsEnemiesCollisions(){
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
@@ -300,6 +327,11 @@ export class World{
         });
     }
 
+    /**
+     * Executes the attack logic when character jumps on an enemy.
+     *
+     * @param {Enemy} enemy - The enemy being attacked.
+     */
     characterAttacks(enemy){
         enemy.dead = true;
         this.hitEnemy(enemy);
@@ -309,6 +341,11 @@ export class World{
         }
     }
 
+    /**
+     * Handles direct collision between the character and the endboss:
+     * - Reduces character health
+     * - Marks endboss as temporarily collided (invulnerability window)
+     */
     handlingCharacterVsEndbossCollisions(){
         if(this.character.isColliding(this.level.endboss)){
             if(!this.level.endboss.dead && !this.level.endboss.collided){
@@ -323,7 +360,12 @@ export class World{
             this.level.endboss.collided = false;
         }
     }
-
+    
+    /**
+     * Updates the character and endboss states after taking damage:
+     * - Sets hurt animations
+     * - Marks character as dead when energy reaches zero
+     */
     checkCharacterState(){
         if(this.character.energy > 0){
             this.character.hurt = true;
@@ -377,6 +419,10 @@ export class World{
         });   
     }
 
+    /**
+ * Prevents the endboss health bar from going below zero.
+ * Synchronizes the energy value of the endboss.
+ */
     checkMinPercentageOnEndbossBar(){
         if (this.statusBar[3].percentage < 0){
             this.statusBar[3].percentage = 0;
@@ -453,6 +499,9 @@ export class World{
         }, 100);
     }
 
+    /**
+     * Reveals the endscreen UI element and switches display mode.
+    */
     showEndscreen(){
         const endscreenRef = document.getElementById("endscreen");
         endscreenRef.classList.remove('d-none');
