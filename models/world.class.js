@@ -1,12 +1,9 @@
 import { AudioHub } from "../js/audio-hub.class.js";
 import { BottleBar } from "./bottle-bar.class.js";
-import { Bottle } from "./bottle.class.js";
 import { Character } from "./character.class.js";
 import { Chicken } from "./chicken.class.js";
 import { CoinBar } from "./coin-bar.class.js";
-import { Coin } from "./coin.class.js";
 import { EndBossBar } from "./endboss-bar.class.js";
-import { Endboss } from "./endboss.class.js";
 import { HealthBar } from "./health-bar.class.js";
 import { Hen } from "./hen.class.js";
 import { IntervalHub } from "./interval-hub.class.js";
@@ -98,22 +95,12 @@ export class World{
      */
     draw(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        // this.ctx.translate(this.cameraX, 0);
-        // this.shiftCameraX("forward");
-        // this.addObjectsToMap(this.level.backgrounds);
-        // this.drawLevelObjects();
         this.renderAllLevelObjects();
-        
         this.renderStatusBars();
-
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
-        // this.ctx.translate(-this.cameraX, 0);
         this.shiftCameraX("back");
         this.renderAnimationFrame();
-        // if(this.state === "running"){
-        //     this.animationFrame = requestAnimationFrame(() => this.draw());
-        // } 
     }
 
     shiftCameraX(direction){
@@ -131,17 +118,14 @@ export class World{
     }
 
     renderAllLevelObjects(){
-        // this.ctx.translate(this.cameraX, 0);
         this.shiftCameraX("forward");
         this.addObjectsToMap(this.level.backgrounds);
         this.drawLevelObjects();
     }
 
     renderStatusBars(){
-        // this.ctx.translate(-this.cameraX, 0); //back
         this.shiftCameraX("back"); 
         this.drawAllStatusBars();
-        // this.ctx.translate(this.cameraX, 0); // forward
         this.shiftCameraX("forward");
     }
 
@@ -159,10 +143,6 @@ export class World{
             this.flipImage(mo);
         }
         this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-        // if (mo instanceof Character || mo instanceof Hen || mo instanceof Chicken || mo instanceof Endboss || mo instanceof Coin || mo instanceof Bottle){
-        //     this.drawFrame(mo);
-        //     this.drawOffset(mo);
-        // }
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -198,7 +178,6 @@ export class World{
         if(this.character.x == 1700 && this.statusBar.length == 3){
             let endbossbar = new EndBossBar();
             this.statusBar.push(endbossbar);
-            console.log('energy endboss', this.level.endboss.energy)
         }
     }
 
@@ -305,12 +284,6 @@ export class World{
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)){
                 if(this.character.ySpeed < 0 && !enemy.dead){
-                    // enemy.dead = true;
-                    // this.hitEnemy(enemy);
-                    // this.checkMaxEnergy();
-                    // if(this.character.canbounce){
-                    //     this.character.bounce(); // small jump after hitting enemy
-                    // }
                     this.characterAttacks(enemy);
                 } else if(this.character.ySpeed >= 0 && !enemy.dead && enemy.attacking) { //die Bedingungen, wann energy runtergeht wurde geändert,damit die Energy nicht so schnell runtergeht.
                     if(enemy instanceof Chicken){
@@ -332,7 +305,7 @@ export class World{
         this.hitEnemy(enemy);
         this.checkMaxEnergy();
         if(this.character.canbounce){
-            this.character.bounce(); // small jump after hitting enemy
+            this.character.bounce(); 
         }
     }
 
@@ -341,16 +314,8 @@ export class World{
             if(!this.level.endboss.dead && !this.level.endboss.collided){
                 this.character.hit(40);
                 this.level.endboss.collided = true;
-                console.log("pepes energy", this.character.energy);
                 this.statusBar[0].setPercentage(this.character.energy);
                 this.checkCharacterState();
-                // if(this.character.energy > 0){
-                //     this.character.hurt = true;
-                //     this.level.endboss.hurt = true;
-                // } else {
-                //     this.character.dead = true;
-                //     this.level.endboss.attacking = false;
-                // }
             } else {
                 this.level.endboss.hurt = false;
             }
@@ -401,15 +366,10 @@ export class World{
                 this.throwableObjects.fly = false;
                 this.level.endboss.hit(25);
                 bottle.hit = true;
-                console.log('energy endboss', this.level.endboss.energy);
                 AudioHub.playOne({_soundName: AudioHub.BOTTLE_BROKEN});
                 if(this.statusBar[3]){
                     this.statusBar[3].percentage = this.level.endboss.energy;
                     this.checkMinPercentageOnEndbossBar();
-                    // if (this.statusBar[3].percentage < 0){
-                    //     this.statusBar[3].percentage = 0;
-                    //     this.level.endboss.energy = 0;
-                    // }
                     this.statusBar[3].setPercentage(this.statusBar[3].percentage);
                 }
                 
@@ -433,7 +393,6 @@ export class World{
         } else if (enemy instanceof Hen){
             return this.character.energy += 10;
         }
-        console.log(this.character.energy); 
     }
     // #endregion
 
@@ -480,9 +439,6 @@ export class World{
     playOutro(){
         const endscreenImgRef = document.getElementById("endscreen-img");
         this.showEndscreen();
-        // const endscreenRef = document.getElementById("endscreen");
-        // endscreenRef.classList.remove('d-none');
-        // endscreenRef.classList.add('d-flex');
         AudioHub.stopAll();
         setTimeout(() => {
             if(this.won()){

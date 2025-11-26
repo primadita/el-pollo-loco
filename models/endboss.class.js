@@ -45,15 +45,11 @@ export class Endboss extends MovableObject{
             if(this.currentImage > ImageManager.HENBOSS.dead.length){
                 this.world.finishDeathAnimation("won");
             }
-
         } else if (this.hurt){
-            console.log('animate hurt', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.hurt);
         } else if (this.attacking){
-            console.log('animate walk', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.walk);
         } else {
-            console.log('animate angry', this.xSpeed);
             this.playAnimation(ImageManager.HENBOSS.angry);
         }
     }

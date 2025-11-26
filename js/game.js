@@ -103,7 +103,6 @@ function openGameCanvas(){
     loadingscreenRef.classList.remove('d-flex');
     loadingscreenRef.classList.add('d-none');
     init();
-    console.log('the game starts');
 }
 
 /**
