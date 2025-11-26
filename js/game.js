@@ -199,6 +199,8 @@ function backToHome(){
     endscreenRef.classList.add('d-none');
     legalNoticeButtonRef.classList.remove('d-none');
     startscreenRef.classList.remove('d-none');
+    loadingscreenRef.classList.remove('d-flex');
+    loadingscreenRef.classList.add('d-none');
     loadSiteInBackground();
     soundThemePlaying = false;
     soundThemeAllowed = false;

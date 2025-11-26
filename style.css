@@ -35,6 +35,10 @@ html{
     font-family: 'Bricolage Grotesque';
     src: url('./assets/fonts/BricolageGrotesque-VariableFont_opsz,wdth,wght.ttf');
 }
+@font-face{
+    font-family: 'MaidenOrange';
+    src: url('assets/fonts/MaidenOrange-Regular.ttf');
+}
 h1{
     font-family: 'Rye','sans-serif';
     font-size: min(60px, 64px);
@@ -264,7 +268,8 @@ body{
                 left: 0;
                 flex-direction: column;
                 padding: 10rem;
-                gap: 5rem;
+                gap: 3rem;
+                justify-content: center;
                 z-index: 3;
                 background: url('./assets/img/5_background/first_half_background.png');
                 background-size: cover;
@@ -273,14 +278,15 @@ body{
                 height: 100%;
                 max-height: 480px;
                 p{
+                    font-family: 'MaidenOrange';
                     font-size: 24px;
-                    background: rgba(255,255, 255, 0.7);
+                    padding: 2rem;
+                    background: rgba(255,255, 255, 0.8);
                 }
                 @media(max-width: 660px){
                     padding: 5rem;
                 }
                 @media (max-width: 470px){
-                    gap: 3rem;
                     p{
                         font-size: 20px;
                     }
